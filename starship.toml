@@ -1,0 +1,72 @@
+format = """
+$gcloud\
+$aws\
+$kubernetes\
+$terraform\
+$line_break\
+$docker_context\
+$nodejs\
+$python\
+$line_break\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+style = "cyan"
+
+[character]
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vicmd_symbol = "[❮](green)"
+
+[git_branch]
+format = "[$branch]($style)"
+style = "bright-green"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+[gcloud]
+format = 'on [\[gcloud\] project: ($project) config: ($active)]($style) '
+
+[aws]
+format = 'on [\[aws\] profile:($profile) region:($region)]($style) '
+
+[kubernetes]
+format = 'on [\[k8s\] context:($context) namespace:($namespace)]($style) '
+disabled = false
+
+[docker_context]
+symbol = "docker "
+
+[nodejs]
+symbol = "nodejs "
+
+
+[python]
+symbol = "py "
+
+[terraform]
+symbol = "terraform "
