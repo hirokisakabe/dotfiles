@@ -1,0 +1,9 @@
+on: push
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v4
+      - run: rm '/usr/local/bin/aws'
+      - run: brew bundle
