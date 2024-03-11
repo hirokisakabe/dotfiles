@@ -1,5 +1,4 @@
-# Apple Silicon Macなら下記のコメントアウトを外す
-# eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
 
