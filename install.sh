@@ -13,7 +13,6 @@ ln -fs $PWD/.vimrc ~/.vimrc
 ln -fs $PWD/.tmux.conf ~/.tmux.conf
 ln -fs $PWD/.wezterm.lua ~/.wezterm.lua
 ln -fs $PWD/.gitconfig ~/.gitconfig
-ln -fs $PWD/.asdfrc ~/.asdfrc
 ln -fs $PWD/.gitignore_global ~/.gitignore_global
 ln -fs $PWD/starship.toml ~/.config/starship.toml
 source ~/.zshrc
