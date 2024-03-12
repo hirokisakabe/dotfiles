@@ -37,4 +37,4 @@ alias k=kubectl
 compdef __start_kubectl k
 
 # mise
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(/opt/homebrew/bin/mise activate zsh)"
