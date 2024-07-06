@@ -1,6 +1,7 @@
 format = """
 $gcloud\
 $aws\
+$azure\
 $kubernetes\
 $terraform\
 $line_break\
@@ -53,6 +54,10 @@ format = 'on [\[gcloud\] project: ($project) config: ($active)]($style) '
 
 [aws]
 format = 'on [\[aws\] profile:($profile) region:($region)]($style) '
+
+[azure]
+disabled = false
+format = 'on [\[azure\] subscription:($subscription) username:($username)]($style) '
 
 [kubernetes]
 format = 'on [\[k8s\] context:($context) namespace:($namespace)]($style) '
