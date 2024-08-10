@@ -9,7 +9,6 @@ end
 config.color_scheme = 'iceberg-dark'
 config.font = wezterm.font("Monaspace Neon Var")
 config.font_size = 16.0
-config.window_background_opacity = 0.8
 config.keys = {
   {
     key = 'q',
