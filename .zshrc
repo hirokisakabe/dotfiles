@@ -18,7 +18,6 @@ setopt auto_cd
 alias cd..="cd .."
 alias c='clear'
 alias h='history'
-alias gg='git log --graph --pretty=oneline'
 alias ls='gls --group-directories-first -1p --color=auto'
 
 # direnv
