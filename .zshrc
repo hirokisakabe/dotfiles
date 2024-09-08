@@ -14,6 +14,8 @@ setopt share_history
 setopt hist_ignore_all_dups
 setopt auto_cd
 
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # alias
 alias cd..="cd .."
 alias c='clear'
