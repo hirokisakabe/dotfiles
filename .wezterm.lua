@@ -11,6 +11,7 @@ config.color_scheme = 'iceberg-light'
 
 config.font = wezterm.font("Monaspace Neon Var")
 config.font_size = 16.0
+config.scrollback_lines = 10000
 config.keys = {
   {
     key = '|',
