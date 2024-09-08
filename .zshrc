@@ -15,6 +15,7 @@ setopt hist_ignore_all_dups
 setopt auto_cd
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # alias
 alias cd..="cd .."
