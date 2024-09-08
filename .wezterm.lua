@@ -16,5 +16,6 @@ config.keys = {
     action = wezterm.action.CloseCurrentTab { confirm = true },
   },
 }
+config.window_close_confirmation = 'NeverPrompt'
 
 return config
