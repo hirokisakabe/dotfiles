@@ -6,7 +6,9 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+-- see https://leaysgur.github.io/wezterm-colorscheme/
 config.color_scheme = 'iceberg-light'
+
 config.font = wezterm.font("Monaspace Neon Var")
 config.font_size = 16.0
 config.keys = {
