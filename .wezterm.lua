@@ -13,6 +13,21 @@ config.font = wezterm.font("Monaspace Neon Var")
 config.font_size = 16.0
 config.keys = {
   {
+    key = '|',
+    mods = 'CMD',
+    action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = '-',
+    mods = 'CMD',
+    action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = 'w',
+    mods = 'CMD',
+    action = wezterm.action.CloseCurrentPane { confirm = true },
+  },
+  {
     key = 'q',
     mods = 'CMD',
     action = wezterm.action.CloseCurrentTab { confirm = true },
