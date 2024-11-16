@@ -1,34 +1,26 @@
 format = """
-$gcloud\
-$aws\
-$azure\
-$kubernetes\
-$terraform\
-$line_break\
-$docker_context\
-$nodejs\
-$python\
-$line_break\
 $username\
 $hostname\
 $directory\
 $git_branch\
+$git_state\
 $git_status\
 $cmd_duration\
 $line_break\
+$python\
 $character"""
 
 [directory]
-style = "cyan"
+style = "blue"
 
 [character]
 success_symbol = "[❯](purple)"
 error_symbol = "[❯](red)"
-vicmd_symbol = "[❮](green)"
+vimcmd_symbol = "[❮](green)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bright-green"
+style = "bright-black"
 
 [git_status]
 format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
@@ -49,29 +41,6 @@ style = "bright-black"
 format = "[$duration]($style) "
 style = "yellow"
 
-[gcloud]
-format = 'on [\[gcloud\] project: ($project) config: ($active)]($style) '
-
-[aws]
-format = 'on [\[aws\] profile:($profile) region:($region)]($style) '
-
-[azure]
-disabled = false
-format = 'on [\[azure\] subscription:($subscription) username:($username)]($style) '
-
-[kubernetes]
-format = 'on [\[k8s\] context:($context) namespace:($namespace)]($style) '
-disabled = false
-
-[docker_context]
-symbol = "docker "
-
-[nodejs]
-symbol = "nodejs "
-
-
 [python]
-symbol = "py "
-
-[terraform]
-symbol = "terraform "
+format = "[$virtualenv]($style) "
+style = "bright-black"
