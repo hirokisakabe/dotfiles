@@ -7,7 +7,7 @@ if wezterm.config_builder then
 end
 
 -- see https://leaysgur.github.io/wezterm-colorscheme/
-config.color_scheme = 'iceberg-light'
+config.color_scheme = 'Solarized Light (Gogh)'
 
 config.font = wezterm.font_with_fallback {
   { family = "Monaspace Neon Var", assume_emoji_presentation = true }
