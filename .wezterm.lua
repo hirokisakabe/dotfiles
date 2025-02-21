@@ -9,7 +9,10 @@ end
 -- see https://leaysgur.github.io/wezterm-colorscheme/
 config.color_scheme = 'iceberg-light'
 
-config.font = wezterm.font("Monaspace Neon Var")
+config.font = wezterm.font_with_fallback {
+  { family = "Monaspace Neon Var", assume_emoji_presentation = true }
+}
+
 config.font_size = 16.0
 config.scrollback_lines = 10000
 config.keys = {
