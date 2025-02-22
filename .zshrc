@@ -19,7 +19,7 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # alias
 alias cd..="cd .."
-alias cdr="cd `git rev-parse --show-toplevel`"
+alias cdr="cd \$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 alias c='clear'
 alias h='history'
 alias ls='gls --group-directories-first -1p --color=auto'
