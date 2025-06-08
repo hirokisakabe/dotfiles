@@ -5,6 +5,8 @@ email = hiroki.sakabe@icloud.com
 [alias]
 delete-merged = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|main'|xargs git branch -d; };f"
 gg = "log --graph --pretty=oneline"
+# stash -> デフォルトブランチに移動 -> pull -> 元ブランチ削除 -> stash pop
+sdd = "!f() { CURRENT_BRANCH=$(git symbolic-ref --short HEAD); DEFAULT_BRANCH=$(git config default.branch); git stash; git checkout $DEFAULT_BRANCH; git pull; git branch -D $CURRENT_BRANCH; git stash pop; }; f"
 
 [rebase]
 autostash = true
@@ -22,6 +24,9 @@ autoSetupRemote = true
 
 [init]
 defaultBranch = main
+
+[default]
+branch = main
 
 [ghq]
 root = ~/work
