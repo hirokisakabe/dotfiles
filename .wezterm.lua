@@ -10,7 +10,7 @@ end
 config.color_scheme = 'Solarized Light (Gogh)'
 
 config.font = wezterm.font_with_fallback {
-  { family = "Monaspace Neon Var", assume_emoji_presentation = true }
+  { family = "Moralerspace Argon", assume_emoji_presentation = true }
 }
 
 config.font_size = 16.0
