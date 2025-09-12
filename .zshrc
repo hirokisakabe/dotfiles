@@ -38,10 +38,5 @@ source <(fzf --zsh)
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
-# kubectl
-source <(kubectl completion zsh)
-alias k=kubectl
-compdef __start_kubectl k
-
 # mise
 eval "$(/opt/homebrew/bin/mise activate zsh)"
