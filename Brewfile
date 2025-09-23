@@ -31,6 +31,7 @@ brew "htop"
 brew "gat"
 brew "freeze"
 brew "mise"
+brew "pipx"
 
 # --- Container & VM ---
 brew "lima"
