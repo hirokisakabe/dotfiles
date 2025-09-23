@@ -15,6 +15,8 @@ ln -fs $PWD/.wezterm.lua ~/.wezterm.lua
 ln -fs $PWD/.gitconfig ~/.gitconfig
 ln -fs $PWD/.gitignore_global ~/.gitignore_global
 ln -fs $PWD/starship.toml ~/.config/starship.toml
+ln -fs $PWD/claude/settings.json ~/.claude/settings.json
+ln -fs $PWD/claude/CLAUDE.md ~/.claude/CLAUDE.md
 source ~/.zshrc
 
 echo "\n-- install GitAlias --"
