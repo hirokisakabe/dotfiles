@@ -17,6 +17,7 @@ ln -fs $PWD/.gitignore_global ~/.gitignore_global
 ln -fs $PWD/starship.toml ~/.config/starship.toml
 ln -fs $PWD/claude/settings.json ~/.claude/settings.json
 ln -fs $PWD/claude/CLAUDE.md ~/.claude/CLAUDE.md
+ln -fs $PWD/.default-npm-packages ~/.default-npm-packages
 source ~/.zshrc
 
 echo "\n-- install GitAlias --"
