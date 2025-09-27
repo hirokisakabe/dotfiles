@@ -22,7 +22,6 @@ alias cd..="cd .."
 alias cdr="cd \$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 alias c='clear'
 alias h='history'
-alias ls='gls --group-directories-first -1p --color=auto'
 alias cl='claude'
 alias ports='lsof -i -P -n | grep LISTEN'
 
