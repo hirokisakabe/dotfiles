@@ -24,6 +24,7 @@ alias c='clear'
 alias h='history'
 alias ls='gls --group-directories-first -1p --color=auto'
 alias cl='claude'
+alias ports='lsof -i -P -n | grep LISTEN'
 
 # direnv
 eval "$(direnv hook zsh)"
