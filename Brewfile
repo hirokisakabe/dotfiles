@@ -79,4 +79,5 @@ cask "figma"
 # --- AI Tools ---
 cask "chatgpt"
 cask "claude"
+cask "claude-code"
 cask "amazon-q"
