@@ -21,6 +21,11 @@ config.keys = {
     mods = 'CMD',
     action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
   },
+  { 
+    key="Enter",
+    mods="SHIFT",
+    action=wezterm.action{SendString="\x1b\r"}
+  },
   {
     key = '-',
     mods = 'CMD',
