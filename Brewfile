@@ -41,7 +41,7 @@ brew "tfenv"
 brew "awscli"
 brew "azure-cli"
 brew "azure-functions-core-tools@4"
-cask "google-cloud-sdk"
+cask "gcloud-cli"
 
 # --- Development Apps ---
 cask "wezterm"
