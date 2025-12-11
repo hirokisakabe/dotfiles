@@ -7,14 +7,8 @@
       "Bash(ls:*)",
       "Bash(wc:*)",
       "Bash(cat:*)",
-      "Bash(git add:*)",
-      "Bash(git reset:*)",
-      "Bash(git commit:*)",
-      "Bash(git checkout:*)",
-      "Bash(git stash:*)",
-      "Bash(git pull:*)",
-      "Bash(git mv:*)",
-      "Bash(git fetch:*)",
+      "Bash(mkdir:*)",
+      "Bash(git:*)",
       "Bash(gh:*)",
       "Bash(npm outdated)",
       "Bash(npm audit:*)",
@@ -24,7 +18,7 @@
       "WebSearch"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"],
-    "ask": []
+    "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)"]
   },
   "hooks": {
     "Notification": [
