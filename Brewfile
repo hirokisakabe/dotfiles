@@ -40,6 +40,7 @@ brew "podman"
 
 # --- Cloud & IaC ---
 brew "tfenv"
+brew "tflint"
 brew "awscli"
 brew "azure-cli"
 brew "azure-functions-core-tools@4"
