@@ -7,7 +7,7 @@ if wezterm.config_builder then
 end
 
 -- see https://leaysgur.github.io/wezterm-colorscheme/
-config.color_scheme = 'Solarized Light (Gogh)'
+config.color_scheme = 'Default (dark) (terminal.sexy)'
 
 config.font = wezterm.font_with_fallback {
   { family = "Moralerspace Argon", assume_emoji_presentation = true }
