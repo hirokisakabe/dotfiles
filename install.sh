@@ -15,6 +15,8 @@ ln -fs $PWD/.wezterm.lua ~/.wezterm.lua
 ln -fs $PWD/.gitconfig ~/.gitconfig
 ln -fs $PWD/.gitignore_global ~/.gitignore_global
 ln -fs $PWD/starship.toml ~/.config/starship.toml
+mkdir -p ~/.config/yazi
+ln -fs $PWD/yazi.toml ~/.config/yazi/yazi.toml
 ln -fs $PWD/claude/settings.json ~/.claude/settings.json
 ln -fs $PWD/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -fs $PWD/codex/AGENTS.md ~/.codex/AGENTS.md

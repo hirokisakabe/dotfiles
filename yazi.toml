@@ -1,0 +1,20 @@
+[mgr]
+ratio = [0, 1, 2]  # 左を非表示
+show_hidden = true  # 隠しファイルを表示
+sort_by = "natural"  # 自然順ソート
+
+[preview]
+max_width = 1000   # プレビューの最大幅
+max_height = 1000  # プレビューの最大高さ
+
+[opener]
+edit = [
+  { run = 'nvim "$@"', block = true, for = "unix" },
+]
+
+[plugin]
+# Git統合を有効化（ファイルのGitステータスを表示）
+prepend_fetchers = [
+  { id = "git", name = "*", run = "git" },
+  { id = "git", name = "*/", run = "git" },
+]
