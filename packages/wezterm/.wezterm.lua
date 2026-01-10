@@ -27,7 +27,7 @@ config.keys = {
     action=wezterm.action{SendString="\x1b\r"}
   },
   {
-    key = '-',
+    key = '\\',
     mods = 'CMD',
     action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
   },
