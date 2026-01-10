@@ -7,21 +7,19 @@ if [ $kernelName != 'Darwin' ]; then
   return 1
 fi
 
-echo "\n-- create symbolic link --"
-ln -fs $PWD/.zshrc ~/.zshrc
-ln -fs $PWD/.vimrc ~/.vimrc
-ln -fs $PWD/.tmux.conf ~/.tmux.conf
-ln -fs $PWD/.wezterm.lua ~/.wezterm.lua
-ln -fs $PWD/.gitconfig ~/.gitconfig
-ln -fs $PWD/.gitignore_global ~/.gitignore_global
-ln -fs $PWD/starship.toml ~/.config/starship.toml
-mkdir -p ~/.config/yazi
-ln -fs $PWD/yazi.toml ~/.config/yazi/yazi.toml
-ln -fs $PWD/claude/settings.json ~/.claude/settings.json
-ln -fs $PWD/claude/CLAUDE.md ~/.claude/CLAUDE.md
-ln -fs $PWD/codex/AGENTS.md ~/.codex/AGENTS.md
-ln -fs $PWD/.default-npm-packages ~/.default-npm-packages
-source ~/.zshrc
+echo "\n-- install Homebrew and formulaes --"
+if ! command -v brew &> /dev/null; then
+  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | /bin/bash
+fi
+brew bundle -v --cleanup
+
+echo "\n-- create symbolic links with stow --"
+mkdir -p ~/.config/yazi ~/.claude ~/.codex
+cd packages
+stow -v -t ~ zsh vim tmux wezterm git npm
+stow -v -t ~ starship yazi
+stow -v -t ~ claude codex
+cd ..
 
 echo "\n-- install GitAlias --"
 echo "Downloading GitAlias..."
@@ -36,6 +34,4 @@ else
   echo "GitAlias already configured."
 fi
 
-echo "\n-- install Homebrew and formulaes --"
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | /bin/bash
-brew bundle -v --cleanup
+echo "\n-- done! --"

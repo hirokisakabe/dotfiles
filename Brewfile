@@ -10,6 +10,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "starship"
 brew "direnv"
+brew "stow"
 
 # --- Development CLI ---
 brew "git"
