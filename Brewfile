@@ -15,6 +15,7 @@ brew "stow"
 # --- Development CLI ---
 brew "git"
 brew "tig"
+brew "lazygit"
 brew "gh"
 brew "ghq"
 brew "actionlint"
