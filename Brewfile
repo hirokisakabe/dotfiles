@@ -81,7 +81,6 @@ cask "microsoft-edge"
 cask "slack"
 cask "discord"
 cask "zoom"
-cask "asana"
 cask "miro"
 cask "figma"
 
