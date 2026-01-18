@@ -23,3 +23,4 @@ unlink: ## Remove symlinks with stow
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
+	claude mcp add --scope user --transport stdio playwright -- npx @playwright/mcp@latest
