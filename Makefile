@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink help
+.PHONY: install update sync link unlink setup-mcp help
 
 PACKAGES := zsh vim tmux wezterm git npm starship yazi claude codex
 
@@ -20,3 +20,7 @@ link: ## Create symlinks with stow
 
 unlink: ## Remove symlinks with stow
 	cd packages && stow -v -D -t ~ $(PACKAGES)
+
+setup-mcp: ## Setup MCP servers for Claude Code
+	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
+	-claude mcp add --scope user --transport stdio playwright -- npx @playwright/mcp@latest

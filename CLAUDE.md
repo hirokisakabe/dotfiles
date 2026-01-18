@@ -23,6 +23,9 @@ make link
 
 # シンボリックリンクを削除
 make unlink
+
+# Claude Code の MCP サーバーをセットアップ
+make setup-mcp
 ```
 
 ## Architecture
