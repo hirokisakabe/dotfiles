@@ -43,7 +43,20 @@ config.keys = {
   },
 }
 config.window_close_confirmation = 'NeverPrompt'
-config.window_background_opacity = 0.9
+config.window_background_opacity = 0.5
 config.macos_window_background_blur = 20
+
+wezterm.on('window-resized', function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  local dimensions = window:get_dimensions()
+
+  if dimensions.is_full_screen then
+    overrides.window_background_opacity = 1
+  else
+    overrides.window_background_opacity = 0.5
+  end
+
+  window:set_config_overrides(overrides)
+end)
 
 return config
