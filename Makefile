@@ -22,5 +22,5 @@ unlink: ## Remove symlinks with stow
 	cd packages && stow -v -D -t ~ $(PACKAGES)
 
 setup-mcp: ## Setup MCP servers for Claude Code
-	claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
-	claude mcp add --scope user --transport stdio playwright -- npx @playwright/mcp@latest
+	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
+	-claude mcp add --scope user --transport stdio playwright -- npx @playwright/mcp@latest
