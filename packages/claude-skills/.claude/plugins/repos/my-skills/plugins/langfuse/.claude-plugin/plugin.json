@@ -1,0 +1,8 @@
+{
+  "name": "langfuse",
+  "version": "1.0.0",
+  "description": "Langfuse のトレース、ログ、observability データを取得・表示する",
+  "author": {
+    "name": "hirokisakabe"
+  }
+}
