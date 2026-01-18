@@ -1,0 +1,18 @@
+{
+  "name": "my-skills",
+  "owner": {
+    "name": "hirokisakabe"
+  },
+  "metadata": {
+    "description": "Personal skill collection",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "langfuse",
+      "source": "./plugins/langfuse",
+      "description": "Langfuse トレース取得スキル",
+      "version": "1.0.0"
+    }
+  ]
+}
