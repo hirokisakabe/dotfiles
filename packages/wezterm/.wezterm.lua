@@ -45,6 +45,7 @@ config.keys = {
 config.window_close_confirmation = 'NeverPrompt'
 config.window_background_opacity = 0.5
 config.macos_window_background_blur = 20
+config.native_macos_fullscreen_mode = true
 
 wezterm.on('window-resized', function(window, pane)
   local overrides = window:get_config_overrides() or {}
