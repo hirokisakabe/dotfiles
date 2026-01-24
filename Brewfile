@@ -43,6 +43,7 @@ brew "uv"
 # --- Container & VM ---
 brew "lima"
 brew "podman"
+cask "docker-desktop"
 
 # --- Cloud & IaC ---
 brew "tfenv"
