@@ -9,6 +9,9 @@ macOS 向けの dotfiles リポジトリ。Homebrew でパッケージ管理、G
 ## Commands
 
 ```bash
+# 利用可能なコマンド一覧を表示
+make help
+
 # 初回セットアップ（Homebrew インストール、パッケージインストール、シンボリックリンク作成）
 make install
 
@@ -41,6 +44,7 @@ packages/           # Stow パッケージ（各ツールの設定ファイル�
 ├── starship/      # .config/starship.toml
 ├── yazi/          # .config/yazi/yazi.toml
 ├── claude/        # .claude/settings.json, .claude/CLAUDE.md
+├── claude-skills/ # .claude/skills/ (Claude Code カスタムスキル)
 └── codex/         # .codex/AGENTS.md
 
 Brewfile           # Homebrew パッケージ定義
