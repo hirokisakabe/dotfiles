@@ -44,3 +44,6 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 # mise
 eval "$(/opt/homebrew/bin/mise activate zsh)"
+
+# git-wt (git worktree helper)
+eval "$(git wt --init zsh)"
