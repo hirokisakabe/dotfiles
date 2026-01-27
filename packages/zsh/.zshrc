@@ -28,6 +28,7 @@ alias c='clear'
 alias h='history'
 alias cl='claude'
 alias ports='lsof -i -P -n | grep LISTEN'
+alias gwr='cd $(git worktree list | head -1 | awk "{print \$1}")'
 
 # direnv
 eval "$(direnv hook zsh)"
