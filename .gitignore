@@ -1,1 +1,4 @@
 Brewfile.lock.json
+
+# Allow .claude directories in packages (for stow)
+!packages/**/.claude/
