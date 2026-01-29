@@ -57,7 +57,6 @@ function cwt() {
     return 1
   fi
 
-  local main_wt=$(git worktree list | head -1 | awk '{print $1}')
   local branch=$(claude -p "以下のタスクに適切なgitブランチ名を1つだけ出力して。命名規則: feature/xxx, fix/xxx, docs/xxx。英語ケバブケース。ブランチ名のみ出力。タスク: $task")
 
   if [ -z "$branch" ]; then
@@ -66,11 +65,7 @@ function cwt() {
   fi
 
   echo "ブランチ: $branch"
-  git wt add -b "$branch" "../$branch" main || return 1
+  git wt "$branch" main --copyignored || return 1
 
-  for f in .env .env.local .env.development.local; do
-    [ -f "$main_wt/$f" ] && cp "$main_wt/$f" "../$branch/$f" && echo "コピー: $f"
-  done
-
-  cd "../$branch" && claude "$task"
+  claude "$task"
 }
