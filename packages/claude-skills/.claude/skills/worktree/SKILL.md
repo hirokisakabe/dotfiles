@@ -28,13 +28,13 @@ description: 新しいgit worktreeを作成し、.envファイルをコピーし
 
 2. **メインworktreeのパスを取得**
    ```bash
-   git worktree list | head -1 | awk '{print $1}'
+   git wt list | head -1 | awk '{print $1}'
    ```
 
 3. **新しいworktreeを作成**
    ```bash
    # メインworktreeのディレクトリと同階層に作成
-   git worktree add -b <ブランチ名> ../<ブランチ名> main
+   git wt add -b <ブランチ名> ../<ブランチ名> main
    ```
 
 4. **環境ファイルのコピー**
