@@ -57,6 +57,7 @@ function cwt() {
     return 1
   fi
 
+  echo "ブランチ名を決定中..."
   local branch=$(claude -p "以下のタスクに適切なgitブランチ名を1つだけ出力して。命名規則: feature/xxx, fix/xxx, docs/xxx。英語ケバブケース。ブランチ名のみ出力。タスク: $task" | tr -d '`')
 
   if [ -z "$branch" ]; then
