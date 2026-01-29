@@ -31,6 +31,11 @@
       "WebFetch(domain:mastra.ai)",
       "WebFetch(domain:langfuse.com)",
       "WebFetch(domain:js.reference.langfuse.com)",
+      "WebFetch(domain:docs.mastra.ai)",
+      "WebFetch(domain:ai-sdk.vercel.ai)",
+      "WebFetch(domain:docs.firecrawl.dev)",
+      "WebFetch(domain:www.firecrawl.dev)",
+      "WebFetch(domain:serpapi.com)",
       "WebSearch",
       "mcp__ide__executeCode",
       "mcp__playwright__browser_navigate",
@@ -55,7 +60,10 @@
       "Bash(command -v:*)",
       "Bash(xargs:*)",
       "Bash(test:*)",
-      "Bash(convert:*)"
+      "Bash(convert:*)",
+      "Bash(bun:*)",
+      "Bash(env)",
+      "Skill(langfuse)"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"],
     "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)"]
