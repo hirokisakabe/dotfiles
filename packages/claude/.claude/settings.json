@@ -36,6 +36,8 @@
       "WebFetch(domain:docs.firecrawl.dev)",
       "WebFetch(domain:www.firecrawl.dev)",
       "WebFetch(domain:serpapi.com)",
+      "WebFetch(domain:zenn.dev)",
+      "WebFetch(domain:python-pptx.readthedocs.io)",
       "WebSearch",
       "mcp__ide__executeCode",
       "mcp__playwright__browser_navigate",
@@ -63,6 +65,9 @@
       "Bash(convert:*)",
       "Bash(bun:*)",
       "Bash(env)",
+      "Bash(md5:*)",
+      "Bash(unzip:*)",
+      "Bash(pyftsubset:*)",
       "Skill(langfuse)"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"],
