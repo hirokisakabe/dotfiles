@@ -30,7 +30,21 @@
       "mcp__playwright__browser_type",
       "mcp__playwright__browser_handle_dialog",
       "mcp__playwright__browser_close",
-      "mcp__playwright__browser_tabs"
+      "mcp__playwright__browser_tabs",
+      "mcp__playwright__browser_run_code",
+      "mcp__playwright__browser_network_requests",
+      "Bash(uv:*)",
+      "Bash(python3:*)",
+      "Bash(pip3:*)",
+      "Bash(terraform:*)",
+      "Bash(tflint:*)",
+      "Bash(docker:*)",
+      "Bash(k6:*)",
+      "Bash(actionlint:*)",
+      "Bash(command -v:*)",
+      "Bash(xargs:*)",
+      "Bash(test:*)",
+      "Bash(convert:*)"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"],
     "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)"]
