@@ -48,3 +48,25 @@ eval "$(/opt/homebrew/bin/mise activate zsh)"
 
 # git-wt (git worktree helper)
 eval "$(git wt --init zsh)"
+
+# cwt: claude worktree - タスクからブランチ名を決定しworktreeを作成して対話開始
+function cwt() {
+  local task="$*"
+  if [ -z "$task" ]; then
+    echo "Usage: cwt <タスクの説明>"
+    return 1
+  fi
+
+  echo "ブランチ名を決定中..."
+  local branch=$(claude -p "以下のタスクに適切なgitブランチ名を1つだけ出力して。命名規則: feature/xxx, fix/xxx, docs/xxx。英語ケバブケース。ブランチ名のみ出力。タスク: $task" | tr -d '`')
+
+  if [ -z "$branch" ]; then
+    echo "ブランチ名の決定に失敗しました"
+    return 1
+  fi
+
+  echo "ブランチ: $branch"
+  git wt "$branch" main --copyignored || return 1
+
+  claude "$task"
+}
