@@ -67,7 +67,7 @@ function cwt() {
 
   local main_dir=$(pwd)
   echo "ブランチ: $branch"
-  git wt "$branch" main --copyignored || return 1
+  git wt "$branch" main --copy ".env*" || return 1
 
   # worktree の settings.local.json を main のものへのシンボリックリンクに置き換え
   if [ -f "$main_dir/.claude/settings.local.json" ]; then
