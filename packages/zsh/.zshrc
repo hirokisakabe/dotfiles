@@ -69,6 +69,9 @@ function cwt() {
   echo "ブランチ: $branch"
   git wt "$branch" main --copy ".env*" || return 1
 
+  # WezTermに現在のディレクトリを通知（新しいタブ/ペインで同じディレクトリを開くため）
+  printf '\e]7;file://%s%s\e\\' "${HOST}" "${PWD}"
+
   # worktree の settings.local.json を main のものへのシンボリックリンクに置き換え
   if [ -f "$main_dir/.claude/settings.local.json" ]; then
     mkdir -p .claude
