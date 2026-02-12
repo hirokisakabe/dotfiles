@@ -46,6 +46,7 @@ brew "uv"
 brew "lima"
 brew "podman"
 cask "docker-desktop"
+cask "orbstack"
 
 # --- Cloud & IaC ---
 brew "tfenv"
