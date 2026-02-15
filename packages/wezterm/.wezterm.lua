@@ -10,7 +10,39 @@ end
 config.color_scheme = 'Ubuntu'
 
 config.font = wezterm.font_with_fallback {
-  { family = "Moralerspace Argon", assume_emoji_presentation = true }
+  { family = "UbuntuMono Nerd Font", assume_emoji_presentation = true },
+  { family = "Moralerspace Argon", assume_emoji_presentation = true },
+}
+
+config.window_frame = {
+  font = wezterm.font { family = "UbuntuMono Nerd Font" },
+  active_titlebar_bg = '#300a24',
+  inactive_titlebar_bg = '#2c001e',
+}
+
+config.colors = {
+  tab_bar = {
+    active_tab = {
+      bg_color = '#300a24',
+      fg_color = '#ffffff',
+    },
+    inactive_tab = {
+      bg_color = '#2c001e',
+      fg_color = '#808080',
+    },
+    inactive_tab_hover = {
+      bg_color = '#5e2750',
+      fg_color = '#ffffff',
+    },
+    new_tab = {
+      bg_color = '#2c001e',
+      fg_color = '#808080',
+    },
+    new_tab_hover = {
+      bg_color = '#5e2750',
+      fg_color = '#ffffff',
+    },
+  },
 }
 
 config.font_size = 16.0
