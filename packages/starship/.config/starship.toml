@@ -10,13 +10,17 @@ $line_break\
 $character"""
 
 
+[directory]
+style = "bold #e95420"
+
 [character]
-success_symbol = "❯"
-error_symbol = "❯"
-vimcmd_symbol = "❮"
+success_symbol = "[❯](#e95420)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](#e95420)"
 
 [git_branch]
 format = "[$branch]($style)"
+style = "bold #772953"
 
 [git_status]
 format = "[(*$conflicted$untracked$modified$staged$renamed$deleted) ($ahead_behind$stashed)]($style)"
