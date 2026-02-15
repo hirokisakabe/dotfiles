@@ -1,4 +1,5 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="$HOME/.local/bin:$PATH"
 
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
 

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# git-delete-merged: GitHub PR のマージ状態を元にローカルブランチと worktree を削除
+# squash merge にも対応（gh api でPR状態を確認するため）
+set -euo pipefail
+
+if ! command -v gh &>/dev/null; then
+  echo "error: gh (GitHub CLI) is required"
+  exit 1
+fi
+
+current=$(git branch --show-current 2>/dev/null || echo "")
+branches=$(git branch --format='%(refname:short)' | grep -vE "^(main|master|develop|${current})$" || true)
+
+if [ -z "$branches" ]; then
+  echo "No branches to check."
+  exit 0
+fi
+
+deleted=0
+for branch in $branches; do
+  pr_number=$(gh pr list --head "$branch" --state merged --json number --jq '.[0].number' 2>/dev/null || true)
+
+  if [ -n "$pr_number" ]; then
+    # worktree があれば先に削除
+    wt_path=$(git worktree list --porcelain | awk -v branch="$branch" \
+      '/^worktree /{wt=substr($0,10)} /^branch refs\/heads\//{b=substr($0,19); if(b==branch) print wt}')
+
+    if [ -n "$wt_path" ]; then
+      echo "Removing worktree: $wt_path (branch: $branch)"
+      git worktree remove --force "$wt_path"
+    fi
+
+    echo "Deleting branch: $branch (PR #$pr_number)"
+    git branch -D "$branch"
+    deleted=$((deleted + 1))
+  fi
+done
+
+if [ "$deleted" -eq 0 ]; then
+  echo "No merged branches found."
+else
+  echo "Deleted $deleted merged branch(es)."
+fi
