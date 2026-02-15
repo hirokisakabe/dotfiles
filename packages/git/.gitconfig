@@ -3,9 +3,6 @@ name = Hiroki SAKABE
 email = hiroki.sakabe@icloud.com
 
 [alias]
-delete-merged = "!f () { git checkout $1; git branch --merged|egrep -v '\\*|develop|main'|xargs git branch -d; };f"
-# マージ済みブランチの worktree を削除してブランチも削除
-wt-delete-merged = "!f() { base=${1:-$(git config default.branch || echo main)}; merged=$(git branch --merged \"$base\" --format='%(refname:short)' | grep -vE '^(main|develop)$'); if [ -z \"$merged\" ]; then echo \"No merged branches found.\"; return 0; fi; git worktree list --porcelain | awk '/^worktree /{wt=substr($0,10)} /^branch refs\\/heads\\//{b=substr($0,19); print wt \"|\" b}' | while IFS=\"|\" read -r wt_path branch_name; do if echo \"$merged\" | grep -qxF \"$branch_name\"; then echo \"Removing worktree: $wt_path (branch: $branch_name)\"; git worktree remove --force \"$wt_path\" && git branch -d \"$branch_name\"; fi; done; }; f"
 gg = "log --graph --pretty=oneline"
 # stash -> デフォルトブランチに移動 -> pull -> 元ブランチ削除 -> stash pop
 sdd = "!f() { CURRENT_BRANCH=$(git symbolic-ref --short HEAD); DEFAULT_BRANCH=$(git config default.branch); git stash; git checkout $DEFAULT_BRANCH; git pull; git branch -D $CURRENT_BRANCH; git stash pop; }; f"
