@@ -10,7 +10,7 @@ sdd = "!f() { CURRENT_BRANCH=$(git symbolic-ref --short HEAD); DEFAULT_BRANCH=$(
 [rebase]
 autostash = true
 abbreviateCommands = true
-autosqaush = true
+autosquash = true
 
 [pull]
 ff = only
