@@ -37,7 +37,6 @@ make setup-mcp
 packages/           # Stow パッケージ（各ツールの設定ファイル）
 ├── zsh/           # .zshrc
 ├── vim/           # .vimrc
-├── tmux/          # .tmux.conf
 ├── wezterm/       # .wezterm.lua
 ├── git/           # .gitconfig, .gitignore_global
 ├── npm/           # .default-npm-packages

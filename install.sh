@@ -16,7 +16,7 @@ brew bundle -v --cleanup
 echo "\n-- create symbolic links with stow --"
 mkdir -p ~/.config/yazi ~/.claude ~/.codex
 cd packages
-stow -v -t ~ zsh vim tmux wezterm git npm starship yazi claude codex claude-skills
+stow -v -t ~ zsh vim wezterm git npm starship yazi claude codex claude-skills
 cd ..
 
 echo "\n-- install GitAlias --"
