@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 kernelName="$(uname -s)"
 
-if [ $kernelName != 'Darwin' ]; then
+if [ "$kernelName" != 'Darwin' ]; then
   echo "Not support OS."
-  return 1
+  exit 1
 fi
 
 echo "\n-- install Homebrew and formulaes --"
@@ -16,9 +16,7 @@ brew bundle -v --cleanup
 echo "\n-- create symbolic links with stow --"
 mkdir -p ~/.config/yazi ~/.claude ~/.codex
 cd packages
-stow -v -t ~ zsh vim tmux wezterm git npm
-stow -v -t ~ starship yazi
-stow -v -t ~ claude codex
+stow -v -t ~ zsh vim tmux wezterm git npm starship yazi claude codex claude-skills
 cd ..
 
 echo "\n-- install GitAlias --"
