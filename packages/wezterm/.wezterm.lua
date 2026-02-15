@@ -7,7 +7,7 @@ if wezterm.config_builder then
 end
 
 -- see https://leaysgur.github.io/wezterm-colorscheme/
-config.color_scheme = 'Twilight (light) (terminal.sexy)'
+config.color_scheme = 'Ubuntu'
 
 config.font = wezterm.font_with_fallback {
   { family = "Moralerspace Argon", assume_emoji_presentation = true }
