@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink setup-mcp help
+.PHONY: install update sync link unlink setup-mcp setup-plugins help
 
 PACKAGES := zsh vim wezterm git npm starship yazi claude codex claude-skills worktrunk
 
@@ -23,3 +23,7 @@ unlink: ## Remove symlinks with stow
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
+
+setup-plugins: ## Setup Claude Code plugins
+	-claude plugin marketplace add max-sixty/worktrunk
+	-claude plugin install worktrunk@worktrunk

@@ -60,8 +60,15 @@
       "Bash(pyftsubset:*)",
       "Skill(langfuse)"
     ],
-    "deny": ["Read(./.env)", "Read(./.env.*)"],
-    "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)", "Bash(wt merge:*)"]
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ],
+    "ask": [
+      "Bash(gh pr merge:*)",
+      "Bash(git push:*)",
+      "Bash(wt merge:*)"
+    ]
   },
   "hooks": {
     "Notification": [
@@ -84,5 +91,8 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "worktrunk@worktrunk": true
   }
 }
