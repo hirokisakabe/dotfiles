@@ -30,8 +30,8 @@ for branch in $branches; do
       echo "Removing worktree: $wt_path (branch: $branch)"
       git worktree remove --force "$wt_path"
     elif [ -n "$wt_path" ] && [ "$wt_path" = "$main_wt" ]; then
-      echo "Switching main worktree from $branch to main"
-      git -C "$main_wt" checkout main
+      echo "Detaching main worktree from $branch"
+      git -C "$main_wt" checkout --detach
     fi
 
     echo "Deleting branch: $branch (PR #$pr_number)"
