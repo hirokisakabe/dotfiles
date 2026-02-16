@@ -14,9 +14,9 @@ fi
 brew bundle -v --cleanup
 
 echo "\n-- create symbolic links with stow --"
-mkdir -p ~/.config/yazi ~/.claude ~/.codex
+mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk
 cd packages
-stow -v -t ~ zsh vim wezterm git npm starship yazi claude codex claude-skills
+stow -v -t ~ zsh vim wezterm git npm starship yazi claude codex claude-skills worktrunk
 cd ..
 
 echo "\n-- install GitAlias --"

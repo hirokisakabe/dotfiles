@@ -35,6 +35,7 @@ alias c='clear'
 alias h='history'
 alias cl='claude'
 alias ports='lsof -i -P -n | grep LISTEN'
+alias wsc='wt switch --create --execute=claude'
 alias gwr='cd $(git worktree list | head -1 | awk "{print \$1}")'
 
 # direnv
@@ -55,6 +56,9 @@ eval "$(/opt/homebrew/bin/mise activate zsh)"
 
 # git-wt (git worktree helper)
 eval "$(git wt --init zsh)"
+
+# worktrunk (git worktree manager)
+eval "$(wt config shell init zsh)"
 
 # claude: mainブランチではコード変更を行わないセッションとして起動
 function claude() {
@@ -84,16 +88,6 @@ function cwt() {
     return 1
   fi
 
-  local main_dir=$(pwd)
   echo "ブランチ: $branch"
-  git wt "$branch" main --copy ".env*" || return 1
-
-  # worktree の settings.local.json を main のものへのシンボリックリンクに置き換え
-  if [ -f "$main_dir/.claude/settings.local.json" ]; then
-    mkdir -p .claude
-    rm -f .claude/settings.local.json
-    ln -s "$main_dir/.claude/settings.local.json" .claude/settings.local.json
-  fi
-
-  command claude "$task"
+  wt switch --create "$branch" --execute=claude -- "$task"
 }
