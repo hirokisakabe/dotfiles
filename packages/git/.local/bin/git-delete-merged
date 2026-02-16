@@ -8,9 +8,10 @@ if ! command -v gh &>/dev/null; then
   exit 1
 fi
 
+default_branch=$(gh repo view --json defaultBranchRef --jq '.defaultBranchRef.name' 2>/dev/null || echo "main")
 current=$(git branch --show-current 2>/dev/null || echo "")
 main_wt=$(git worktree list --porcelain | sed -n '1s/^worktree //p')
-branches=$(git branch --format='%(refname:short)' | grep -vE "^(main|master|develop|${current})$" || true)
+branches=$(git branch --format='%(refname:short)' | grep -vE "^(${default_branch}|${current})$" || true)
 
 if [ -z "$branches" ]; then
   echo "No branches to check."
