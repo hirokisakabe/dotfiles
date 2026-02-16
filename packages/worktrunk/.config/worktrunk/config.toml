@@ -1,0 +1,13 @@
+[commit.generation]
+command = "MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
+
+[post-create]
+copy-ignored = "wt step copy-ignored"
+claude-settings = """
+main_dir="{{ primary_worktree_path }}"
+if [ -f "$main_dir/.claude/settings.local.json" ]; then
+  mkdir -p .claude
+  rm -f .claude/settings.local.json
+  ln -s "$main_dir/.claude/settings.local.json" .claude/settings.local.json
+fi
+"""

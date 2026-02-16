@@ -1,6 +1,6 @@
 .PHONY: install update sync link unlink setup-mcp help
 
-PACKAGES := zsh vim wezterm git npm starship yazi claude codex claude-skills
+PACKAGES := zsh vim wezterm git npm starship yazi claude codex claude-skills worktrunk
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -15,7 +15,7 @@ sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
 link: ## Create symlinks with stow
-	@mkdir -p ~/.config/yazi ~/.claude ~/.codex
+	@mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk
 	cd packages && stow -v -t ~ $(PACKAGES)
 
 unlink: ## Remove symlinks with stow
