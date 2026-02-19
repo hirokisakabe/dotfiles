@@ -134,7 +134,7 @@ function cwtsend() {
   printf '%s\n' "$text" | wezterm cli send-text --pane-id "$target" --no-paste
 }
 
-# cwtstart: 議論セッションを維持したまま、別タブで実装セッションを開始
+# cwtstart: 議論セッションを維持したまま、右ペインで実装セッションを開始
 function cwtstart() {
   local task="$*"
   if [ -z "$task" ]; then
@@ -142,5 +142,5 @@ function cwtstart() {
     return 1
   fi
 
-  cwtsend --new-tab "cwt $task"$'\n'
+  cwtsend "cwt $task"$'\n'
 }
