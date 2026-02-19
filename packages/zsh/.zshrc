@@ -91,3 +91,35 @@ function cwt() {
   echo "ブランチ: $branch"
   wt switch --create "$branch" --execute=claude -- "$task"
 }
+
+# cwtsend: 右ペインへテキストを送信（右ペインがなければ作成）
+function cwtsend() {
+  local text="$*"
+  if [ -z "$text" ]; then
+    echo "Usage: cwtsend <送信するテキスト>"
+    return 1
+  fi
+
+  if [ -z "${WEZTERM_PANE:-}" ]; then
+    echo "WezTermのペイン内で実行してください"
+    return 1
+  fi
+
+  if ! command -v wezterm >/dev/null 2>&1; then
+    echo "wezterm コマンドが見つかりません"
+    return 1
+  fi
+
+  local target
+  target=$(wezterm cli get-pane-direction Right 2>/dev/null | tr -d '[:space:]')
+  if [ -z "$target" ]; then
+    target=$(wezterm cli split-pane --right --percent 40 --cwd "$PWD" 2>/dev/null | tr -d '[:space:]')
+  fi
+
+  if [ -z "$target" ]; then
+    echo "送信先ペインの準備に失敗しました"
+    return 1
+  fi
+
+  printf '%s\n' "$text" | wezterm cli send-text --pane-id "$target" --no-paste
+}
