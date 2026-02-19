@@ -122,7 +122,7 @@ function cwtsend() {
   else
     target=$(wezterm cli get-pane-direction Right 2>/dev/null | tr -d '[:space:]')
     if [ -z "$target" ]; then
-      target=$(wezterm cli split-pane --right --percent 40 --cwd "$PWD" 2>/dev/null | tr -d '[:space:]')
+      target=$(wezterm cli split-pane --right --percent 50 --cwd "$PWD" 2>/dev/null | tr -d '[:space:]')
     fi
   fi
 
