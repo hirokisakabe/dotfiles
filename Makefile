@@ -27,3 +27,5 @@ setup-mcp: ## Setup MCP servers for Claude Code
 setup-plugins: ## Setup Claude Code plugins
 	-claude plugin marketplace add max-sixty/worktrunk
 	-claude plugin install worktrunk@worktrunk
+	-claude plugin marketplace add anthropics/skills
+	-claude plugin install example-skills@anthropic-agent-skills
