@@ -92,11 +92,17 @@ function cwt() {
   wt switch --create "$branch" --execute=claude -- "$task"
 }
 
-# cwtsend: 右ペインへテキストを送信（右ペインがなければ作成）
+# cwtsend: テキストを送信（既定は右ペイン。--new-tab で新規タブ）
 function cwtsend() {
+  local mode="right"
+  if [ "$1" = "--new-tab" ]; then
+    mode="new-tab"
+    shift
+  fi
+
   local text="$*"
   if [ -z "$text" ]; then
-    echo "Usage: cwtsend <送信するテキスト>"
+    echo "Usage: cwtsend [--new-tab] <送信するテキスト>"
     return 1
   fi
 
@@ -111,9 +117,13 @@ function cwtsend() {
   fi
 
   local target
-  target=$(wezterm cli get-pane-direction Right 2>/dev/null | tr -d '[:space:]')
-  if [ -z "$target" ]; then
-    target=$(wezterm cli split-pane --right --percent 40 --cwd "$PWD" 2>/dev/null | tr -d '[:space:]')
+  if [ "$mode" = "new-tab" ]; then
+    target=$(wezterm cli spawn --cwd "$PWD" 2>/dev/null | tr -d '[:space:]')
+  else
+    target=$(wezterm cli get-pane-direction Right 2>/dev/null | tr -d '[:space:]')
+    if [ -z "$target" ]; then
+      target=$(wezterm cli split-pane --right --percent 40 --cwd "$PWD" 2>/dev/null | tr -d '[:space:]')
+    fi
   fi
 
   if [ -z "$target" ]; then
@@ -122,4 +132,15 @@ function cwtsend() {
   fi
 
   printf '%s\n' "$text" | wezterm cli send-text --pane-id "$target" --no-paste
+}
+
+# cwtstart: 議論セッションを維持したまま、別タブで実装セッションを開始
+function cwtstart() {
+  local task="$*"
+  if [ -z "$task" ]; then
+    echo "Usage: cwtstart <タスクの説明>"
+    return 1
+  fi
+
+  cwtsend --new-tab "cwt $task"$'\n'
 }
