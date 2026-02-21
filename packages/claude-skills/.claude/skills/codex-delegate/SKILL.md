@@ -22,24 +22,29 @@ description: 実装・修正・テスト・PR作成タスクを Codex CLI へ委
 
 ```md
 # Task
+
 - 目的:
 - 背景:
 
 # Scope
+
 - In:
 - Out:
 
 # Constraints
+
 - 変更禁止:
 - 互換性要件:
 - 実行必須コマンド:
 
 # Acceptance Criteria
+
 1.
 2.
 3.
 
 # Target Files
+
 - path:
 ```
 
