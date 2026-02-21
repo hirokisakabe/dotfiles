@@ -5,7 +5,16 @@ squash = false
 command = "MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
 [post-create]
-copy-ignored = "wt step copy-ignored"
+symlink-env = """
+main_dir="{{ primary_worktree_path }}"
+for f in .env .env.local; do
+  if [ -f "$main_dir/$f" ]; then
+    ln -sf "$main_dir/$f" "$f"
+  else
+    rm -f "$f"
+  fi
+done
+"""
 claude-settings = """
 main_dir="{{ primary_worktree_path }}"
 if [ -f "$main_dir/.claude/settings.local.json" ]; then
