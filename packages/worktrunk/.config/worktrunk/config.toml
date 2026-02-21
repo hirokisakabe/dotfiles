@@ -5,7 +5,15 @@ squash = false
 command = "MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
 [post-create]
-copy-ignored = "wt step copy-ignored"
+symlink-env = """
+main_dir="{{ primary_worktree_path }}"
+find "$main_dir" -maxdepth 5 -name '.env' -o -name '.env.local' | while read -r src; do
+  rel="${src#$main_dir/}"
+  dir="$(dirname "$rel")"
+  [ "$dir" != "." ] && mkdir -p "$dir"
+  ln -sf "$src" "$rel"
+done
+"""
 claude-settings = """
 main_dir="{{ primary_worktree_path }}"
 if [ -f "$main_dir/.claude/settings.local.json" ]; then
