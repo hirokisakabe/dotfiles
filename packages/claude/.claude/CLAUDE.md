@@ -28,6 +28,7 @@
 ブラウザ操作には agent-browser CLI を Bash ツール経由で使用する。
 
 基本ワークフロー:
+
 1. `agent-browser open <url>` — ページを開く
 2. `agent-browser snapshot -i` — インタラクティブ要素の ref を取得
 3. `agent-browser click @<ref>` / `agent-browser fill @<ref> "値"` — 要素を操作
@@ -35,6 +36,7 @@
 5. `agent-browser close` — ブラウザを閉じる
 
 主要コマンド:
+
 - ナビゲーション: open, back, forward, reload
 - 要素操作: click, fill, type, press, hover, select, check, scroll
 - 情報取得: get text, get html, get value, get title, get url

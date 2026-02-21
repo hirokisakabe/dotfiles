@@ -1,0 +1,11 @@
+packages/zsh/
+packages/vim/
+packages/wezterm/
+packages/git/
+packages/npm/
+Brewfile
+Brewfile.lock.json
+Makefile
+install.sh
+*.toml
+.wt/

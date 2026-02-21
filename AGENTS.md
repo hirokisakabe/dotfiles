@@ -1,6 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
+
 This repository manages dotfiles and CLI tool settings with GNU Stow.
 
 - `packages/`: one directory per tool (`zsh`, `vim`, `wezterm`, `git`, `codex`, etc.).
@@ -10,6 +11,7 @@ This repository manages dotfiles and CLI tool settings with GNU Stow.
 - `Brewfile` / `Brewfile.lock.json`: Homebrew package definitions and lock data.
 
 ## Build, Test, and Development Commands
+
 Use `make` targets as the standard workflow:
 
 - `make help`: list available tasks.
@@ -22,14 +24,16 @@ Use `make` targets as the standard workflow:
 Example: `make link` after adding a new file under `packages/zsh/`.
 
 ## Coding Style & Naming Conventions
+
 - Keep directory names tool-oriented and lowercase (for example, `packages/starship`).
 - Preserve target paths exactly as they should appear in `$HOME` (for example, `.config/gh-dash/config.yml`).
 - Prefer minimal, focused changes per package.
 - For shell snippets, use POSIX-compatible style unless the target tool requires `zsh`-specific syntax.
 
-No dedicated formatter/linter is configured at repository root; validate changes with relevant tool commands and `make` targets.
+Prettier is configured as the formatter. Run `npx prettier@3 --check .` to verify formatting. See `.prettierignore` for excluded files.
 
 ## Testing Guidelines
+
 There is no centralized automated test suite in this repository.
 
 - Verify symlink behavior with `make link` and `make unlink`.
@@ -37,6 +41,7 @@ There is no centralized automated test suite in this repository.
 - For tool-specific configs, run the tool’s own check command when available (for example, `git config --list`).
 
 ## Commit & Pull Request Guidelines
+
 - Follow Conventional Commit-like prefixes seen in history: `feat:`, `fix:`, `chore:`.
 - Keep commit scope small and message specific (example: `fix: adjust yazi preview keymap`).
 - Open PRs with:

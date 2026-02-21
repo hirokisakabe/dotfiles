@@ -29,6 +29,12 @@ make unlink
 
 # Claude Code の MCP サーバーをセットアップ
 make setup-mcp
+
+# フォーマットチェック（CI と同じ）
+npx prettier@3 --check .
+
+# フォーマット適用
+npx prettier@3 --write .
 ```
 
 ## Architecture
@@ -56,6 +62,7 @@ Makefile           # タスクランナー
 `packages/` 配下の各ディレクトリは、ホームディレクトリ（`~`）へのシンボリックリンクとして展開される。例えば `packages/zsh/.zshrc` は `~/.zshrc` にリンクされる。
 
 新しいツールの設定を追加する場合：
+
 1. `packages/<tool>/` ディレクトリを作成
 2. ホームディレクトリからの相対パスで設定ファイルを配置
 3. `Makefile` の `PACKAGES` 変数にツール名を追加
