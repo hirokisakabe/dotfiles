@@ -21,9 +21,11 @@ description: 実装完了後、PR作成前に Codex CLI へコードレビュー
 git diff main...HEAD --stat
 git diff main...HEAD
 
-# 未コミットの変更がある場合
+# 未コミットの変更がある場合（unstaged + staged）
 git diff --stat
 git diff
+git diff --cached --stat
+git diff --cached
 ```
 
 2. 差分のファイル数と行数を確認し、レビュー方法を決定する。
@@ -56,15 +58,17 @@ Output format (respond in Japanese):
 4. 分割レビュー: 差分が大きい場合はファイル単位で分割してレビューする。
 
 ```bash
-# 変更ファイル一覧を取得
+# 変更ファイル一覧を取得（コミット済み + unstaged + staged の和集合）
 git diff main...HEAD --name-only
+git diff --name-only
+git diff --cached --name-only
 
 # ファイルごとに個別レビューを実行
 codex exec "Review the changes to <file-path> on the current branch compared to main.
 
 First, read the repository's AGENTS.md (if it exists) to understand project conventions.
 
-Evaluate from: Correctness, Readability, Consistency, Security, Performance.
+Evaluate from: Correctness, Readability, Consistency, Security, Performance, Tests.
 
 Output (respond in Japanese):
 - Each finding with severity (critical / warning / info), file path, line number, description, fix suggestion
