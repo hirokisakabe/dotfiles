@@ -23,6 +23,7 @@ unlink: ## Remove symlinks with stow
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
+	-claude mcp add --scope user --transport http asana https://mcp.asana.com/mcp
 
 setup-plugins: ## Setup Claude Code plugins
 	-claude plugin marketplace add max-sixty/worktrunk
