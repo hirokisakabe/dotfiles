@@ -15,7 +15,7 @@
   - warning はユーザーに確認してから対応を決める
 - 作業完了後はコミットして PR を作成する
 - PR の description は日本語で記載する
-- PR の close <issue>は先頭に記載する
+- ユーザーから明示的に issue 番号を指定された場合のみ、PR description の先頭に `close #<issue番号>` を記載する。issue 番号が指定されていない場合は記載しない。Issue の作成・コメントには close キーワードを使わない
 
 ### CI/CD
 
