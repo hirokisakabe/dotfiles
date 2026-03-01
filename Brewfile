@@ -5,6 +5,7 @@ tap "charmbracelet/tap"
 tap "azure/functions"
 tap "timwehrle/asana"
 tap "k1LoW/tap"
+tap "steipete/tap"
 
 # --- Shell & Environment ---
 brew "zsh"
@@ -97,3 +98,4 @@ cask "claude"
 cask "claude-code"
 cask "copilot-cli"
 cask "kiro-cli"
+cask "codexbar"
