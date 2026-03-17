@@ -80,6 +80,7 @@ cask "font-hackgen-nerd"
 cask "font-monaspace"
 cask "font-moralerspace"
 cask "font-ubuntu-mono-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
 
 # --- Browsers ---
 cask "google-chrome"

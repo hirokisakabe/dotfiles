@@ -10,12 +10,12 @@ end
 config.color_scheme = 'Catppuccin Latte'
 
 config.font = wezterm.font_with_fallback {
-  { family = "UbuntuMono Nerd Font", assume_emoji_presentation = true },
+  { family = "JetBrainsMono Nerd Font", assume_emoji_presentation = true },
   { family = "Moralerspace Argon", assume_emoji_presentation = true },
 }
 
 config.window_frame = {
-  font = wezterm.font { family = "UbuntuMono Nerd Font" },
+  font = wezterm.font { family = "JetBrainsMono Nerd Font" },
   active_titlebar_bg = '#e6e9ef',
   inactive_titlebar_bg = '#dce0e8',
 }
