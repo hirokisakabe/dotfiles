@@ -7,7 +7,7 @@ if wezterm.config_builder then
 end
 
 -- see https://leaysgur.github.io/wezterm-colorscheme/
-config.color_scheme = 'Ubuntu'
+config.color_scheme = 'Catppuccin Latte'
 
 config.font = wezterm.font_with_fallback {
   { family = "UbuntuMono Nerd Font", assume_emoji_presentation = true },
@@ -16,31 +16,31 @@ config.font = wezterm.font_with_fallback {
 
 config.window_frame = {
   font = wezterm.font { family = "UbuntuMono Nerd Font" },
-  active_titlebar_bg = '#300a24',
-  inactive_titlebar_bg = '#2c001e',
+  active_titlebar_bg = '#e6e9ef',
+  inactive_titlebar_bg = '#dce0e8',
 }
 
 config.colors = {
   tab_bar = {
     active_tab = {
-      bg_color = '#300a24',
-      fg_color = '#ffffff',
+      bg_color = '#eff1f5',
+      fg_color = '#4c4f69',
     },
     inactive_tab = {
-      bg_color = '#2c001e',
-      fg_color = '#808080',
+      bg_color = '#e6e9ef',
+      fg_color = '#9ca0b0',
     },
     inactive_tab_hover = {
-      bg_color = '#5e2750',
-      fg_color = '#ffffff',
+      bg_color = '#ccd0da',
+      fg_color = '#4c4f69',
     },
     new_tab = {
-      bg_color = '#2c001e',
-      fg_color = '#808080',
+      bg_color = '#e6e9ef',
+      fg_color = '#9ca0b0',
     },
     new_tab_hover = {
-      bg_color = '#5e2750',
-      fg_color = '#ffffff',
+      bg_color = '#ccd0da',
+      fg_color = '#4c4f69',
     },
   },
 }
