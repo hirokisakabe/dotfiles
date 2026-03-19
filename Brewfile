@@ -6,6 +6,7 @@ tap "azure/functions"
 tap "timwehrle/asana"
 tap "k1LoW/tap"
 tap "steipete/tap"
+tap "lightpanda-io/browser"
 
 # --- Shell & Environment ---
 brew "zsh"
@@ -101,3 +102,6 @@ cask "claude-code"
 cask "copilot-cli"
 cask "kiro-cli"
 cask "codexbar"
+
+# --- Headless Browser ---
+brew "lightpanda"

@@ -23,17 +23,22 @@
 - CI が失敗した場合は、ログを確認して修正する
 - CI が開始されない場合は、ブランチのコンフリクトが原因の可能性がある。コンフリクトを解消してから再度確認すること。
 
-### ブラウザ操作（agent-browser）
+### ブラウザ操作（Lightpanda + agent-browser）
 
-ブラウザ操作には agent-browser CLI を Bash ツール経由で使用する。
+ブラウザ操作には Lightpanda（ヘッドレスブラウザ）と agent-browser CLI を組み合わせて使用する。
+
+起動手順:
+
+1. `lightpanda serve --host 127.0.0.1 --port 9222` — Lightpanda を CDP サーバーとして起動
+2. `agent-browser --cdp 9222 <command>` — agent-browser から Lightpanda に接続して操作
 
 基本ワークフロー:
 
-1. `agent-browser open <url>` — ページを開く
-2. `agent-browser snapshot -i` — インタラクティブ要素の ref を取得
-3. `agent-browser click @<ref>` / `agent-browser fill @<ref> "値"` — 要素を操作
-4. `agent-browser screenshot <file>` — スクリーンショット撮影
-5. `agent-browser close` — ブラウザを閉じる
+1. `agent-browser --cdp 9222 open <url>` — ページを開く
+2. `agent-browser --cdp 9222 snapshot -i` — インタラクティブ要素の ref を取得
+3. `agent-browser --cdp 9222 click @<ref>` / `agent-browser --cdp 9222 fill @<ref> "値"` — 要素を操作
+4. `agent-browser --cdp 9222 screenshot <file>` — スクリーンショット撮影
+5. `agent-browser --cdp 9222 close` — ブラウザを閉じる
 
 主要コマンド:
 
