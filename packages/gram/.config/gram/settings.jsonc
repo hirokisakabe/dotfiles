@@ -1,0 +1,88 @@
+{
+  // --- Base ---
+  "base_keymap": "VSCode",
+  "theme": {
+    "mode": "system",
+    "dark": "One Dark",
+    "light": "One Light",
+  },
+
+  // --- Editor ---
+  "show_whitespaces": "all",
+  "cursor_blink": true,
+  "cursor_shape": "bar",
+  "tab_size": 2,
+  "soft_wrap": "none",
+  "show_wrap_guides": true,
+  "preferred_line_length": 80,
+  "current_line_highlight": "all",
+  "selection_highlight": true,
+  "colorize_brackets": true,
+  "scroll_beyond_last_line": "one_page",
+
+  // --- Indent Guides ---
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware",
+  },
+
+  // --- Minimap (VS Code はデフォルト表示) ---
+  "minimap": {
+    "show": "auto",
+  },
+
+  // --- Scrollbar ---
+  "scrollbar": {
+    "show": "auto",
+    "git_diff": true,
+    "search_results": true,
+    "diagnostics": "all",
+  },
+
+  // --- Tabs (VS Code 風) ---
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "close_position": "right",
+    "show_diagnostics": "errors",
+  },
+
+  // --- Gutter ---
+  "gutter": {
+    "line_numbers": true,
+    "folds": true,
+  },
+
+  // --- Completions ---
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
+  "auto_signature_help": true,
+
+  // --- Inlay Hints (VS Code はデフォルト有効) ---
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+  },
+
+  // --- Git ---
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+    },
+  },
+
+  // --- Project Panel (VS Code のエクスプローラー風) ---
+  "project_panel": {
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+    "indent_size": 20,
+  },
+
+  // --- Terminal ---
+  "terminal": {
+    "cursor_shape": "bar",
+    "line_height": "comfortable",
+  },
+}
