@@ -63,6 +63,7 @@ cask "gcloud-cli"
 cask "wezterm"
 cask "visual-studio-code"
 cask "flutter"
+cask "gram"
 
 # --- Utility Apps ---
 cask "stats"
