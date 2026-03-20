@@ -14,10 +14,7 @@ fi
 brew bundle -v --cleanup
 
 echo "\n-- create symbolic links with stow --"
-mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk ~/.config/gh-dash
-cd packages
-stow -v -t ~ zsh vim wezterm git npm starship yazi claude codex claude-skills worktrunk gh-dash
-cd ..
+make link
 
 echo "\n-- install gh extensions --"
 gh extension install dlvhdr/gh-dash || true
