@@ -61,7 +61,8 @@
       "Bash(pyftsubset:*)",
       "Skill(langfuse)",
       "Skill(codex-delegate)",
-      "Skill(codex-review)"
+      "Skill(codex-review)",
+      "Bash(echo:*)"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"],
     "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)", "Bash(wt merge:*)"]
