@@ -1,7 +1,7 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$HOME/.local/bin:$PATH"
 
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fpath+=("/opt/homebrew/share/zsh/site-functions")
 
 function set_win_title() {
     echo -ne "\033]0; $(basename "$PWD") \007"
@@ -25,8 +25,8 @@ setopt share_history
 setopt hist_ignore_all_dups
 setopt auto_cd
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # alias
 alias cd..="cd .."
