@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink setup-mcp setup-plugins help
+.PHONY: install update sync link unlink setup-mcp help
 
 PACKAGES := zsh vim wezterm git npm starship yazi claude codex claude-skills worktrunk gh-dash gram mise
 
@@ -24,9 +24,3 @@ unlink: ## Remove symlinks with stow
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
 	-claude mcp add --scope user --transport http asana https://mcp.asana.com/mcp
-
-setup-plugins: ## Setup Claude Code plugins
-	-claude plugin marketplace add max-sixty/worktrunk
-	-claude plugin install worktrunk@worktrunk
-	-claude plugin marketplace add anthropics/skills
-	-claude plugin install example-skills@anthropic-agent-skills
