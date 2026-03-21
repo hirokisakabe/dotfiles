@@ -1,4 +1,6 @@
 {
+  "voiceEnabled": true,
+  "language": "ja",
   "permissions": {
     "allow": [
       "Bash(find:*)",
