@@ -22,6 +22,5 @@ unlink: ## Remove symlinks with stow
 	cd packages && stow -v -D -t ~ $(PACKAGES)
 
 setup-mcp: ## Setup MCP servers for Claude Code
-	@command -v claude >/dev/null || { echo "claude not found, skip"; exit 0; }
-	@claude mcp list 2>/dev/null | grep -q '^chrome-devtools:' || claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
-	@claude mcp list 2>/dev/null | grep -q '^asana:' || claude mcp add --scope user --transport http asana https://mcp.asana.com/mcp
+	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
+	-claude mcp add --scope user --transport http asana https://mcp.asana.com/mcp
