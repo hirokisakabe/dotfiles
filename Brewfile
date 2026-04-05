@@ -1,6 +1,5 @@
 # --- Tap repositories ---
 tap "homebrew/bundle"
-tap "homebrew/cask-fonts"
 tap "charmbracelet/tap"
 tap "azure/functions"
 tap "timwehrle/asana"
