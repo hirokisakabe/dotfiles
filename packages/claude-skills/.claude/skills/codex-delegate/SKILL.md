@@ -48,10 +48,10 @@ description: 実装・修正・テスト・PR作成タスクを Codex CLI へ委
 - path:
 ```
 
-2. 整理した内容を使い、`codex exec` で実装を委譲する。
+2. 整理した内容を使い、`gh copilot` で実装を委譲する。
 
 ```bash
-codex exec "Implement the task in the current repository. Follow repository instructions. Run required lint/format/test checks. Create a branch, commit changes, open a PR, and report changed files, verification commands, commit SHA, and PR URL."
+gh copilot -- -p "Implement the task in the current repository. Follow repository instructions. Run required lint/format/test checks. Create a branch, commit changes, open a PR, and report changed files, verification commands, commit SHA, and PR URL." --model gpt-5.3-codex --allow-all --silent --no-ask-user
 ```
 
 3. Codex の結果を確認し、次の形式で要約して返す。
@@ -64,5 +64,5 @@ codex exec "Implement the task in the current repository. Follow repository inst
 ## 失敗時の対応
 
 - 仕様が不足している場合は実装を開始せず、不足項目を列挙してユーザーへ確認する。
-- `codex` コマンドが見つからない場合は `which codex` で確認し、未導入であることとインストール手順を案内する。
+- `gh copilot` コマンドが見つからない場合は `gh extension list` で確認し、未導入であることとインストール手順（`gh extension install github/gh-copilot`）を案内する。
 - CI が失敗した場合は失敗ログ要約と修正方針を提示する。

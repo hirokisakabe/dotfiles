@@ -32,10 +32,10 @@ git diff --cached
    - **差分が 500 行以下**: 一括レビュー（ステップ 3 へ）
    - **差分が 500 行超**: ファイル単位で分割レビュー（ステップ 4 へ）
 
-3. 一括レビュー: 差分の概要を整理し、`codex exec` でレビューを委譲する。
+3. 一括レビュー: 差分の概要を整理し、`gh copilot` でレビューを委譲する。
 
 ```bash
-codex exec "Review the changes on the current branch compared to main.
+gh copilot -- -p "Review the changes on the current branch compared to main.
 
 First, read the repository's AGENTS.md (if it exists) to understand project conventions and coding standards.
 
@@ -52,7 +52,7 @@ Output format (respond in Japanese):
 - List each finding with severity: critical / warning / info
 - For each finding, include: file path, line number or range, description, and a concrete fix suggestion
 - If no issues found, state that the code looks good
-- End with a summary table: total findings by severity"
+- End with a summary table: total findings by severity" --model gpt-5.3-codex --allow-all --silent --no-ask-user
 ```
 
 4. 分割レビュー: 差分が大きい場合はファイル単位で分割してレビューする。
@@ -64,7 +64,7 @@ git diff --name-only
 git diff --cached --name-only
 
 # ファイルごとに個別レビューを実行
-codex exec "Review the changes to <file-path> on the current branch compared to main.
+gh copilot -- -p "Review the changes to <file-path> on the current branch compared to main.
 
 First, read the repository's AGENTS.md (if it exists) to understand project conventions.
 
@@ -72,7 +72,7 @@ Evaluate from: Correctness, Readability, Consistency, Security, Performance, Tes
 
 Output (respond in Japanese):
 - Each finding with severity (critical / warning / info), file path, line number, description, fix suggestion
-- If no issues, state the file looks good"
+- If no issues, state the file looks good" --model gpt-5.3-codex --allow-all --silent --no-ask-user
 ```
 
 最後に全ファイルのレビュー結果を集約してサマリーを作成する。
@@ -84,6 +84,6 @@ Output (respond in Japanese):
 
 ## 失敗時の対応
 
-- `codex` コマンドが見つからない場合は `which codex` で確認し、未導入であることとインストール手順を案内する。
+- `gh copilot` コマンドが見つからない場合は `gh extension list` で確認し、未導入であることとインストール手順（`gh extension install github/gh-copilot`）を案内する。
 - 差分がない場合はレビュー不要としてスキップする。
-- Codex がタイムアウトした場合は、差分を分割して再試行する。
+- Copilot CLI がタイムアウトした場合は、差分を分割して再試行する。

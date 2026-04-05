@@ -20,7 +20,7 @@
       "Bash(git:*)",
       "Bash(gh:*)",
       "Bash(npm:*)",
-      "Bash(codex:*)",
+      "Bash(gh copilot:*)",
       "Bash(npx:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
