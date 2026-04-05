@@ -6,6 +6,7 @@ This repository manages dotfiles and CLI tool settings with GNU Stow.
 
 - `packages/`: one directory per tool (`zsh`, `vim`, `wezterm`, `git`, `codex`, etc.).
 - `packages/*/`: mirrored home-directory layout (for example, `packages/yazi/.config/yazi/`).
+- `packages/codex/`: contains `AGENTS.md`, shared by both Copilot CLI and Codex CLI as primary instructions.
 - `Makefile`: primary task entrypoint for setup, linking, and package maintenance.
 - `install.sh`: bootstrap script used by `make install`.
 - `Brewfile` / `Brewfile.lock.json`: Homebrew package definitions and lock data.

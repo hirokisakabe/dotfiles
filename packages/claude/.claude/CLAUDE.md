@@ -45,12 +45,12 @@
 - ネットワーク: network requests
 - タブ管理: tabs list, tabs new, tabs close, tabs select
 
-### Codex 委譲
+### Copilot CLI 経由の Codex 委譲
 
-- 実装・修正・テスト・PR 作成の依頼では、以下の条件を満たす場合に Codex へ委譲する。
+- 実装・修正・テスト・PR 作成の依頼では、以下の条件を満たす場合に Copilot CLI 経由で Codex へ委譲する。
   - 目的、制約、受け入れ条件が明示されている
   - 変更対象ファイルまたは対象ディレクトリが明示されている
-- 委譲時は `codex-delegate` Skill を使い、仕様を整理して `codex exec` を実行すること。
+- 委譲時は `codex-delegate` Skill を使い、仕様を整理して `gh copilot -- -p` を実行すること。
 - Codex 実行結果として、最低限以下を返すこと。
   - 変更ファイル一覧
   - 実行した検証コマンドと結果
