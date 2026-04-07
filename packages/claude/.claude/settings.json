@@ -64,6 +64,7 @@
       "Skill(langfuse)",
       "Skill(codex-delegate)",
       "Skill(codex-review)",
+      "Skill(agent-browser)",
       "Bash(echo:*)"
     ],
     "deny": ["Read(./.env)", "Read(./.env.*)"],

@@ -23,27 +23,9 @@
 - CI が失敗した場合は、ログを確認して修正する
 - CI が開始されない場合は、ブランチのコンフリクトが原因の可能性がある。コンフリクトを解消してから再度確認すること。
 
-### ブラウザ操作（agent-browser）
+### ブラウザ操作
 
-ブラウザ操作には agent-browser CLI を Bash ツール経由で使用する。
-
-基本ワークフロー:
-
-1. `agent-browser open <url>` — ページを開く
-2. `agent-browser snapshot -i` — インタラクティブ要素の ref を取得
-3. `agent-browser click @<ref>` / `agent-browser fill @<ref> "値"` — 要素を操作
-4. `agent-browser screenshot <file>` — スクリーンショット撮影
-5. `agent-browser close` — ブラウザを閉じる
-
-主要コマンド:
-
-- ナビゲーション: open, back, forward, reload
-- 要素操作: click, fill, type, press, hover, select, check, scroll
-- 情報取得: get text, get html, get value, get title, get url
-- 状態確認: is visible, is enabled, is checked
-- デバッグ: console, errors, screenshot, snapshot
-- ネットワーク: network requests
-- タブ管理: tabs list, tabs new, tabs close, tabs select
+ブラウザ操作は `agent-browser` Skill を使用する。詳細は `~/.claude/skills/agent-browser/SKILL.md` を参照。
 
 ### Copilot CLI 経由の Codex 委譲
 
