@@ -25,10 +25,6 @@
 
 ブラウザ操作は `agent-browser` Skill を使用する。詳細は `~/.claude/skills/agent-browser/SKILL.md` を参照。
 
-### 実装タスクの委譲
-
-- 仕様が固まっている実装系タスクは `codex-delegate` Skill を使用する。
-
 ### 最新情報の参照
 
 - バージョン・仕様・状況が変わりうる技術トピックは、知識ベースで答えず WebSearch / WebFetch で必ず確認する。
