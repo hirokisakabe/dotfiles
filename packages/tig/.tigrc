@@ -1,0 +1,26 @@
+# Iceberg-inspired tig color scheme
+# tig は名前付きカラー/256色のみサポートのため近似値を使う
+
+color default            252 233
+color cursor             233 110
+color status             110 233
+color title-blame        233 110
+color title-focus        233 110
+color title-blur         110 233
+color main-date          108 default
+color main-author        140 default
+color main-commit        252 default
+color main-tag           215 default bold
+color main-local-tag     215 default
+color main-remote        108 default
+color main-tracked       108 default bold
+color main-ref           110 default
+color main-head          174 default bold
+
+color diff-header        110 default bold
+color diff-chunk         140 default
+color "Reported-by:"     108 default
+
+color "    "             default 235
+color "+"                108 default
+color "-"                174 default

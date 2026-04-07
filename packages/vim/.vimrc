@@ -1,5 +1,9 @@
 syntax on
 
+" Iceberg colorscheme (cocopon/iceberg.vim) - install.sh で clone される
+set termguicolors
+silent! colorscheme iceberg
+
 let g:netrw_banner = 0
 
 let g:netrw_liststyle = 3

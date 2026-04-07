@@ -10,17 +10,18 @@ $line_break\
 $character"""
 
 
+# Iceberg palette
 [directory]
-style = "bold #e95420"
+style = "bold #84a0c6"
 
 [character]
-success_symbol = "[❯](#e95420)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](#e95420)"
+success_symbol = "[❯](#b4be82)"
+error_symbol = "[❯](#e27878)"
+vimcmd_symbol = "[❮](#a093c7)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bold #772953"
+style = "bold #a093c7"
 
 [git_status]
 format = "[(*$conflicted$untracked$modified$staged$renamed$deleted) ($ahead_behind$stashed)]($style)"

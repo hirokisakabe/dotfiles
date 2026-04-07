@@ -1,0 +1,103 @@
+# Iceberg dark palette - https://github.com/cocopon/iceberg.vim
+
+[mgr]
+cwd = { fg = "#84a0c6" }
+hovered = { reversed = true }
+preview_hovered = { underline = true }
+find_keyword = { fg = "#e2a478", italic = true }
+find_position = { fg = "#a093c7", bg = "reset", italic = true }
+marker_copied = { fg = "#b4be82", bg = "#b4be82" }
+marker_cut = { fg = "#e27878", bg = "#e27878" }
+marker_marked = { fg = "#89b8c2", bg = "#89b8c2" }
+marker_selected = { fg = "#84a0c6", bg = "#84a0c6" }
+tab_active = { fg = "#161821", bg = "#84a0c6" }
+tab_inactive = { fg = "#c6c8d1", bg = "#1e2132" }
+tab_width = 1
+border_symbol = "│"
+border_style = { fg = "#6b7089" }
+
+[mode]
+normal_main = { fg = "#161821", bg = "#84a0c6", bold = true }
+normal_alt = { fg = "#84a0c6", bg = "#1e2132" }
+select_main = { fg = "#161821", bg = "#b4be82", bold = true }
+select_alt = { fg = "#b4be82", bg = "#1e2132" }
+unset_main = { fg = "#161821", bg = "#a093c7", bold = true }
+unset_alt = { fg = "#a093c7", bg = "#1e2132" }
+
+[status]
+separator_open = ""
+separator_close = ""
+separator_style = { fg = "#1e2132", bg = "#1e2132" }
+progress_label = { fg = "#c6c8d1", bold = true }
+progress_normal = { fg = "#84a0c6", bg = "#1e2132" }
+progress_error = { fg = "#e27878", bg = "#1e2132" }
+permissions_t = { fg = "#84a0c6" }
+permissions_r = { fg = "#e2a478" }
+permissions_w = { fg = "#e27878" }
+permissions_x = { fg = "#b4be82" }
+permissions_s = { fg = "#6b7089" }
+
+[input]
+border = { fg = "#84a0c6" }
+title = {}
+value = {}
+selected = { reversed = true }
+
+[confirm]
+border = { fg = "#84a0c6" }
+title = { fg = "#84a0c6" }
+content = {}
+list = {}
+btn_yes = { reversed = true }
+btn_no = {}
+btn_labels = [ "[Y(es)]", "[(N)o]" ]
+
+[pick]
+border = { fg = "#84a0c6" }
+active = { fg = "#a093c7", bold = true }
+inactive = {}
+
+[cmp]
+border = { fg = "#84a0c6" }
+active = { reversed = true }
+inactive = {}
+icon_file = ""
+icon_folder = ""
+icon_command = ""
+
+[tasks]
+border = { fg = "#84a0c6" }
+title = {}
+hovered = { fg = "#a093c7", underline = true }
+
+[which]
+mask = { bg = "#1e2132" }
+cand = { fg = "#89b8c2" }
+rest = { fg = "#6b7089" }
+desc = { fg = "#a093c7" }
+separator = "  "
+separator_style = { fg = "#6b7089" }
+
+[help]
+on = { fg = "#89b8c2" }
+run = { fg = "#a093c7" }
+hovered = { reversed = true, bold = true }
+footer = { fg = "#1e2132", bg = "#c6c8d1" }
+
+[notify]
+title_info = { fg = "#b4be82" }
+title_warn = { fg = "#e2a478" }
+title_error = { fg = "#e27878" }
+icon_info = ""
+icon_warn = ""
+icon_error = ""
+
+[filetype]
+rules = [
+  { mime = "image/*", fg = "#e2a478" },
+  { mime = "{audio,video}/*", fg = "#a093c7" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#e27878" },
+  { mime = "application/{pdf,doc,rtf,*office*}", fg = "#89b8c2" },
+  { name = "*", fg = "#c6c8d1" },
+  { name = "*/", fg = "#84a0c6" },
+]
