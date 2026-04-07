@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink setup-mcp help
+.PHONY: install update sync link unlink setup-mcp promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex claude-skills worktrunk gh-dash gram mise
 
@@ -24,3 +24,6 @@ unlink: ## Remove symlinks with stow
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
 	-claude mcp add --scope user --transport http asana https://mcp.asana.com/mcp
+
+promote-webfetch: ## Promote WebFetch domains from history to permissions.allow
+	./scripts/promote-webfetch.sh

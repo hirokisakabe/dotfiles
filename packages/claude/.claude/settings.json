@@ -71,6 +71,17 @@
     "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)", "Bash(wt merge:*)"]
   },
   "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/webfetch-history-append.sh"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "hooks": [
