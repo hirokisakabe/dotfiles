@@ -51,7 +51,7 @@ description: 実装・修正・テスト・PR作成タスクを Codex CLI へ委
 2. 整理した内容を使い、`copilot` CLI で実装を委譲する。
 
 ```bash
-copilot -p "Implement the task in the current repository. Follow repository instructions. Run required lint/format/test checks. Create a branch, commit changes, open a PR, and report changed files, verification commands, commit SHA, and PR URL." --allow-all --no-ask-user -s
+copilot --model gpt-5.3-codex -p "Implement the task in the current repository. Follow repository instructions. Run required lint/format/test checks. Create a branch, commit changes, open a PR, and report changed files, verification commands, commit SHA, and PR URL." --allow-all --no-ask-user -s
 ```
 
 3. Codex の結果を確認し、次の形式で要約して返す。
