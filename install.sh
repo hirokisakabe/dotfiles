@@ -32,4 +32,16 @@ else
   echo "GitAlias already configured."
 fi
 
+printf '\n-- build bat theme cache (Iceberg) --\n'
+bat cache --build || true
+
+printf '\n-- install vim plugins (iceberg.vim) --\n'
+ICEBERG_VIM_DIR="$HOME/.vim/pack/themes/start/iceberg.vim"
+mkdir -p "$(dirname "$ICEBERG_VIM_DIR")"
+if [ ! -d "$ICEBERG_VIM_DIR" ]; then
+  git clone --depth 1 https://github.com/cocopon/iceberg.vim.git "$ICEBERG_VIM_DIR"
+else
+  git -C "$ICEBERG_VIM_DIR" pull --ff-only || true
+fi
+
 printf '\n-- done! --\n'

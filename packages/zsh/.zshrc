@@ -44,7 +44,17 @@ eval "$(direnv hook zsh)"
 # starship
 eval "$(starship init zsh)"
 
+# Iceberg color palette - https://github.com/cocopon/iceberg.vim
+# eza
+export EZA_COLORS="di=1;38;2;132;160;198:ln=38;2;137;184;194:ex=38;2;180;190;130:fi=38;2;198;200;209:*.md=38;2;160;147;199:*.json=38;2;226;164;120:*.lock=38;2;107;112;137:*.toml=38;2;226;164;120:*.yml=38;2;226;164;120:*.yaml=38;2;226;164;120"
+
 # fzf
+export FZF_DEFAULT_OPTS="
+  --color=fg:#c6c8d1,bg:#161821,hl:#84a0c6
+  --color=fg+:#c6c8d1,bg+:#1e2132,hl+:#84a0c6
+  --color=info:#b4be82,prompt:#a093c7,pointer:#e27878
+  --color=marker:#e2a478,spinner:#89b8c2,header:#84a0c6
+  --color=border:#6b7089"
 source <(fzf --zsh)
 
 # Terraform

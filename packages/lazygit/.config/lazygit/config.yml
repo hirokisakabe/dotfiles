@@ -1,0 +1,24 @@
+# Iceberg dark - https://github.com/cocopon/iceberg.vim
+gui:
+  theme:
+    activeBorderColor:
+      - "#84a0c6"
+      - bold
+    inactiveBorderColor:
+      - "#6b7089"
+    optionsTextColor:
+      - "#84a0c6"
+    selectedLineBgColor:
+      - "#1e2132"
+    selectedRangeBgColor:
+      - "#1e2132"
+    cherryPickedCommitBgColor:
+      - "#3a5a52"
+    cherryPickedCommitFgColor:
+      - "#b4be82"
+    unstagedChangesColor:
+      - "#e27878"
+    defaultFgColor:
+      - "#c6c8d1"
+  authorColors:
+    "*": "#a093c7"
