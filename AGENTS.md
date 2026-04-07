@@ -1,8 +1,12 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
+This file is the single source of truth for AI coding agents (Claude Code, Codex CLI, Copilot CLI 等) working in this repository. `CLAUDE.md` is a symlink to this file.
 
-This repository manages dotfiles and CLI tool settings with GNU Stow.
+## Overview
+
+macOS 向けの dotfiles リポジトリ。Homebrew でパッケージ管理、GNU Stow でシンボリックリンク管理を行う。
+
+## Project Structure & Module Organization
 
 - `packages/`: one directory per tool (`zsh`, `vim`, `wezterm`, `git`, `codex`, etc.).
 - `packages/*/`: mirrored home-directory layout (for example, `packages/yazi/.config/yazi/`).
@@ -11,16 +15,41 @@ This repository manages dotfiles and CLI tool settings with GNU Stow.
 - `install.sh`: bootstrap script used by `make install`.
 - `Brewfile` / `Brewfile.lock.json`: Homebrew package definitions and lock data.
 
+```
+packages/           # Stow パッケージ（各ツールの設定ファイル）
+├── zsh/           # .zshrc
+├── vim/           # .vimrc
+├── wezterm/       # .wezterm.lua
+├── git/           # .gitconfig, .gitignore_global
+├── npm/           # .default-npm-packages
+├── starship/      # .config/starship.toml
+├── yazi/          # .config/yazi/yazi.toml
+├── claude/        # .claude/settings.json, .claude/CLAUDE.md
+├── claude-skills/ # .claude/skills/ (Claude Code カスタムスキル)
+└── codex/         # .codex/AGENTS.md (Copilot CLI / Codex CLI 共通の指示ファイル)
+```
+
+### Stow の仕組み
+
+`packages/` 配下の各ディレクトリは、ホームディレクトリ（`~`）へのシンボリックリンクとして展開される。例えば `packages/zsh/.zshrc` は `~/.zshrc` にリンクされる。
+
+新しいツールの設定を追加する場合：
+
+1. `packages/<tool>/` ディレクトリを作成
+2. ホームディレクトリからの相対パスで設定ファイルを配置
+3. `Makefile` の `PACKAGES` 変数にツール名を追加
+
 ## Build, Test, and Development Commands
 
 Use `make` targets as the standard workflow:
 
-- `make help`: list available tasks.
-- `make install`: run initial setup via `install.sh`.
-- `make update`: install/update Homebrew dependencies from `Brewfile`.
-- `make sync`: dump current Homebrew state back to `Brewfile`.
-- `make link`: create symlinks from `packages/` into `$HOME` with stow.
-- `make unlink`: remove stow-managed symlinks.
+- `make help`: 利用可能なタスク一覧を表示。
+- `make install`: 初回セットアップ（Homebrew インストール、パッケージインストール、シンボリックリンク作成）を `install.sh` 経由で実行。
+- `make update`: `Brewfile` から Homebrew パッケージを更新。
+- `make sync`: 現在の Homebrew 状態を `Brewfile` に書き戻す。
+- `make link`: `packages/` 配下を `$HOME` に stow でシンボリックリンク化。
+- `make unlink`: stow 管理のシンボリックリンクを削除。
+- `make setup-mcp`: Claude Code の MCP サーバーをセットアップ。
 
 Example: `make link` after adding a new file under `packages/zsh/`.
 
@@ -31,7 +60,7 @@ Example: `make link` after adding a new file under `packages/zsh/`.
 - Prefer minimal, focused changes per package.
 - For shell snippets, use POSIX-compatible style unless the target tool requires `zsh`-specific syntax.
 
-Prettier is configured as the formatter. Run `npx prettier@3 --check .` to verify formatting. See `.prettierignore` for excluded files.
+Prettier is configured as the formatter. Run `npx prettier@3 --check .` to verify formatting (フォーマット適用は `npx prettier@3 --write .`)。See `.prettierignore` for excluded files.
 
 ## Testing Guidelines
 
