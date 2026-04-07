@@ -35,7 +35,7 @@ git diff --cached
 3. 一括レビュー: 差分の概要を整理し、`copilot` CLI でレビューを委譲する。
 
 ```bash
-copilot -p "Review the changes on the current branch compared to main.
+copilot --model gpt-5.3-codex -p "Review the changes on the current branch compared to main.
 
 First, read the repository's AGENTS.md (if it exists) to understand project conventions and coding standards.
 
@@ -64,7 +64,7 @@ git diff --name-only
 git diff --cached --name-only
 
 # ファイルごとに個別レビューを実行
-copilot -p "Review the changes to <file-path> on the current branch compared to main.
+copilot --model gpt-5.3-codex -p "Review the changes to <file-path> on the current branch compared to main.
 
 First, read the repository's AGENTS.md (if it exists) to understand project conventions.
 
