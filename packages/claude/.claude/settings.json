@@ -62,7 +62,6 @@
       "Bash(unzip:*)",
       "Bash(pyftsubset:*)",
       "Skill(langfuse)",
-      "Skill(codex-delegate)",
       "Skill(codex-review)",
       "Skill(agent-browser)",
       "Bash(echo:*)"
