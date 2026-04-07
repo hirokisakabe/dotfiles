@@ -9,7 +9,7 @@ fi
 
 printf '\n-- install Homebrew and formulaes --\n'
 if ! command -v brew &> /dev/null; then
-  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | /bin/bash
+  curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 fi
 brew bundle -v --cleanup
 
