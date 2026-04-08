@@ -10,7 +10,7 @@
 - コミット前に lint/fmt などが通ることを確認する
 - **実装完了後、PR 作成前に `codex-review` Skill を呼び出し、Codex によるクロスレビューを実施する**
   - critical の指摘があれば修正してからコミットする
-  - warning はユーザーに確認してから対応を決める
+  - warning は Claude 自身で対応要否を判断し、必要なら修正する（ユーザー確認は不要）
 - 作業完了後はコミットして PR を作成する
 - PR の description は日本語で記載する
 - ユーザーから明示的に issue 番号を指定された場合のみ、PR description の先頭に `close #<issue番号>` を記載する
