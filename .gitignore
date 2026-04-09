@@ -1,4 +1,8 @@
 Brewfile.lock.json
+.env
+
+# Allow .envrc (overrides global gitignore)
+!.envrc
 
 # Allow .claude directories in packages (for stow)
 !packages/**/.claude/
