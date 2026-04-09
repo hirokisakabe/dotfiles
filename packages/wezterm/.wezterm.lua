@@ -47,7 +47,7 @@ config.colors = {
   },
 }
 
-config.font_size = 16.0
+config.font_size = 13.0
 config.scrollback_lines = 10000
 config.keys = {
   {
