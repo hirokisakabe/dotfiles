@@ -87,6 +87,7 @@ cask "font-jetbrains-mono-nerd-font"
 # --- Browsers ---
 cask "google-chrome"
 cask "microsoft-edge"
+cask "vivaldi"
 
 # --- Communication & Collaboration ---
 cask "slack"
