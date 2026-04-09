@@ -19,7 +19,7 @@ wtf:
         width: 2
       refreshInterval: 300
       repositories:
-        hirokisakabe/dotfiles: "myPRs"
+        - "hirokisakabe/dotfiles"
       apiKey: ""
       enableStatus: true
       uploadURL: ""
@@ -35,7 +35,7 @@ wtf:
         width: 1
       refreshInterval: 300
       repositories:
-        hirokisakabe/dotfiles: "othersPRs"
+        - "hirokisakabe/dotfiles"
       customQueries:
         reviewRequests:
           title: "Review Requests"
