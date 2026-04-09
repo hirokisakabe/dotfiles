@@ -20,10 +20,7 @@ wtf:
       refreshInterval: 300
       repositories:
         - "hirokisakabe/dotfiles"
-      apiKey: ""
       enableStatus: true
-      uploadURL: ""
-      baseURL: ""
       username: "hirokisakabe"
     github_review:
       type: github
@@ -40,10 +37,7 @@ wtf:
         reviewRequests:
           title: "Review Requests"
           filter: "is:open is:pr review-requested:hirokisakabe"
-      apiKey: ""
       enableStatus: true
-      uploadURL: ""
-      baseURL: ""
       username: "hirokisakabe"
     git:
       type: git
