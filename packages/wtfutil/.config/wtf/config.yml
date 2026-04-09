@@ -20,7 +20,7 @@ wtf:
       refreshInterval: 300
       repositories:
         hirokisakabe/dotfiles: "myPRs"
-      apiKey: "${WTF_GITHUB_TOKEN}"
+      apiKey: ""
       enableStatus: true
       uploadURL: ""
       baseURL: ""
@@ -40,7 +40,7 @@ wtf:
         reviewRequests:
           title: "Review Requests"
           filter: "is:open is:pr review-requested:hirokisakabe"
-      apiKey: "${WTF_GITHUB_TOKEN}"
+      apiKey: ""
       enableStatus: true
       uploadURL: ""
       baseURL: ""
