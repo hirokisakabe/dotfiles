@@ -77,6 +77,20 @@ config.keys = {
   },
 }
 config.window_close_confirmation = 'NeverPrompt'
+
+wezterm.on('format-tab-title', function(tab)
+  local pane = tab.active_pane
+  local title = pane.title
+  local cwd = pane.current_working_directory
+  if cwd then
+    local path = cwd.file_path or tostring(cwd)
+    local folder = path:match('([^/]+)/?$')
+    if folder then
+      return ' ' .. folder .. ': ' .. title .. ' '
+    end
+  end
+  return ' ' .. title .. ' '
+end)
 config.native_macos_fullscreen_mode = true
 config.initial_cols = 120
 config.initial_rows = 40
