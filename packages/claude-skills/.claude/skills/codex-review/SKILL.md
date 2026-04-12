@@ -47,6 +47,7 @@ Then evaluate the diff from these perspectives:
 4. **Security**: Is there proper input validation? Are secrets or credentials exposed?
 5. **Performance**: Are there unnecessary computations or inefficient patterns?
 6. **Tests**: If the project has tests, is coverage adequate for the changes?
+7. **Documentation**: Are related docs (README, CLAUDE.md, AGENTS.md, inline comments, etc.) updated to reflect the changes? Flag missing or outdated documentation.
 
 Output format (respond in Japanese):
 - List each finding with severity: critical / warning / info
@@ -68,7 +69,7 @@ copilot --model gpt-5.3-codex -p "Review the changes to <file-path> on the curre
 
 First, read the repository's AGENTS.md (if it exists) to understand project conventions.
 
-Evaluate from: Correctness, Readability, Consistency, Security, Performance, Tests.
+Evaluate from: Correctness, Readability, Consistency, Security, Performance, Tests, Documentation.
 
 Output (respond in Japanese):
 - Each finding with severity (critical / warning / info), file path, line number, description, fix suggestion
