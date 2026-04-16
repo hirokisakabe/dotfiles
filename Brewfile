@@ -47,9 +47,7 @@ brew "pipx"
 brew "uv"
 
 # --- Container & VM ---
-brew "lima"
 brew "podman"
-cask "docker-desktop"
 cask "orbstack"
 
 # --- Cloud & IaC ---
