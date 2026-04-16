@@ -66,8 +66,14 @@
       "Skill(agent-browser)",
       "Bash(echo:*)"
     ],
-    "deny": ["Read(./.env)", "Read(./.env.*)"],
-    "ask": ["Bash(gh pr merge:*)", "Bash(git push:*)", "Bash(wt merge:*)"]
+    "deny": [],
+    "ask": [
+      "Bash(gh pr merge:*)",
+      "Bash(git push:*)",
+      "Bash(wt merge:*)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
   },
   "hooks": {
     "PostToolUse": [
