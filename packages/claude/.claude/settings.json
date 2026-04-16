@@ -32,8 +32,6 @@
       "WebFetch(domain:sdk.vercel.ai)",
       "WebFetch(domain:ai-sdk.dev)",
       "WebFetch(domain:mastra.ai)",
-      "WebFetch(domain:langfuse.com)",
-      "WebFetch(domain:js.reference.langfuse.com)",
       "WebFetch(domain:docs.mastra.ai)",
       "WebFetch(domain:ai-sdk.vercel.ai)",
       "WebFetch(domain:docs.firecrawl.dev)",
@@ -61,7 +59,6 @@
       "Bash(md5:*)",
       "Bash(unzip:*)",
       "Bash(pyftsubset:*)",
-      "Skill(langfuse)",
       "Skill(codex-review)",
       "Skill(agent-browser)",
       "Bash(echo:*)"
