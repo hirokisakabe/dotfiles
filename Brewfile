@@ -76,7 +76,6 @@ cask "inkscape"
 cask "raspberry-pi-imager"
 cask "logi-options+"
 cask "deepl"
-cask "monitorcontrol"
 
 # --- Fonts ---
 cask "font-hackgen-nerd"
