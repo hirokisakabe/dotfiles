@@ -132,7 +132,28 @@ Status: Ready
    EOF
    ```
 
-5. 起票後、issue URL をユーザーに返す。親 issue がある場合は GitHub UI もしくは `gh api` で sub-issue として紐づける（手動でのリンク付けが必要な場合はその旨を案内）。
+5. 起票後、issue URL を保持する（まだユーザーに返さない）。
+6. **親 issue がある場合は、必ず `gh api` で sub-issue として紐づける。** この手順を省略してはならない。
+
+   ```bash
+   # gh issue create の出力 URL から子 issue 番号を抽出
+   CHILD_ISSUE_URL="<gh issue create が返した URL>"
+   CHILD_ISSUE_NUMBER="${CHILD_ISSUE_URL##*/}"
+   PARENT_ISSUE_NUMBER=<親 issue 番号>
+
+   # リポジトリ名を取得
+   REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner')
+
+   # 子 issue の node ID を取得
+   CHILD_ID=$(gh issue view "$CHILD_ISSUE_NUMBER" --json id --jq '.id')
+
+   # 親 issue に sub-issue として追加
+   gh api "repos/${REPO}/issues/${PARENT_ISSUE_NUMBER}/sub_issues" \
+     -X POST \
+     -f sub_issue_id="$CHILD_ID"
+   ```
+
+7. 紐づけ完了を確認してから、issue URL をユーザーに返す。
 
 ## やらないこと
 
