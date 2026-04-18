@@ -5,6 +5,7 @@ tap "azure/functions"
 tap "timwehrle/asana"
 tap "k1LoW/tap"
 tap "steipete/tap"
+tap "lightpanda-io/browser"
 
 # --- Shell & Environment ---
 brew "zsh"
@@ -80,6 +81,9 @@ cask "font-hackgen-nerd"
 cask "font-monaspace"
 cask "font-moralerspace"
 cask "font-jetbrains-mono-nerd-font"
+
+# --- Headless Browser ---
+brew "lightpanda"
 
 # --- Browsers ---
 cask "google-chrome"
