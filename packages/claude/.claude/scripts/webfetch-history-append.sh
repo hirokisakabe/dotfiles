@@ -17,7 +17,7 @@ is_error=$(printf '%s' "$input" | jq -r '.tool_response.is_error // false')
 url=$(printf '%s' "$input" | jq -r '.tool_input.url // empty')
 [ -n "$url" ] || exit 0
 
-domain=$(printf '%s' "$url" | sed 's|https\?://||' | cut -d'/' -f1)
+domain=$(printf '%s' "$url" | sed -E 's|https?://||' | cut -d'/' -f1)
 [ -n "$domain" ] || exit 0
 
 ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
