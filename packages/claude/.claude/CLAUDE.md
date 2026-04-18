@@ -21,9 +21,15 @@
 - CI が失敗した場合は、ログを確認して修正する
 - CI が開始されない場合は、ブランチのコンフリクトが原因の可能性がある。コンフリクトを解消してから再度確認すること。
 
-### ブラウザ操作
+### ブラウザ操作（Lightpanda + agent-browser）
 
-ブラウザ操作は `agent-browser` Skill を使用する。詳細は `~/.claude/skills/agent-browser/SKILL.md` を参照。
+ブラウザ操作は `agent-browser` Skill を `--engine lightpanda` 付きで使用する。
+
+```bash
+agent-browser --engine lightpanda <command>
+```
+
+詳細は `~/.claude/skills/agent-browser/SKILL.md` を参照。
 
 ### 最新情報の参照
 
