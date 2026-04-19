@@ -83,7 +83,7 @@ cask "font-moralerspace"
 cask "font-jetbrains-mono-nerd-font"
 
 # --- Headless Browser ---
-brew "lightpanda"
+brew "lightpanda-io/browser/lightpanda"
 
 # --- Browsers ---
 cask "google-chrome"
