@@ -57,6 +57,9 @@ export FZF_DEFAULT_OPTS="
   --color=border:#6b7089"
 source <(fzf --zsh)
 
+# zoxide
+eval "$(zoxide init zsh)"
+
 # Terraform
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
