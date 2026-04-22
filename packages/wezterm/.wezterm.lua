@@ -47,6 +47,9 @@ config.colors = {
   },
 }
 
+config.front_end = 'WebGpu'
+config.freetype_load_flags = 'NO_HINTING'
+
 config.font_size = 13.0
 config.scrollback_lines = 10000
 config.keys = {
