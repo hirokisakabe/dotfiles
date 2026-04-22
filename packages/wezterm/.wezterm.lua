@@ -11,13 +11,13 @@ end
 config.color_scheme = 'iceberg-dark'
 
 config.font = wezterm.font_with_fallback {
-  { family = "JetBrainsMono Nerd Font", assume_emoji_presentation = true },
+  { family = "OverpassM Nerd Font", assume_emoji_presentation = true },
   { family = "Moralerspace Argon", assume_emoji_presentation = true },
 }
 
 -- Iceberg dark palette
 config.window_frame = {
-  font = wezterm.font { family = "JetBrainsMono Nerd Font" },
+  font = wezterm.font { family = "OverpassM Nerd Font" },
   active_titlebar_bg = '#0f1117',
   inactive_titlebar_bg = '#161821',
 }
