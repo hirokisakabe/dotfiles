@@ -94,6 +94,8 @@ wezterm.on('format-tab-title', function(tab)
   end
   return ' ' .. title .. ' '
 end)
+config.window_background_opacity = 0.9
+config.macos_window_background_blur = 20
 config.native_macos_fullscreen_mode = true
 config.initial_cols = 120
 config.initial_rows = 40
