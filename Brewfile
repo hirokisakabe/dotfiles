@@ -80,6 +80,7 @@ cask "font-hackgen-nerd"
 cask "font-monaspace"
 cask "font-moralerspace"
 cask "font-jetbrains-mono-nerd-font"
+cask "font-overpass-nerd-font"
 
 # --- Headless Browser ---
 brew "lightpanda-io/browser/lightpanda"
