@@ -11,8 +11,8 @@ end
 config.color_scheme = 'iceberg-dark'
 
 config.font = wezterm.font_with_fallback {
-  { family = "OverpassM Nerd Font", assume_emoji_presentation = true },
-  { family = "Moralerspace Argon", assume_emoji_presentation = true },
+  { family = "OverpassM Nerd Font" },
+  { family = "Moralerspace Argon" },
 }
 
 -- Iceberg dark palette
