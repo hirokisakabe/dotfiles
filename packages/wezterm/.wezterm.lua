@@ -7,42 +7,42 @@ if wezterm.config_builder then
 end
 
 -- see https://leaysgur.github.io/wezterm-colorscheme/
--- Iceberg (dark) - https://github.com/cocopon/iceberg.vim
-config.color_scheme = 'iceberg-dark'
+-- Iceberg (light) - https://github.com/cocopon/iceberg.vim
+config.color_scheme = 'iceberg-light'
 
 config.font = wezterm.font_with_fallback {
   { family = "OverpassM Nerd Font" },
   { family = "Moralerspace Argon" },
 }
 
--- Iceberg dark palette
+-- Iceberg light palette
 config.window_frame = {
   font = wezterm.font { family = "OverpassM Nerd Font" },
-  active_titlebar_bg = '#0f1117',
-  inactive_titlebar_bg = '#161821',
+  active_titlebar_bg = '#e8e9ec',
+  inactive_titlebar_bg = '#dcdfe7',
 }
 
 config.colors = {
   tab_bar = {
     active_tab = {
-      bg_color = '#1e2132',
-      fg_color = '#c6c8d1',
+      bg_color = '#e8e9ec',
+      fg_color = '#33374c',
     },
     inactive_tab = {
-      bg_color = '#161821',
-      fg_color = '#6b7089',
+      bg_color = '#dcdfe7',
+      fg_color = '#8b98b6',
     },
     inactive_tab_hover = {
-      bg_color = '#1e2132',
-      fg_color = '#c6c8d1',
+      bg_color = '#e8e9ec',
+      fg_color = '#33374c',
     },
     new_tab = {
-      bg_color = '#161821',
-      fg_color = '#6b7089',
+      bg_color = '#dcdfe7',
+      fg_color = '#8b98b6',
     },
     new_tab_hover = {
-      bg_color = '#1e2132',
-      fg_color = '#c6c8d1',
+      bg_color = '#e8e9ec',
+      fg_color = '#33374c',
     },
   },
 }
