@@ -32,12 +32,10 @@ git diff --cached
    - **差分が 500 行以下**: 一括レビュー（ステップ 3 へ）
    - **差分が 500 行超**: ファイル単位で分割レビュー（ステップ 4 へ）
 
-3. 一括レビュー: 差分の概要を整理し、`copilot` CLI でレビューを委譲する。
+3. 一括レビュー: 差分の概要を整理し、`codex exec review` でレビューを委譲する。
 
 ```bash
-copilot --model gpt-5.3-codex -p "Review the changes on the current branch compared to main.
-
-First, read the repository's AGENTS.md (if it exists) to understand project conventions and coding standards.
+codex exec review --base main --uncommitted --model gpt-5.4 --full-auto "First, read the repository's AGENTS.md (if it exists) to understand project conventions and coding standards.
 
 Then evaluate the diff from these perspectives:
 
@@ -53,7 +51,7 @@ Output format (respond in Japanese):
 - List each finding with severity: critical / warning / info
 - For each finding, include: file path, line number or range, description, and a concrete fix suggestion
 - If no issues found, state that the code looks good
-- End with a summary table: total findings by severity" --allow-all --no-ask-user -s
+- End with a summary table: total findings by severity"
 ```
 
 4. 分割レビュー: 差分が大きい場合はファイル単位で分割してレビューする。
@@ -65,15 +63,13 @@ git diff --name-only
 git diff --cached --name-only
 
 # ファイルごとに個別レビューを実行
-copilot --model gpt-5.3-codex -p "Review the changes to <file-path> on the current branch compared to main.
-
-First, read the repository's AGENTS.md (if it exists) to understand project conventions.
+codex exec review --base main --uncommitted --model gpt-5.4 --full-auto "Review the changes to <file-path>.
 
 Evaluate from: Correctness, Readability, Consistency, Security, Performance, Tests, Documentation.
 
 Output (respond in Japanese):
 - Each finding with severity (critical / warning / info), file path, line number, description, fix suggestion
-- If no issues, state the file looks good" --allow-all --no-ask-user -s
+- If no issues, state the file looks good"
 ```
 
 最後に全ファイルのレビュー結果を集約してサマリーを作成する。
@@ -85,6 +81,6 @@ Output (respond in Japanese):
 
 ## 失敗時の対応
 
-- `copilot` コマンドが見つからない場合は `command -v copilot` で確認し、未導入であれば `brew install --cask copilot-cli` でのインストールを案内する。初回利用時は `copilot login` で GitHub Copilot サブスクリプションでの認証が必要。
+- `codex` コマンドが見つからない場合は `command -v codex` で確認し、未導入であれば `brew install --cask codex` でのインストールを案内する。初回利用時は `codex login` で OpenAI アカウントでの認証が必要。
 - 差分がない場合はレビュー不要としてスキップする。
-- Copilot CLI がタイムアウトした場合は、差分を分割して再試行する。
+- Codex CLI がタイムアウトした場合は、差分を分割して再試行する。
