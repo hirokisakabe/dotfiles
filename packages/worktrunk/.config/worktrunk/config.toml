@@ -4,7 +4,7 @@ squash = false
 [commit.generation]
 command = "MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
-[post-create]
+[pre-start]
 symlink-env = """
 main_dir="{{ primary_worktree_path }}"
 find "$main_dir" -maxdepth 5 -name '.env' -o -name '.env.local' | while read -r src; do
