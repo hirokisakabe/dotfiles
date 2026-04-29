@@ -37,7 +37,7 @@ else
 fi
 
 printf '\n-- deploy Claude Code skills via APM --\n'
-"$DOTFILES_DIR/scripts/apm-install-issuekit.sh"
+"$DOTFILES_DIR/scripts/apm-deploy.sh"
 
 printf '\n-- build bat theme cache (Iceberg) --\n'
 bat cache --build || true

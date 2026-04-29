@@ -22,8 +22,8 @@ link: ## Create symlinks with stow and deploy Claude Code skills via APM
 unlink: ## Remove symlinks with stow
 	cd packages && stow -v -D -t ~ $(PACKAGES)
 
-apm-install: ## Deploy Claude Code skills (issuekit) via APM
-	./scripts/apm-install-issuekit.sh
+apm-install: ## Deploy Claude Code skills/plugins via APM
+	./scripts/apm-deploy.sh
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest

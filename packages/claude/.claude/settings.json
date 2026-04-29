@@ -131,23 +131,7 @@
     ]
   },
   "enabledPlugins": {
-    "worktrunk@worktrunk": true,
-    "swift-lsp@claude-plugins-official": true,
-    "example-skills@anthropic-agent-skills": true
-  },
-  "extraKnownMarketplaces": {
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
-      }
-    },
-    "anthropic-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "anthropics/skills"
-      }
-    }
+    "swift-lsp@claude-plugins-official": true
   },
   "statusLine": {
     "type": "command",
