@@ -34,12 +34,22 @@ issue 本文の **先頭** に必ず以下のいずれかを記載する。
 
 着手依頼を受けた際、Claude Code は **実装を始める前に必ずこのステータスを確認する**。`Status: Draft` の場合は実装に着手せず、ユーザーに方針確認を行うこと。
 
+## 依存 issue (Depends on)
+
+他 issue の完了を待つ必要がある場合、`Status:` 行の直下に `Depends on: #<番号>` を記載する。
+
+- 形式: `Depends on: #123, #124`（複数あればカンマ区切り）
+- 依存が無ければ **行ごと省略** する（空の `Depends on:` を残さない）。
+- **依存 issue の状態（open / closed）は本文に書かない。** GitHub UI 側で close 済み issue は取り消し線で表示されるため、本文に状態を書くと二重管理になり古い情報が残るリスクがある。状態を判定したいときは `gh issue view <番号> --json state` で実体を確認する。
+- `Status` との関係: `Status` は spec 自体の確定度（Ready / Draft）、`Depends on` は他 issue の完了待ちを表し、両者は独立した軸。「Ready だが Depends on あり」「Draft かつ Depends on あり」のような組み合わせもありうる。
+
 ## 本文フォーマット
 
 ### 共通セクション（必須）
 
 ```md
 Status: Ready # または Draft
+Depends on: #123, #124 # 依存がある場合のみ。無ければ行ごと省略
 
 ## 概要
 
@@ -105,6 +115,7 @@ Status: Ready # または Draft
 
 ```md
 Status: Ready
+Depends on: #<依存 issue 番号> # 依存がある場合のみ。無ければ行ごと省略
 
 親: #<親 issue 番号>
 
