@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink setup-mcp promote-webfetch help
+.PHONY: install update sync link unlink setup-mcp apm-install promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex claude-skills worktrunk gh-dash gram mise wtfutil
 
@@ -14,12 +14,16 @@ update: ## Update Homebrew packages from Brewfile
 sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
-link: ## Create symlinks with stow
+link: ## Create symlinks with stow and deploy Claude Code skills via APM
 	@mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk ~/.config/gh-dash ~/.config/gram ~/.config/mise ~/.config/bat/themes ~/.config/lazygit ~/.config/wtf
 	cd packages && stow -v -t ~ $(PACKAGES)
+	$(MAKE) apm-install
 
 unlink: ## Remove symlinks with stow
 	cd packages && stow -v -D -t ~ $(PACKAGES)
+
+apm-install: ## Deploy Claude Code skills (issuekit) via APM
+	./scripts/apm-install-issuekit.sh
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest

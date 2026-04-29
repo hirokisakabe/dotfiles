@@ -6,6 +6,7 @@ tap "timwehrle/asana"
 tap "k1LoW/tap"
 tap "steipete/tap"
 tap "lightpanda-io/browser"
+tap "microsoft/apm"
 
 # --- Shell & Environment ---
 brew "zsh"
@@ -103,3 +104,4 @@ cask "claude"
 cask "claude-code"
 cask "codex"
 cask "kiro-cli"
+brew "microsoft/apm/apm"
