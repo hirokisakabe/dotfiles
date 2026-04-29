@@ -1,6 +1,4 @@
 {
-  "voiceEnabled": true,
-  "language": "ja",
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
@@ -73,7 +71,8 @@
       "Bash(wt merge:*)",
       "Read(./.env)",
       "Read(./.env.*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "hooks": {
     "PostToolUse": [
@@ -130,5 +129,8 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  }
+  },
+  "language": "ja",
+  "voiceEnabled": true,
+  "skipAutoPermissionPrompt": true
 }
