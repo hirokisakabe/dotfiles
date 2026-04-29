@@ -1,5 +1,6 @@
 ^/README\.md$
 ^/LICENSE$
+^/\.claude$
 ^/skills$
 ^/apm\.yml$
 ^/apm\.lock\.yaml$
