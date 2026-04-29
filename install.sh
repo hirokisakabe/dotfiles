@@ -2,8 +2,6 @@
 
 set -e
 
-DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-
 kernelName="$(uname -s)"
 
 if [ "$kernelName" != 'Darwin' ]; then
@@ -35,9 +33,6 @@ if ! grep -q "\[include\]" ~/.gitconfig || ! grep -q "path = ~/.git-extensions/g
 else
   echo "GitAlias already configured."
 fi
-
-printf '\n-- deploy Claude Code skills via APM --\n'
-"$DOTFILES_DIR/scripts/apm-deploy.sh"
 
 printf '\n-- build bat theme cache (Iceberg) --\n'
 bat cache --build || true

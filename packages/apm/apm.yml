@@ -1,0 +1,13 @@
+name: hirokisakabe
+version: 1.0.0
+description: APM project for hirokisakabe
+author: Hiroki SAKABE
+dependencies:
+  apm:
+    - ~/.localskills/issuekit
+    - max-sixty/worktrunk
+    - anthropics/skills/skills/frontend-design
+    - anthropics/skills/skills/skill-creator
+  mcp: []
+includes: auto
+scripts: {}
