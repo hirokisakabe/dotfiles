@@ -58,9 +58,31 @@ issuekit assumes the following tools are available on the host:
 
 ## Install
 
-> **Placeholder.** Install instructions will be added once issuekit is packaged as a Claude Code plugin (tracked in #236).
->
-> Until then, the only supported deployment path is the maintainer's personal dotfiles repository, where the skills are stowed as part of a larger setup. **Do not run this dotfiles repository's `make link` to install issuekit alone** — it would stow every package in the repo (`zsh`, `git`, `vim`, ...) into your home directory and overwrite unrelated config. If you want to try issuekit before the plugin manifest lands, the closest package-scoped equivalent is to `stow` only the `claude-skills` package against `~`, but this is unsupported and may break without notice.
+issuekit is distributed as an [APM](https://github.com/microsoft/apm) (Agent Package Manager) skill bundle. The package manifest is `apm.yml` at the bundle root.
+
+### Prerequisites
+
+- [APM CLI](https://microsoft.github.io/apm/getting-started/installation/): `brew install microsoft/apm/apm`
+- [`gh` CLI](https://cli.github.com/) authenticated against your target repository.
+- [Codex CLI](https://github.com/openai/codex) reachable on `PATH` (used by `codex-review`).
+
+### Deploy
+
+From any directory whose `.claude/` should receive the skills (typically `$HOME` for global use):
+
+```bash
+apm install /path/to/dotfiles/packages/claude-skills
+```
+
+APM auto-detects `.claude/` in the current working directory and copies all six skills under `.claude/skills/`. No `settings.json` mutation occurs — issuekit declares no hooks.
+
+To re-deploy after pulling skill updates, re-run `apm install` from the same directory; APM reads `apm.yml` / `apm.lock.yaml` written on first install.
+
+> The dotfiles repository in which issuekit lives wires this up automatically: `make install` (via `install.sh`) generates `~/apm.yml` referencing this bundle and runs `apm install` from `$HOME`. Standalone consumers can do the same manually.
+
+### Caveat: APM `--global` is not supported for local packages
+
+`apm install --global` requires a remote `owner/repo` reference, which issuekit does not currently publish. Project-scoped install (above) is the only supported path until issuekit is split into a standalone repository.
 
 ## License
 
