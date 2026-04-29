@@ -15,13 +15,13 @@ sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
 link: ## Create symlinks with stow and deploy Claude Code skills via APM
-	@mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk ~/.config/gh-dash ~/.config/gram ~/.config/mise ~/.config/bat/themes ~/.config/lazygit ~/.config/wtf ~/.localskills
-	cd packages && stow -v -t ~ $(PACKAGES)
+	@mkdir -p ~/.localskills
+	cd packages && stow -v --no-folding -t ~ $(PACKAGES)
 	ln -snf "$$(pwd)/packages/claude-skills" ~/.localskills/issuekit
 	$(MAKE) apm-install
 
 unlink: ## Remove symlinks with stow
-	cd packages && stow -v -D -t ~ $(PACKAGES)
+	cd packages && stow -v --no-folding -D -t ~ $(PACKAGES)
 	rm -f ~/.localskills/issuekit
 
 apm-install: ## Deploy Claude Code skills/plugins via APM (uses ~/apm.yml managed by stow)
