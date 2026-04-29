@@ -33,7 +33,7 @@ The differentiator that matters most to issuekit's design is the verification mo
 
 ## Skills
 
-issuekit ships the following Claude Code skills under `packages/claude-skills/.claude/skills/`:
+issuekit ships the following Claude Code skills under `packages/claude-skills/skills/`:
 
 | Skill              | Role                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |

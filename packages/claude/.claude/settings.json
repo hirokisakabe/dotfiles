@@ -133,7 +133,8 @@
   "enabledPlugins": {
     "worktrunk@worktrunk": true,
     "swift-lsp@claude-plugins-official": true,
-    "example-skills@anthropic-agent-skills": true
+    "example-skills@anthropic-agent-skills": true,
+    "issuekit@issuekit-local": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
@@ -146,6 +147,12 @@
       "source": {
         "source": "github",
         "repo": "anthropics/skills"
+      }
+    },
+    "issuekit-local": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/hirokisakabe/work/dotfiles/packages/claude-skills"
       }
     }
   },

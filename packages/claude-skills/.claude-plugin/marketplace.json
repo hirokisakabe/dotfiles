@@ -1,0 +1,12 @@
+{
+  "name": "issuekit-local",
+  "owner": {
+    "name": "Hiroki SAKABE"
+  },
+  "plugins": [
+    {
+      "name": "issuekit",
+      "source": "."
+    }
+  ]
+}
