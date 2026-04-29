@@ -126,5 +126,9 @@
         "repo": "anthropics/skills"
       }
     }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
   }
 }
