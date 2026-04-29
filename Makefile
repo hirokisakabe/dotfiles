@@ -1,6 +1,6 @@
 .PHONY: install update sync link unlink setup-mcp apm-install promote-webfetch help
 
-PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex claude-skills worktrunk gh-dash gram mise wtfutil
+PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex claude-skills worktrunk gh-dash gram mise wtfutil apm
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -15,15 +15,18 @@ sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
 link: ## Create symlinks with stow and deploy Claude Code skills via APM
-	@mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk ~/.config/gh-dash ~/.config/gram ~/.config/mise ~/.config/bat/themes ~/.config/lazygit ~/.config/wtf
+	@mkdir -p ~/.config/yazi ~/.claude ~/.codex ~/.config/worktrunk ~/.config/gh-dash ~/.config/gram ~/.config/mise ~/.config/bat/themes ~/.config/lazygit ~/.config/wtf ~/.localskills
 	cd packages && stow -v -t ~ $(PACKAGES)
+	ln -snf "$$(pwd)/packages/claude-skills" ~/.localskills/issuekit
 	$(MAKE) apm-install
 
 unlink: ## Remove symlinks with stow
 	cd packages && stow -v -D -t ~ $(PACKAGES)
+	rm -f ~/.localskills/issuekit
 
-apm-install: ## Deploy Claude Code skills/plugins via APM
-	./scripts/apm-deploy.sh
+apm-install: ## Deploy Claude Code skills/plugins via APM (uses ~/apm.yml managed by stow)
+	@command -v apm >/dev/null 2>&1 || { echo "apm CLI not found on PATH; install with: brew install microsoft/apm/apm" >&2; exit 0; }
+	cd $$HOME && apm install
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
