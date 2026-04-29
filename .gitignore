@@ -4,6 +4,6 @@ Brewfile.lock.json
 # Allow .envrc (overrides global gitignore)
 !.envrc
 
-# Ignore APM-deployed skills under packages/claude-skills/.claude/.
-# issuekit source lives in packages/claude-skills/skills/ and is installed via APM.
-/packages/claude-skills/.claude/
+# Ignore APM-deployed skills under packages/issuekit/.claude/.
+# issuekit source lives in packages/issuekit/skills/ and is installed via APM.
+/packages/issuekit/.claude/
