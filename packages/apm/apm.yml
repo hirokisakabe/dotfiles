@@ -5,7 +5,6 @@ author: Hiroki SAKABE
 dependencies:
   apm:
     - ~/.localskills/issuekit
-    - max-sixty/worktrunk
     - anthropics/skills/skills/frontend-design
     - anthropics/skills/skills/skill-creator
   mcp: []
