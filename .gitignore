@@ -4,10 +4,6 @@ Brewfile.lock.json
 # Allow .envrc (overrides global gitignore)
 !.envrc
 
-# Allow .claude directories in packages (for stow)
-!packages/**/.claude/
-
-# Ignore APM-deployed skills under packages/claude-skills/.claude/
-# (managed via ~/apm.yml; only stow-managed skills like agent-browser are tracked)
-/packages/claude-skills/.claude/skills/*/
-!/packages/claude-skills/.claude/skills/agent-browser/
+# Ignore APM-deployed skills under packages/claude-skills/.claude/.
+# issuekit source lives in packages/claude-skills/skills/ and is installed via APM.
+/packages/claude-skills/.claude/
