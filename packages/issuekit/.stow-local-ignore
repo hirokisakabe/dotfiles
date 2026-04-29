@@ -1,6 +1,7 @@
 ^/README\.md$
 ^/LICENSE$
 ^/\.claude$
+^/\.claude-plugin$
 ^/skills$
 ^/apm\.yml$
 ^/apm\.lock\.yaml$

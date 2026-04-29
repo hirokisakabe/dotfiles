@@ -3,4 +3,4 @@ version: 0.1.0
 description: Issue-driven development cycle skills for Claude Code (Japanese-oriented)
 author: Hiroki SAKABE
 license: MIT
-type: skill
+type: hybrid

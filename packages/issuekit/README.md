@@ -33,7 +33,7 @@ The differentiator that matters most to issuekit's design is the verification mo
 
 ## Skills
 
-issuekit ships the following Claude Code skills under `packages/claude-skills/skills/`:
+issuekit ships the following Claude Code skills under `packages/issuekit/skills/`:
 
 | Skill              | Role                                                                                                                                                   |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -58,7 +58,7 @@ issuekit assumes the following tools are available on the host:
 
 ## Install
 
-issuekit is distributed as an [APM](https://github.com/microsoft/apm) (Agent Package Manager) skill bundle. The package manifest is `apm.yml` at the bundle root.
+issuekit is distributed as a Claude Code plugin with an [APM](https://github.com/microsoft/apm) (Agent Package Manager) manifest for local dependency wiring. The Claude plugin manifest is `.claude-plugin/plugin.json`; the APM package manifest is `apm.yml` at the bundle root.
 
 ### Prerequisites
 
@@ -68,13 +68,21 @@ issuekit is distributed as an [APM](https://github.com/microsoft/apm) (Agent Pac
 
 ### Deploy
 
-From any directory whose `.claude/` should receive the skills (typically `$HOME` for global use):
+For Claude Code plugin loading during local development:
 
 ```bash
-apm install /path/to/dotfiles/packages/claude-skills
+claude --plugin-dir /path/to/dotfiles/packages/issuekit
 ```
 
-APM auto-detects `.claude/` in the current working directory and copies all six skills under `.claude/skills/`. No `settings.json` mutation occurs — issuekit declares no hooks.
+When loaded as a plugin, commands are namespaced as `/issuekit:<skill-name>` (for example, `/issuekit:issue-create`).
+
+For APM-managed local dependency wiring from any directory whose `.claude/` should receive the skills (typically `$HOME` for global use):
+
+```bash
+apm install /path/to/dotfiles/packages/issuekit
+```
+
+APM auto-detects `.claude/` in the current working directory and integrates the six skills declared by this package. Depending on the APM runtime target, this may be plain-skill mode rather than Claude plugin mode; in that case skill names are unqualified (for example, `issue-create`) instead of plugin-namespaced. No `settings.json` mutation occurs — issuekit declares no hooks.
 
 To re-deploy after pulling skill updates, re-run `apm install` from the same directory; APM reads `apm.yml` / `apm.lock.yaml` written on first install.
 
