@@ -140,5 +140,5 @@
   "language": "ja",
   "voiceEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "tui": "fullscreen"
+  "tui": "default"
 }
