@@ -1,6 +1,6 @@
 .PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-mcp apm-install promote-webfetch help
 
-PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise wtfutil apm issuekit
+PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise apm issuekit
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
