@@ -90,7 +90,7 @@ done
 親子関係の解釈は以下とする。`issuekit:issue-create` skill の運用では子 issue は「親 epic 配下の独立した実装タスク」として起票されるため、open な親 issue があっても **即 blocker とは限らない**。
 
 - **親が closed**: 依存は解消済み。blocker 扱いしない。
-- **親が open かつ `Status: Draft`**: 親側の方針が確定していないため、子 issue の前提が揺らぐ可能性がある。**blocker 候補** として注記する。
+- **親が open かつ `Status: Draft`**: 親側の受け入れ条件が確定しておらず、子 issue の前提が揺らぐ可能性がある。**blocker 候補** として注記する。
 - **親が open かつ `Status: Ready` / それ以外**: 親が大きな epic として open のまま残っているだけのケースが多い。blocker ではなく **文脈情報** として「親: #N」を記載するに留める。
 
 親 issue 本文の取得には別途 `gh issue view <親番号>` が必要。blocker 判定が出力に効く場合のみ取得し、不要な fetch は避ける。

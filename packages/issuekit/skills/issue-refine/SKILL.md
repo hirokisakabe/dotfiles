@@ -45,10 +45,12 @@ gh issue view "$ISSUE_NUMBER"
 
 ### 4. Status の再評価
 
-`issue-create` skill の「Status > Draft とする条件」に従い、整理後の本文で Status を再判定する。
+`issue-create` skill の「Status > Draft とする条件」に従い、整理後の本文で Status を再判定する。判定軸は **受け入れ条件の確定度** 一本。
 
-- 未決事項・オープンクエスチョンが残る → `Status: Draft`
-- 方針確定・受け入れ条件確定 → `Status: Ready`
+- 受け入れ条件が「仮」「要検討」を含む / 検証不能なほど曖昧（やったかどうか自分で判定できない）→ `Status: Draft`
+- 受け入れ条件が「やったかどうか自分で判定できる」形になっている → `Status: Ready`
+
+実装方針の確定度では判定しない。複数案を優先順位付きで列挙していれば `Status: Ready` でよい。
 
 整理前後で Status が変わる場合（例: Draft → Ready）は、その旨をユーザーに伝える。
 
