@@ -27,9 +27,9 @@ ISSUE_NUMBER=<issue 番号>
 gh issue view "$ISSUE_NUMBER"
 ```
 
-- 本文先頭の `Status:` を確認する。
-  - **`Status: Ready`**: 続行。
-  - **`Status: Draft`**: 着手しない。ユーザーに方針確認を促し、必要なら `issuekit:issue-refine` skill（APM plain-skill mode では `issue-refine`）で整理する。
+- 本文先頭の `Status:` を確認する。Status の判定軸は **受け入れ条件の確定度** 一本（実装方針の確定度は問わない）であり、その意味を踏まえて分岐する。
+  - **`Status: Ready`**: 受け入れ条件が「やったかどうか自分で判定できる」形になっている。続行。
+  - **`Status: Draft`**: 受け入れ条件が未確定（「仮」「要検討」を含む / 検証不能なほど曖昧）。着手しない。ユーザーに受け入れ条件の確認を促し、必要なら `issuekit:issue-refine` skill（APM plain-skill mode では `issue-refine`）で整理する。
   - **`Status:` 表記なし / フォーマット不完全**: `issuekit:issue-refine` skill（APM plain-skill mode では `issue-refine`）での整理を案内する。
 
 ### 2. Depends on (依存 issue) の確認
@@ -64,6 +64,8 @@ gh api "repos/${REPO}/issues/${ISSUE_NUMBER}" --jq '.parent // empty'
 ### 4. 実装
 
 issue の「実装方針」「受け入れ条件」「スコープ外」に従い実装する。実装中に方針の揺らぎや不明点が出た場合は、勝手に拡張せずユーザーに確認する。
+
+「実装方針」が **優先順位付き（または順序付き）の解消候補リスト** として書かれている場合は、上から順に試す。各候補の試行後に `acceptance-check` skill 相当の検証で受け入れ条件の充足を確認し、満たせない場合は次の候補へ進む。候補を恣意的に選ばず、最初から順に試すこと。すべて試しても受け入れ条件を満たせない場合は、勝手に新しい方針を追加せずユーザーに報告する。
 
 実装完了の判定は **受け入れ条件のチェックリストをすべて満たしていること**。
 
