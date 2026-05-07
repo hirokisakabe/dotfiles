@@ -1,6 +1,6 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-mcp apm-install issuekit-install promote-webfetch help
+.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-mcp skills-install promote-webfetch help
 
-PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise apm
+PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -15,17 +15,16 @@ update: ## Update Homebrew itself and packages from Brewfile
 sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
-link: ## Create symlinks with stow, deploy APM skills, and install issuekit via skills.sh
+link: ## Create symlinks with stow and install agent skills via skills.sh
 	$(MAKE) clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -t ~ $(PACKAGES)
-	$(MAKE) apm-install
-	$(MAKE) issuekit-install
+	$(MAKE) skills-install
 
 unlink: ## Remove symlinks with stow
 	$(MAKE) clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -D -t ~ $(PACKAGES)
 
-clean-legacy-claude-skills-stow: ## Remove old Stow links for APM-managed Claude Code skills
+clean-legacy-claude-skills-stow: ## Remove old Stow links for legacy Claude Code skills package
 	@if [ -L "$$HOME/.claude/skills" ]; then \
 		target=$$(readlink "$$HOME/.claude/skills"); \
 		case "$$target" in *packages/claude-skills/.claude/skills*) rm -f "$$HOME/.claude/skills" ;; esac; \
@@ -37,13 +36,12 @@ clean-legacy-claude-skills-stow: ## Remove old Stow links for APM-managed Claude
 		done; \
 	fi
 
-apm-install: ## Deploy Claude Code skills/plugins via APM (uses ~/apm.yml managed by stow)
-	@command -v apm >/dev/null 2>&1 || { echo "apm CLI not found on PATH; install with: brew install microsoft/apm/apm" >&2; exit 0; }
-	cd $$HOME && apm install
-
-issuekit-install: ## Install issuekit skills globally via skills.sh (hirokisakabe/issuekit)
-	@command -v npx >/dev/null 2>&1 || { echo "npx not found on PATH; skipping issuekit install (install Node via mise first)" >&2; exit 0; }
+skills-install: ## Install agent skills globally via skills.sh
+	@command -v npx >/dev/null 2>&1 || { echo "npx not found on PATH; skipping skills install (install Node via mise first)" >&2; exit 0; }
 	npx -y skills@latest add hirokisakabe/issuekit --global -y
+	npx -y skills@latest add anthropics/skills --skill frontend-design --global -y
+	npx -y skills@latest add anthropics/skills --skill skill-creator --global -y
+	npx -y skills@latest add vercel-labs/agent-browser --global -y
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
