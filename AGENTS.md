@@ -52,14 +52,6 @@ Use `make` targets as the standard workflow:
 
 Example: `make link` after adding a new file under `packages/zsh/`.
 
-### issuekit (外部配布)
-
-issue-driven 開発用 skill 群 `issuekit` は本リポジトリから切り離し、独立 repo [`hirokisakabe/issuekit`](https://github.com/hirokisakabe/issuekit) として [skills.sh](https://skills.sh) 経由で配布している。
-
-`make install` / `make link` の最後に `make issuekit-install` が呼ばれ、`npx skills add hirokisakabe/issuekit --global -y` でグローバル install (`-g`) される。skill 更新時は `make link`（または `make issuekit-install` 単体）を再実行する。
-
-`npx` (Node) が PATH に無い環境では skip される。Node は `packages/mise/.config/mise/config.toml` 経由で provision される想定。
-
 ## Coding Style & Naming Conventions
 
 - Keep directory names tool-oriented and lowercase (for example, `packages/starship`).
