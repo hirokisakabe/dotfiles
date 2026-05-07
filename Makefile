@@ -8,7 +8,8 @@ help: ## Show this help
 install: ## Run install.sh to setup dotfiles
 	./install.sh
 
-update: ## Update Homebrew packages from Brewfile
+update: ## Update Homebrew itself and packages from Brewfile
+	brew update
 	brew bundle --file=Brewfile
 
 sync: ## Sync current Homebrew packages to Brewfile
