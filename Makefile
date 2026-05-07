@@ -14,7 +14,7 @@ update: ## Update Homebrew packages from Brewfile
 sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
-link: ## Create symlinks with stow and install Claude Code skills via skills.sh
+link: ## Create symlinks with stow and install agent skills via skills.sh
 	$(MAKE) clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -t ~ $(PACKAGES)
 	$(MAKE) skills-install
@@ -35,7 +35,7 @@ clean-legacy-claude-skills-stow: ## Remove old Stow links for legacy Claude Code
 		done; \
 	fi
 
-skills-install: ## Install Claude Code skills globally via skills.sh
+skills-install: ## Install agent skills globally via skills.sh
 	@command -v npx >/dev/null 2>&1 || { echo "npx not found on PATH; skipping skills install (install Node via mise first)" >&2; exit 0; }
 	npx -y skills@latest add hirokisakabe/issuekit --global -y
 	npx -y skills@latest add anthropics/skills --skill frontend-design --global -y
