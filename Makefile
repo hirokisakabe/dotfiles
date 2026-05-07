@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow clean-legacy-apm setup-mcp skills-install promote-webfetch help
+.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-mcp skills-install promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise
 
@@ -16,13 +16,11 @@ sync: ## Sync current Homebrew packages to Brewfile
 
 link: ## Create symlinks with stow and install Claude Code skills via skills.sh
 	$(MAKE) clean-legacy-claude-skills-stow
-	$(MAKE) clean-legacy-apm
 	cd packages && stow -v --no-folding -t ~ $(PACKAGES)
 	$(MAKE) skills-install
 
 unlink: ## Remove symlinks with stow
 	$(MAKE) clean-legacy-claude-skills-stow
-	$(MAKE) clean-legacy-apm
 	cd packages && stow -v --no-folding -D -t ~ $(PACKAGES)
 
 clean-legacy-claude-skills-stow: ## Remove old Stow links for legacy Claude Code skills package
@@ -35,12 +33,6 @@ clean-legacy-claude-skills-stow: ## Remove old Stow links for legacy Claude Code
 			target=$$(readlink "$$link"); \
 			case "$$target" in *packages/claude-skills/.claude/skills/*) rm -f "$$link" ;; esac; \
 		done; \
-	fi
-
-clean-legacy-apm: ## Remove legacy APM artefacts (~/apm.yml symlink) from old stow setup
-	@if [ -L "$$HOME/apm.yml" ]; then \
-		target=$$(readlink "$$HOME/apm.yml"); \
-		case "$$target" in *packages/apm/apm.yml*) rm -f "$$HOME/apm.yml" ;; esac; \
 	fi
 
 skills-install: ## Install Claude Code skills globally via skills.sh
