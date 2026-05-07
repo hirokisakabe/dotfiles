@@ -38,4 +38,9 @@ Temporary Items
 
 .envrc
 mise.toml
-.claude
+
+# Claude Code: 個人マシン固有・機密ファイルのみ除外し、共有設定 (.claude/settings.json,
+# CLAUDE.md 等) はプロジェクトごとに track できるようにする
+.claude/settings.local.json
+.claude/.credentials.json
+CLAUDE.local.md
