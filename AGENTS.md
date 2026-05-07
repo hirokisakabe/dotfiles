@@ -54,17 +54,11 @@ Example: `make link` after adding a new file under `packages/zsh/`.
 
 ### issuekit (外部配布)
 
-issue-driven 開発用 skill 群 `issuekit` は本リポジトリから切り離し、独立 repo [`hirokisakabe/issuekit`](https://github.com/hirokisakabe/issuekit) として [skills.sh](https://skills.sh) 経由で配布している。Claude Code / Codex CLI 等で利用する場合は `$HOME` で以下を実行する。
+issue-driven 開発用 skill 群 `issuekit` は本リポジトリから切り離し、独立 repo [`hirokisakabe/issuekit`](https://github.com/hirokisakabe/issuekit) として [skills.sh](https://skills.sh) 経由で配布している。
 
-```sh
-# 6 skill 一括 install
-npx skills add hirokisakabe/issuekit -y
+`make install` / `make link` の最後に `make issuekit-install` が呼ばれ、`npx skills add hirokisakabe/issuekit --global -y` でグローバル install (`-g`) される。skill 更新時は `make link`（または `make issuekit-install` 単体）を再実行する。
 
-# 個別 install (例: issue-implement のみ)
-npx skills add hirokisakabe/issuekit --skill issue-implement -y
-```
-
-dotfiles の `make install` / `make link` は issuekit を扱わない。skill 更新時は `npx skills add` を再実行する。
+`npx` (Node) が PATH に無い環境では skip される。Node は `packages/mise/.config/mise/config.toml` 経由で provision される想定。
 
 ## Coding Style & Naming Conventions
 
