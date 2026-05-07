@@ -4,7 +4,6 @@ description: APM project for hirokisakabe
 author: Hiroki SAKABE
 dependencies:
   apm:
-    - ~/.localskills/issuekit
     - anthropics/skills/skills/frontend-design
     - anthropics/skills/skills/skill-creator
     - vercel-labs/agent-browser

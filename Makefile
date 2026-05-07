@@ -1,6 +1,6 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-mcp apm-install promote-webfetch help
+.PHONY: install update sync link unlink clean-legacy-claude-skills-stow clean-legacy-localskills-issuekit setup-mcp apm-install promote-webfetch help
 
-PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise apm issuekit
+PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex worktrunk gh-dash gram mise apm
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -15,16 +15,21 @@ sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
 link: ## Create symlinks with stow and deploy Claude Code skills via APM
-	@mkdir -p ~/.localskills
 	$(MAKE) clean-legacy-claude-skills-stow
+	$(MAKE) clean-legacy-localskills-issuekit
 	cd packages && stow -v --no-folding -t ~ $(PACKAGES)
-	ln -snf "$$(pwd)/packages/issuekit" ~/.localskills/issuekit
 	$(MAKE) apm-install
 
 unlink: ## Remove symlinks with stow
 	$(MAKE) clean-legacy-claude-skills-stow
+	$(MAKE) clean-legacy-localskills-issuekit
 	cd packages && stow -v --no-folding -D -t ~ $(PACKAGES)
-	rm -f ~/.localskills/issuekit
+
+clean-legacy-localskills-issuekit: ## Remove the issuekit symlink left from the APM-distribution era (issuekit is now distributed via skills.sh)
+	@rm -f "$$HOME/.localskills/issuekit"
+	@if [ -d "$$HOME/.localskills" ] && [ -z "$$(ls -A $$HOME/.localskills 2>/dev/null)" ]; then \
+		rmdir "$$HOME/.localskills" 2>/dev/null || true; \
+	fi
 
 clean-legacy-claude-skills-stow: ## Remove old Stow links for APM-managed Claude Code skills
 	@if [ -L "$$HOME/.claude/skills" ]; then \
