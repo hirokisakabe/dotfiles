@@ -72,15 +72,3 @@ eval "$(git wt --init zsh)"
 
 # worktrunk (git worktree manager)
 eval "$(wt config shell init zsh)"
-
-# claude: mainブランチではコード変更を行わないセッションとして起動
-function claude() {
-  local branch=$(git branch --show-current 2>/dev/null)
-  if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
-    command claude --append-system-prompt \
-      "現在mainブランチにいます。このセッションではコードの変更やgit操作（checkout, commit, branch作成等）を行わないでください。issue起票、アーキテクチャ議論、調査、レビューなど、コード変更を伴わないタスクのみ対応してください。実装が必要な場合はissueを作成するか、worktree-start skillでworktreeを切ってから作業を開始してください。" \
-      "$@"
-  else
-    command claude "$@"
-  fi
-}
