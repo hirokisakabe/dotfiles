@@ -73,6 +73,7 @@ cask "inkscape"
 cask "raspberry-pi-imager"
 cask "logi-options+"
 cask "deepl"
+cask "obsidian"
 
 # --- Fonts ---
 cask "font-hackgen-nerd"
