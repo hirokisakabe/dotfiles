@@ -1,13 +1,1 @@
-# Claude Code Configuration
-
-## Git ワークフロー
-
-- PR の description は日本語で記載する
-- ユーザーから明示的に issue 番号を指定された場合のみ、PR description の先頭に `close #<issue番号>` を記載する
-
-## 最新情報の参照
-
-- バージョン・仕様・状況が変わりうる技術トピックは、知識ベースで答えず WebSearch / WebFetch で必ず確認する。
-- ユーザー発話に「最新」「現在」「公式」「リリース」等のキーワードが含まれる場合は検索必須。
-- 自分の知識に確信がない技術トピックは、ユーザーから指摘される前に先回りして検索する。
-- 出典は markdown リンクで明示する。
+../../codex/.codex/AGENTS.md
