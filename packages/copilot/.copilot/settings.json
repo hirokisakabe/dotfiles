@@ -1,5 +1,6 @@
 {
   "theme": "auto",
+  "copyOnSelect": false,
   "allowedUrls": [
     "github.com",
     "raw.githubusercontent.com",
