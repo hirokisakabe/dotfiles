@@ -67,6 +67,10 @@ complete -o nospace -C /opt/homebrew/bin/terraform terraform
 # mise
 eval "$(/opt/homebrew/bin/mise activate zsh)"
 
+# npm: publish 直後の悪意あるバージョン取り込みを避けるため、7日経過したバージョンのみ install 対象とする
+# 要 npm >= 11.10.0
+export NPM_CONFIG_MIN_RELEASE_AGE=7
+
 # git-wt (git worktree helper)
 eval "$(git wt --init zsh)"
 
