@@ -1,6 +1,14 @@
 {
   "theme": "auto",
   "copyOnSelect": false,
+  "footer": {
+    "showDirectory": true,
+    "showBranch": true,
+    "showContextUsed": true,
+    "showQuota": true,
+    "showAgent": true,
+    "showEffort": true
+  },
   "allowedUrls": [
     "github.com",
     "raw.githubusercontent.com",
