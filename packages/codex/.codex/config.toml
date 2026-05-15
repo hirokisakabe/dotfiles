@@ -1,0 +1,21 @@
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+
+[features]
+runtime_metrics = true
+
+[tui]
+status_line = [
+  "model-with-reasoning",
+  "git-branch",
+  "context-used",
+  "input-token-usage",
+  "output-token-usage",
+  "five-hour-limit",
+  "weekly-limit",
+]
+status_line_use_colors = true
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
