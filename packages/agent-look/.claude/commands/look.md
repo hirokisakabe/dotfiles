@@ -1,0 +1,1 @@
+Use the agent-look skill and run a one-shot webcam check with `agent-look status`. Summarize the result as an AI work availability signal. Do not identify the person or infer emotion, age, gender, health, or other sensitive attributes.
