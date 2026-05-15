@@ -140,5 +140,6 @@
   "language": "ja",
   "voiceEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "tui": "default"
+  "tui": "default",
+  "model": "opusplan"
 }
