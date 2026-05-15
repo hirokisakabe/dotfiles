@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state_dir="${AGENT_LOOK_STATE_DIR:-$HOME/.local/state/agent-look}"
+tmp_dir="${TMPDIR:-/tmp}/agent-look"
+latest="$state_dir/latest.jpg"
+status_json="$state_dir/status.json"
+default_width="${AGENT_LOOK_WIDTH:-960}"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  agent-look capture [--json] [--output PATH] [--width PX] [--no-resize]
+  agent-look status [--provider codex] [--width PX]
+  agent-look clean
+
+Capture a one-shot webcam image for AI agent context.
+EOF
+}
+
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "agent-look: missing command: $1" >&2
+    exit 127
+  fi
+}
+
+json_escape() {
+  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
+}
+
+capture() {
+  local output="$latest"
+  local width="$default_width"
+  local json=false
+  local resize=true
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --json)
+        json=true
+        ;;
+      --output)
+        output="${2:?missing value for --output}"
+        shift
+        ;;
+      --width)
+        width="${2:?missing value for --width}"
+        shift
+        ;;
+      --no-resize)
+        resize=false
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        echo "agent-look: unknown capture option: $1" >&2
+        exit 2
+        ;;
+    esac
+    shift
+  done
+
+  require_cmd imagesnap
+  mkdir -p "$state_dir" "$tmp_dir" "$(dirname "$output")"
+
+  local raw="$tmp_dir/latest.raw.jpg"
+  local imagesnap_log="$tmp_dir/imagesnap.log"
+  if ! imagesnap -w 1 "$raw" >/dev/null 2>"$imagesnap_log"; then
+    cat "$imagesnap_log" >&2
+    exit 1
+  fi
+
+  if [ "$resize" = true ]; then
+    require_cmd sips
+    cp "$raw" "$output"
+    sips -Z "$width" "$output" >/dev/null
+  else
+    cp "$raw" "$output"
+  fi
+
+  local captured_at
+  captured_at="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+  if [ "$json" = true ]; then
+    printf '{"image_path":"%s","captured_at":"%s","width_limit":%s}\n' \
+      "$(json_escape "$output")" \
+      "$(json_escape "$captured_at")" \
+      "$width"
+  else
+    printf '%s\n' "$output"
+  fi
+}
+
+status() {
+  local provider="codex"
+  local width="$default_width"
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --provider)
+        provider="${2:?missing value for --provider}"
+        shift
+        ;;
+      --width)
+        width="${2:?missing value for --width}"
+        shift
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      *)
+        echo "agent-look: unknown status option: $1" >&2
+        exit 2
+        ;;
+    esac
+    shift
+  done
+
+  local image_path
+  image_path="$(capture --width "$width")"
+
+  case "$provider" in
+    codex)
+      require_cmd codex
+      mkdir -p "$state_dir"
+      local codex_log="$tmp_dir/codex.log"
+      if ! codex exec --sandbox read-only \
+        --image "$image_path" \
+        --output-last-message "$status_json" \
+        "画像をAI作業エージェント向けの状態シグナルとしてJSONだけで要約してください。個人識別、感情推定、年齢・性別・健康状態などの推定はしないでください。キーは presence, attention_hint, lighting, privacy_risk, usable_for_agent_context, image_path にしてください。image_path は ${image_path} にしてください。" \
+        >"$codex_log" 2>&1; then
+        cat "$codex_log" >&2
+        exit 1
+      fi
+      cat "$status_json"
+      printf '\n'
+      ;;
+    none|path)
+      printf '{"image_path":"%s","status":"captured_without_analysis"}\n' "$(json_escape "$image_path")" | tee "$status_json"
+      ;;
+    *)
+      echo "agent-look: unsupported provider: $provider" >&2
+      exit 2
+      ;;
+  esac
+}
+
+clean() {
+  rm -f "$latest" "$status_json" "$tmp_dir/latest.raw.jpg"
+}
+
+case "${1:-}" in
+  capture)
+    shift
+    capture "$@"
+    ;;
+  status)
+    shift
+    status "$@"
+    ;;
+  clean)
+    clean
+    ;;
+  -h|--help|"")
+    usage
+    ;;
+  *)
+    echo "agent-look: unknown command: $1" >&2
+    usage >&2
+    exit 2
+    ;;
+esac
