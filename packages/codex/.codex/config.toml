@@ -1,9 +1,14 @@
 model = "gpt-5.5"
 model_reasoning_effort = "medium"
 personality = "pragmatic"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
 
 [features]
 runtime_metrics = true
+
+[sandbox_workspace_write]
+network_access = true
 
 [tui]
 status_line = [
@@ -19,3 +24,6 @@ status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+
+[projects."/Users/hirokisakabe/work/dotfiles"]
+trust_level = "trusted"
