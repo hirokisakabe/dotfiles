@@ -1,6 +1,6 @@
 .PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-mcp skills-install promote-webfetch help
 
-PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash gram mise pnpm atuin
+PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -45,7 +45,6 @@ skills-install: ## Install agent skills globally via skills.sh
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
-	-claude mcp add --scope user --transport http asana https://mcp.asana.com/mcp
 
 promote-webfetch: ## Promote WebFetch domains from history to permissions.allow
 	./scripts/promote-webfetch.sh
