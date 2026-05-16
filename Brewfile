@@ -2,10 +2,8 @@
 tap "homebrew/bundle"
 tap "charmbracelet/tap"
 tap "azure/functions"
-tap "timwehrle/asana"
 tap "k1LoW/tap"
 tap "steipete/tap"
-tap "lightpanda-io/browser"
 
 # --- Shell & Environment ---
 brew "zsh"
@@ -13,7 +11,6 @@ brew "zsh-autosuggestions"
 brew "atuin"
 brew "zsh-fast-syntax-highlighting"
 brew "starship"
-brew "direnv"
 brew "stow"
 
 # --- Development CLI ---
@@ -23,14 +20,11 @@ brew "tig"
 brew "lazygit"
 brew "serie"
 brew "gh"
-brew "ghq"
 brew "k1LoW/tap/git-wt"
 brew "worktrunk"
 brew "actionlint"
 brew "gitleaks"
 brew "shellcheck"
-brew "timwehrle/asana/asana"
-brew "neovim"
 brew "fzf"
 brew "zoxide"
 brew "eza"
@@ -64,7 +58,6 @@ cask "gcloud-cli"
 cask "wezterm"
 cask "visual-studio-code"
 cask "flutter"
-cask "gram"
 
 # --- Utility Apps ---
 cask "stats"
@@ -73,7 +66,6 @@ cask "alt-tab"
 cask "raycast"
 cask "libreoffice"
 cask "inkscape"
-cask "raspberry-pi-imager"
 cask "logi-options+"
 cask "deepl"
 cask "obsidian"
@@ -85,13 +77,9 @@ cask "font-moralerspace"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-overpass-nerd-font"
 
-# --- Headless Browser ---
-brew "lightpanda-io/browser/lightpanda"
-
 # --- Browsers ---
 cask "google-chrome"
 cask "microsoft-edge"
-cask "vivaldi"
 
 # --- Communication & Collaboration ---
 cask "slack"
