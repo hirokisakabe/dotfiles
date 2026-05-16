@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v gitleaks &>/dev/null; then
+    echo "Error: gitleaks is not installed. Install with: brew install gitleaks"
+    exit 1
+fi
+
+gitleaks protect --staged --no-banner
+
+staged_sh_files=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.sh$' || true)
+if [ -n "$staged_sh_files" ]; then
+    if command -v shellcheck &>/dev/null; then
+        # shellcheck disable=SC2086
+        shellcheck $staged_sh_files
+    else
+        echo "Warning: shellcheck is not installed. Skipping shell script check."
+        echo "Install with: brew install shellcheck"
+    fi
+fi
