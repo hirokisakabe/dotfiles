@@ -55,9 +55,6 @@ defaultBranch = main
 [default]
 branch = main
 
-[ghq]
-root = ~/work
-
 # GitAlias configuration
 [include]
     path = ~/.git-extensions/gitalias.txt
