@@ -10,6 +10,7 @@ tap "lightpanda-io/browser"
 # --- Shell & Environment ---
 brew "zsh"
 brew "zsh-autosuggestions"
+brew "atuin"
 brew "zsh-fast-syntax-highlighting"
 brew "starship"
 brew "direnv"
