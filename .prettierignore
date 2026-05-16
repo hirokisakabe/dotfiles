@@ -8,4 +8,5 @@ Brewfile.lock.json
 Makefile
 install.sh
 *.toml
+*.rules
 .wt/
