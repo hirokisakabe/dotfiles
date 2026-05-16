@@ -37,10 +37,13 @@ clean-legacy-claude-skills-stow: ## Remove old Stow links for legacy Claude Code
 	fi
 
 skills-install: ## Install agent skills globally via skills.sh
-	@command -v npx >/dev/null 2>&1 || { echo "npx not found on PATH; skipping skills install (install Node via mise first)" >&2; exit 0; }
-	npx -y skills@latest add hirokisakabe/issuekit --global -y
-	npx -y skills@latest add anthropics/skills --skill frontend-design --global -y
-	npx -y skills@latest add anthropics/skills --skill skill-creator --global -y
+	@if ! command -v npx >/dev/null 2>&1; then \
+		echo "npx not found on PATH; skipping skills install (install Node via mise first)" >&2; \
+		exit 0; \
+	fi; \
+	npx -y skills@latest add hirokisakabe/issuekit --global -y && \
+	npx -y skills@latest add anthropics/skills --skill frontend-design --global -y && \
+	npx -y skills@latest add anthropics/skills --skill skill-creator --global -y && \
 	npx -y skills@latest add vercel-labs/agent-browser --global -y
 
 setup-mcp: ## Setup MCP servers for Claude Code
