@@ -79,3 +79,6 @@ eval "$(git wt --init zsh)"
 
 # worktrunk (git worktree manager)
 eval "$(wt config shell init zsh)"
+
+# atuin
+eval "$(atuin init zsh)"
