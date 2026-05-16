@@ -9,7 +9,7 @@ max_height = 1000  # プレビューの最大高さ
 
 [opener]
 edit = [
-  { run = 'nvim "$@"', block = true, for = "unix" },
+  { run = 'vim "$@"', block = true, for = "unix" },
 ]
 
 [plugin]
