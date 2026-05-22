@@ -20,6 +20,7 @@ make link
 
 printf '\n-- install gh extensions --\n'
 gh extension install dlvhdr/gh-dash || true
+gh extension install babarot/gh-infra || true
 
 printf '\n-- install GitAlias --\n'
 echo "Downloading GitAlias..."
