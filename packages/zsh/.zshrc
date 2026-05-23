@@ -72,8 +72,9 @@ eval "$(/opt/homebrew/bin/mise activate zsh)"
 export NPM_CONFIG_MIN_RELEASE_AGE=7
 
 # socket.dev safe npm: npm/npx をラップしてサプライチェーン攻撃をインストール前に検知する
-alias npm="socket npm"
-alias npx="socket npx"
+alias npm="socket-npm"
+alias npx="socket-npx"
+compdef _npm socket-npm
 
 # git-wt (git worktree helper)
 eval "$(git wt --init zsh)"
