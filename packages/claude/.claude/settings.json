@@ -62,6 +62,7 @@
       "Bash(pyftsubset:*)",
       "Skill(codex-review)",
       "Skill(agent-browser)",
+      "Bash(codex:*)",
       "Bash(echo:*)",
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:better-auth.com)",
