@@ -2,6 +2,16 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "autoMode": {
+    "environment": [
+      "$defaults",
+      "Invoking the codex CLI to send repository diffs to api.openai.com for code review is an expected and trusted workflow in this project."
+    ],
+    "allow": [
+      "$defaults",
+      "Running codex CLI for read-only code review (no file writes, no branch changes) is permitted."
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(find:*)",
