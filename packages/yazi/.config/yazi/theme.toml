@@ -98,6 +98,6 @@ rules = [
   { mime = "{audio,video}/*", fg = "#a093c7" },
   { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#e27878" },
   { mime = "application/{pdf,doc,rtf,*office*}", fg = "#89b8c2" },
-  { name = "*", fg = "#c6c8d1" },
-  { name = "*/", fg = "#84a0c6" },
+  { url = "*", fg = "#c6c8d1" },
+  { url = "*/", fg = "#84a0c6" },
 ]
