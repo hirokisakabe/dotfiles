@@ -15,6 +15,6 @@ edit = [
 [plugin]
 # Git統合を有効化（ファイルのGitステータスを表示）
 prepend_fetchers = [
-  { id = "git", name = "*", run = "git" },
-  { id = "git", name = "*/", run = "git" },
+  { id = "git", group = "mime", name = "*", run = "git" },
+  { id = "git", group = "mime", name = "*/", run = "git" },
 ]
