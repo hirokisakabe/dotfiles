@@ -3,6 +3,7 @@ model_reasoning_effort = "medium"
 personality = "pragmatic"
 approval_policy = "on-request"
 sandbox_mode = "danger-full-access"
+suppress_unstable_features_warning = true
 
 [features]
 runtime_metrics = true
