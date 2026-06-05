@@ -15,6 +15,15 @@ autosquash = true
 [pull]
 ff = only
 
+[transfer]
+fsckObjects = true
+
+[fetch]
+fsckObjects = true
+
+[receive]
+fsckObjects = true
+
 [core]
 excludesfile = ~/.gitignore_global
 pager = delta
