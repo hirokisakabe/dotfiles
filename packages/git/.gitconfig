@@ -15,6 +15,7 @@ autosquash = true
 [pull]
 ff = only
 
+# Verify received objects to harden fetch/receive at a small performance cost.
 [transfer]
 fsckObjects = true
 
