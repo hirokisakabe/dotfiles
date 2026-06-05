@@ -15,6 +15,16 @@ autosquash = true
 [pull]
 ff = only
 
+# Verify received objects; fetch/receive are explicit even though transfer is a fallback.
+[transfer]
+fsckObjects = true
+
+[fetch]
+fsckObjects = true
+
+[receive]
+fsckObjects = true
+
 [core]
 excludesfile = ~/.gitignore_global
 pager = delta
