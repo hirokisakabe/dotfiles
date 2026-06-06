@@ -1,7 +1,6 @@
 # --- Tap repositories ---
 tap "homebrew/bundle"
 tap "charmbracelet/tap"
-tap "azure/functions"
 tap "k1LoW/tap"
 tap "steipete/tap"
 
@@ -51,8 +50,6 @@ cask "orbstack"
 brew "tfenv"
 brew "tflint"
 brew "awscli"
-brew "azure-cli"
-brew "azure-functions-core-tools@4"
 cask "gcloud-cli"
 
 # --- Development Apps ---

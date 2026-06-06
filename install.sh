@@ -9,11 +9,12 @@ if [ "$kernelName" != 'Darwin' ]; then
   exit 1
 fi
 
-printf '\n-- install Homebrew and formulaes --\n'
+printf '\n-- install Homebrew and formulae --\n'
 if ! command -v brew &> /dev/null; then
   curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 fi
-brew bundle -v --cleanup
+
+brew bundle install --cleanup --force-cleanup --file=Brewfile
 
 printf '\n-- create symbolic links with stow --\n'
 make link
