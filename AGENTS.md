@@ -49,7 +49,7 @@ Use `make` targets as the standard workflow:
 - `make link`: `packages/` 配下を `$HOME` に stow でシンボリックリンク化。
 - `make unlink`: stow 管理のシンボリックリンクを削除。
 - `make setup-mcp`: Claude Code の MCP サーバーをセットアップ。
-- `make setup-openhands`: OpenHands を uv 経由でインストール（`uv` が前提）。
+- `make setup-python-tools`: OpenHands などの Python CLI ツールを `uv` / `pipx` 経由でインストール。
 
 Example: `make link` after adding a new file under `packages/zsh/`.
 

@@ -18,14 +18,15 @@ make install
 
 ## 主要コマンド
 
-| Command        | 用途                                                      |
-| -------------- | --------------------------------------------------------- |
-| `make help`    | 利用可能なタスク一覧を表示                                |
-| `make install` | 初回セットアップ                                          |
-| `make link`    | `packages/` 配下を `$HOME` に stow でシンボリックリンク化 |
-| `make unlink`  | stow 管理のシンボリックリンクを削除                       |
-| `make update`  | `Brewfile` から Homebrew パッケージを更新                 |
-| `make sync`    | 現在の Homebrew 状態を `Brewfile` に書き戻し              |
+| Command                   | 用途                                                      |
+| ------------------------- | --------------------------------------------------------- |
+| `make help`               | 利用可能なタスク一覧を表示                                |
+| `make install`            | 初回セットアップ                                          |
+| `make link`               | `packages/` 配下を `$HOME` に stow でシンボリックリンク化 |
+| `make unlink`             | stow 管理のシンボリックリンクを削除                       |
+| `make update`             | `Brewfile` から Homebrew パッケージを更新                 |
+| `make sync`               | 現在の Homebrew 状態を `Brewfile` に書き戻し              |
+| `make setup-python-tools` | OpenHands などの Python CLI ツールをインストール          |
 
 ## 詳細
 
