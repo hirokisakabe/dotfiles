@@ -15,6 +15,7 @@ brew "stow"
 
 # --- Development CLI ---
 brew "git"
+brew "git-lfs"
 brew "git-delta"
 brew "tig"
 brew "lazygit"
