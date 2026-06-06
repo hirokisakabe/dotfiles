@@ -37,8 +37,6 @@ alias cdr="cd \$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 alias c='clear'
 alias h='history'
 alias cl='claude'
-alias hcl='headroom wrap claude --no-serena'
-alias hcx='headroom wrap codex --no-serena'
 alias ports='lsof -i -P -n | grep LISTEN'
 alias wsc='wt switch --create --execute=claude'
 alias gwr='cd $(git worktree list | head -1 | awk "{print \$1}")'

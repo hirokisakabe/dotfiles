@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
+.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-mcp setup-claude-mcp skills-install promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 UV_TOOLS_FILE := packages/python-tools/.default-uv-tools
@@ -64,13 +64,10 @@ setup-pipx-tools: ## Install Python CLI tools via pipx
 		pipx install "$$package" --python "$$python"; \
 	done < "$(PIPX_TOOLS_FILE)"
 
-setup-mcp: setup-claude-mcp setup-codex-mcp ## Setup MCP servers for AI coding agents
+setup-mcp: setup-claude-mcp ## Setup MCP servers for AI coding agents
 
 setup-claude-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
-
-setup-codex-mcp: ## Setup MCP servers for Codex
-	-codex mcp add headroom -- headroom mcp serve
 
 promote-webfetch: ## Promote WebFetch domains from history to permissions.allow
 	./scripts/promote-webfetch.sh
