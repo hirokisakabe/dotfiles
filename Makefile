@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-openhands setup-mcp setup-claude-mcp setup-codex-mcp setup-headroom skills-install promote-webfetch help
+.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 UV_TOOLS_FILE := packages/python-tools/.default-uv-tools
@@ -63,10 +63,6 @@ setup-pipx-tools: ## Install Python CLI tools via pipx
 		case "$$package" in ""|\#*) continue;; esac; \
 		pipx install "$$package" --python "$$python"; \
 	done < "$(PIPX_TOOLS_FILE)"
-
-setup-openhands: setup-uv-tools ## Install OpenHands via uv (uv must be installed)
-
-setup-headroom: setup-pipx-tools ## Install headroom-ai via pipx (requires Python 3.10-3.13)
 
 setup-mcp: setup-claude-mcp setup-codex-mcp ## Setup MCP servers for AI coding agents
 
