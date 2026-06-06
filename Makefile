@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-openhands setup-mcp skills-install promote-webfetch help
+.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-openhands setup-mcp setup-headroom skills-install promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 
@@ -50,6 +50,9 @@ skills-install: ## Install agent skills globally via gh skill
 
 setup-openhands: ## Install OpenHands via uv (uv must be installed)
 	uv tool install openhands --python 3.12
+
+setup-headroom: ## Install headroom-ai via pip (requires Python 3.10+)
+	pip install "headroom-ai[all]"
 
 setup-mcp: ## Setup MCP servers for Claude Code
 	-claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
