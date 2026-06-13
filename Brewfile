@@ -83,7 +83,6 @@ cask "microsoft-edge"
 cask "slack"
 cask "discord"
 cask "zoom"
-cask "miro"
 cask "figma"
 
 # --- AI Tools ---
