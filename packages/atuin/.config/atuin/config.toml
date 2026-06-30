@@ -6,7 +6,7 @@ filter_mode = "global"
 workspaces = true
 
 style = "compact"
-enter_accept = true
+enter_accept = false
 show_preview = true
 
 secrets_filter = true
