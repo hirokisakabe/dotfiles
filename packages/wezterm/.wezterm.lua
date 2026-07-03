@@ -100,4 +100,39 @@ config.native_macos_fullscreen_mode = true
 config.initial_cols = 120
 config.initial_rows = 40
 
+local function adjust_fullscreen_background(window)
+  local window_dims = window:get_dimensions()
+  local overrides = window:get_config_overrides() or {}
+
+  if window_dims.is_full_screen then
+    if
+      overrides.window_background_opacity == 1.0
+      and overrides.macos_window_background_blur == 0
+    then
+      return
+    end
+    overrides.window_background_opacity = 1.0
+    overrides.macos_window_background_blur = 0
+  else
+    if
+      overrides.window_background_opacity == nil
+      and overrides.macos_window_background_blur == nil
+    then
+      return
+    end
+    overrides.window_background_opacity = nil
+    overrides.macos_window_background_blur = nil
+  end
+
+  window:set_config_overrides(overrides)
+end
+
+wezterm.on('window-resized', function(window)
+  adjust_fullscreen_background(window)
+end)
+
+wezterm.on('window-config-reloaded', function(window)
+  adjust_fullscreen_background(window)
+end)
+
 return config
