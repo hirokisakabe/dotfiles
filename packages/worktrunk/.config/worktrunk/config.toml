@@ -6,21 +6,58 @@ command = "MAX_THINKING_TOKENS=0 claude -p --model=haiku --tools='' --disable-sl
 
 [[pre-start]]
 symlink-env = """
-main_dir="{{ primary_worktree_path }}"
-find "$main_dir" -maxdepth 5 -name '.env' -o -name '.env.local' | while read -r src; do
+main_dir={{ primary_worktree_path }}
+find "$main_dir" -maxdepth 5 \\( -path "$main_dir/.git" -o -path "$main_dir/.worktrees" \\) -prune -o \\( -name '.env' -o -name '.env.local' -o -name '.env.*.local' \\) -type f -print | while read -r src; do
   rel="${src#$main_dir/}"
-  dir="$(dirname "$rel")"
-  [ "$dir" != "." ] && mkdir -p "$dir"
-  ln -sf "$src" "$rel"
+  if ! git -C "$main_dir" ls-files --error-unmatch "$rel" >/dev/null 2>&1; then
+    dir="$(dirname "$rel")"
+    [ "$dir" != "." ] && mkdir -p "$dir"
+    if [ ! -e "$rel" ] && [ ! -L "$rel" ]; then
+      ln -s "$src" "$rel"
+    fi
+  fi
 done
 """
 
 [[pre-start]]
 claude-settings = """
-main_dir="{{ primary_worktree_path }}"
+main_dir={{ primary_worktree_path }}
 if [ -f "$main_dir/.claude/settings.local.json" ]; then
   mkdir -p .claude
   rm -f .claude/settings.local.json
   ln -s "$main_dir/.claude/settings.local.json" .claude/settings.local.json
+fi
+"""
+
+[[pre-start]]
+codex-settings = """
+main_dir={{ primary_worktree_path }}
+
+if [ -f "$main_dir/.codex/config.toml" ] && ! git -C "$main_dir" ls-files --error-unmatch ".codex/config.toml" >/dev/null 2>&1; then
+  mkdir -p .codex
+  if [ ! -e .codex/config.toml ] && [ ! -L .codex/config.toml ]; then
+    ln -s "$main_dir/.codex/config.toml" .codex/config.toml
+  fi
+fi
+
+if [ -d "$main_dir/.codex/rules" ]; then
+  tracked_codex_rules="$(git -C "$main_dir" ls-files -- ".codex/rules")"
+  if [ -z "$tracked_codex_rules" ]; then
+    mkdir -p .codex
+    if [ ! -e .codex/rules ] && [ ! -L .codex/rules ]; then
+      ln -s "$main_dir/.codex/rules" .codex/rules
+    fi
+  else
+    find "$main_dir/.codex/rules" -type f | while read -r src; do
+      rel="${src#$main_dir/}"
+      if ! git -C "$main_dir" ls-files --error-unmatch "$rel" >/dev/null 2>&1; then
+        dest="$rel"
+        if [ ! -e "$dest" ] && [ ! -L "$dest" ]; then
+          mkdir -p "$(dirname "$dest")"
+          ln -s "$src" "$dest"
+        fi
+      fi
+    done
+  fi
 fi
 """
