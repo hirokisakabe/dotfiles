@@ -1,8 +1,8 @@
 [tools]
 node = "24.16.0"
 python = "3.14.5"
-"npm:aze-cli" = "0.5.1"
-"npm:shirube" = "1.1.0"
+"npm:aze-cli" = "0.5.3"
+"npm:shirube" = "1.2.2"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
