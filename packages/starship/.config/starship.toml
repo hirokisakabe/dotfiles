@@ -10,18 +10,18 @@ $line_break\
 $character"""
 
 
-# Iceberg palette
+# Frosted Aqua palette
 [directory]
-style = "bold #84a0c6"
+style = "bold #4c87c7"
 
 [character]
-success_symbol = "[❯](#b4be82)"
-error_symbol = "[❯](#e27878)"
-vimcmd_symbol = "[❮](#a093c7)"
+success_symbol = "[❯](#3f8969)"
+error_symbol = "[❯](#b84f68)"
+vimcmd_symbol = "[❮](#8076b3)"
 
 [git_branch]
 format = "[$branch]($style)"
-style = "bold #a093c7"
+style = "bold #5e9bd9"
 
 [git_status]
 format = "[(*$conflicted$untracked$modified$staged$renamed$deleted) ($ahead_behind$stashed)]($style)"
