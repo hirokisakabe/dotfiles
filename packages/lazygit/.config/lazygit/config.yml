@@ -1,24 +1,24 @@
-# Iceberg dark - https://github.com/cocopon/iceberg.vim
+# Frosted Aqua palette
 gui:
   theme:
     activeBorderColor:
-      - "#84a0c6"
+      - "#4c87c7"
       - bold
     inactiveBorderColor:
-      - "#6b7089"
+      - "#8abdd0"
     optionsTextColor:
-      - "#84a0c6"
+      - "#5e9bd9"
     selectedLineBgColor:
-      - "#1e2132"
+      - "#c7eaf6"
     selectedRangeBgColor:
-      - "#1e2132"
+      - "#b4dfed"
     cherryPickedCommitBgColor:
-      - "#3a5a52"
+      - "#b9dfd0"
     cherryPickedCommitFgColor:
-      - "#b4be82"
+      - "#3f8969"
     unstagedChangesColor:
-      - "#e27878"
+      - "#b84f68"
     defaultFgColor:
-      - "#c6c8d1"
+      - "#203b52"
   authorColors:
-    "*": "#a093c7"
+    "*": "#8076b3"

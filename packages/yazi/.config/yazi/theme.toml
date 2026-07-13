@@ -1,51 +1,51 @@
-# Iceberg dark palette - https://github.com/cocopon/iceberg.vim
+# Frosted Aqua palette
 
 [mgr]
-cwd = { fg = "#84a0c6" }
+cwd = { fg = "#4c87c7" }
 hovered = { reversed = true }
 preview_hovered = { underline = true }
-find_keyword = { fg = "#e2a478", italic = true }
-find_position = { fg = "#a093c7", bg = "reset", italic = true }
-marker_copied = { fg = "#b4be82", bg = "#b4be82" }
-marker_cut = { fg = "#e27878", bg = "#e27878" }
-marker_marked = { fg = "#89b8c2", bg = "#89b8c2" }
-marker_selected = { fg = "#84a0c6", bg = "#84a0c6" }
-tab_active = { fg = "#161821", bg = "#84a0c6" }
-tab_inactive = { fg = "#c6c8d1", bg = "#1e2132" }
+find_keyword = { fg = "#966824", italic = true }
+find_position = { fg = "#8076b3", bg = "reset", italic = true }
+marker_copied = { fg = "#3f8969", bg = "#3f8969" }
+marker_cut = { fg = "#b84f68", bg = "#b84f68" }
+marker_marked = { fg = "#378a9b", bg = "#378a9b" }
+marker_selected = { fg = "#4c87c7", bg = "#4c87c7" }
+tab_active = { fg = "#12283a", bg = "#93d2ea" }
+tab_inactive = { fg = "#203b52", bg = "#c7eaf6" }
 tab_width = 1
 border_symbol = "│"
-border_style = { fg = "#6b7089" }
+border_style = { fg = "#8abdd0" }
 
 [mode]
-normal_main = { fg = "#161821", bg = "#84a0c6", bold = true }
-normal_alt = { fg = "#84a0c6", bg = "#1e2132" }
-select_main = { fg = "#161821", bg = "#b4be82", bold = true }
-select_alt = { fg = "#b4be82", bg = "#1e2132" }
-unset_main = { fg = "#161821", bg = "#a093c7", bold = true }
-unset_alt = { fg = "#a093c7", bg = "#1e2132" }
+normal_main = { fg = "#12283a", bg = "#93d2ea", bold = true }
+normal_alt = { fg = "#4c87c7", bg = "#c7eaf6" }
+select_main = { fg = "#12283a", bg = "#b9dfd0", bold = true }
+select_alt = { fg = "#3f8969", bg = "#c7eaf6" }
+unset_main = { fg = "#12283a", bg = "#cfc9e8", bold = true }
+unset_alt = { fg = "#8076b3", bg = "#c7eaf6" }
 
 [status]
 separator_open = ""
 separator_close = ""
-separator_style = { fg = "#1e2132", bg = "#1e2132" }
-progress_label = { fg = "#c6c8d1", bold = true }
-progress_normal = { fg = "#84a0c6", bg = "#1e2132" }
-progress_error = { fg = "#e27878", bg = "#1e2132" }
-permissions_t = { fg = "#84a0c6" }
-permissions_r = { fg = "#e2a478" }
-permissions_w = { fg = "#e27878" }
-permissions_x = { fg = "#b4be82" }
-permissions_s = { fg = "#6b7089" }
+separator_style = { fg = "#c7eaf6", bg = "#c7eaf6" }
+progress_label = { fg = "#203b52", bold = true }
+progress_normal = { fg = "#4c87c7", bg = "#c7eaf6" }
+progress_error = { fg = "#b84f68", bg = "#c7eaf6" }
+permissions_t = { fg = "#4c87c7" }
+permissions_r = { fg = "#966824" }
+permissions_w = { fg = "#b84f68" }
+permissions_x = { fg = "#3f8969" }
+permissions_s = { fg = "#6d8496" }
 
 [input]
-border = { fg = "#84a0c6" }
+border = { fg = "#4c87c7" }
 title = {}
 value = {}
 selected = { reversed = true }
 
 [confirm]
-border = { fg = "#84a0c6" }
-title = { fg = "#84a0c6" }
+border = { fg = "#4c87c7" }
+title = { fg = "#4c87c7" }
 content = {}
 list = {}
 btn_yes = { reversed = true }
@@ -53,12 +53,12 @@ btn_no = {}
 btn_labels = [ "[Y(es)]", "[(N)o]" ]
 
 [pick]
-border = { fg = "#84a0c6" }
-active = { fg = "#a093c7", bold = true }
+border = { fg = "#4c87c7" }
+active = { fg = "#8076b3", bold = true }
 inactive = {}
 
 [cmp]
-border = { fg = "#84a0c6" }
+border = { fg = "#4c87c7" }
 active = { reversed = true }
 inactive = {}
 icon_file = ""
@@ -66,38 +66,38 @@ icon_folder = ""
 icon_command = ""
 
 [tasks]
-border = { fg = "#84a0c6" }
+border = { fg = "#4c87c7" }
 title = {}
-hovered = { fg = "#a093c7", underline = true }
+hovered = { fg = "#8076b3", underline = true }
 
 [which]
-mask = { bg = "#1e2132" }
-cand = { fg = "#89b8c2" }
-rest = { fg = "#6b7089" }
-desc = { fg = "#a093c7" }
+mask = { bg = "#c7eaf6" }
+cand = { fg = "#378a9b" }
+rest = { fg = "#6d8496" }
+desc = { fg = "#8076b3" }
 separator = "  "
-separator_style = { fg = "#6b7089" }
+separator_style = { fg = "#6d8496" }
 
 [help]
-on = { fg = "#89b8c2" }
-run = { fg = "#a093c7" }
+on = { fg = "#378a9b" }
+run = { fg = "#8076b3" }
 hovered = { reversed = true, bold = true }
-footer = { fg = "#1e2132", bg = "#c6c8d1" }
+footer = { fg = "#12283a", bg = "#c7eaf6" }
 
 [notify]
-title_info = { fg = "#b4be82" }
-title_warn = { fg = "#e2a478" }
-title_error = { fg = "#e27878" }
+title_info = { fg = "#3f8969" }
+title_warn = { fg = "#966824" }
+title_error = { fg = "#b84f68" }
 icon_info = ""
 icon_warn = ""
 icon_error = ""
 
 [filetype]
 rules = [
-  { mime = "image/*", fg = "#e2a478" },
-  { mime = "{audio,video}/*", fg = "#a093c7" },
-  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#e27878" },
-  { mime = "application/{pdf,doc,rtf,*office*}", fg = "#89b8c2" },
-  { url = "*", fg = "#c6c8d1" },
-  { url = "*/", fg = "#84a0c6" },
+  { mime = "image/*", fg = "#966824" },
+  { mime = "{audio,video}/*", fg = "#8076b3" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#b84f68" },
+  { mime = "application/{pdf,doc,rtf,*office*}", fg = "#378a9b" },
+  { url = "*", fg = "#203b52" },
+  { url = "*/", fg = "#4c87c7" },
 ]

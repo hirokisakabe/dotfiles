@@ -236,17 +236,18 @@ EOF
 # starship
 eval "$(starship init zsh)"
 
-# Iceberg color palette - https://github.com/cocopon/iceberg.vim
+# Frosted Aqua color palette
 # eza
-export EZA_COLORS="di=1;38;2;132;160;198:ln=38;2;137;184;194:ex=38;2;180;190;130:fi=38;2;198;200;209:*.md=38;2;160;147;199:*.json=38;2;226;164;120:*.lock=38;2;107;112;137:*.toml=38;2;226;164;120:*.yml=38;2;226;164;120:*.yaml=38;2;226;164;120"
+export EZA_COLORS="di=1;38;2;76;135;199:ln=38;2;55;138;155:ex=38;2;63;137;105:fi=38;2;32;59;82:*.md=38;2;128;118;179:*.json=38;2;150;104;36:*.lock=38;2;109;132;150:*.toml=38;2;150;104;36:*.yml=38;2;150;104;36:*.yaml=38;2;150;104;36"
 
 # fzf
 export FZF_DEFAULT_OPTS="
-  --color=fg:#c6c8d1,bg:#161821,hl:#84a0c6
-  --color=fg+:#c6c8d1,bg+:#1e2132,hl+:#84a0c6
-  --color=info:#b4be82,prompt:#a093c7,pointer:#e27878
-  --color=marker:#e2a478,spinner:#89b8c2,header:#84a0c6
-  --color=border:#6b7089"
+  --border=rounded --preview-border=rounded --margin=1 --padding=1,2
+  --color=fg:#203b52,bg:#ddf4fa,hl:#4c87c7
+  --color=fg+:#12283a,bg+:#c7eaf6,hl+:#5e9bd9
+  --color=info:#3f8969,prompt:#8076b3,pointer:#b84f68
+  --color=marker:#966824,spinner:#378a9b,header:#4c87c7
+  --color=border:#8abdd0"
 source <(fzf --zsh)
 
 # zoxide

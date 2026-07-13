@@ -34,24 +34,24 @@ hooksPath = ~/.git-hooks
 diffFilter = delta --color-only
 
 [delta]
-# Iceberg dark palette - https://github.com/cocopon/iceberg.vim
+# Frosted Aqua palette
 navigate = true
 line-numbers = true
 syntax-theme = base16
-minus-style = syntax "#3c2a30"
-minus-emph-style = syntax "#5e3a44"
-plus-style = syntax "#293f3a"
-plus-emph-style = syntax "#3a5a52"
+minus-style = syntax "#f4dce2"
+minus-emph-style = syntax "#ebc0ca"
+plus-style = syntax "#dcefe7"
+plus-emph-style = syntax "#b9dfd0"
 zero-style = syntax
-line-numbers-minus-style = "#e27878"
-line-numbers-plus-style = "#b4be82"
-line-numbers-left-style = "#6b7089"
-line-numbers-right-style = "#6b7089"
-line-numbers-zero-style = "#6b7089"
-file-style = "#84a0c6" bold
-file-decoration-style = "#6b7089" ul
-hunk-header-style = "#a093c7" bold
-hunk-header-decoration-style = "#6b7089" box
+line-numbers-minus-style = "#b84f68"
+line-numbers-plus-style = "#3f8969"
+line-numbers-left-style = "#6d8496"
+line-numbers-right-style = "#6d8496"
+line-numbers-zero-style = "#6d8496"
+file-style = "#4c87c7" bold
+file-decoration-style = "#8abdd0" ul
+hunk-header-style = "#8076b3" bold
+hunk-header-decoration-style = "#8abdd0" box
 
 [merge]
 conflictStyle = zdiff3
