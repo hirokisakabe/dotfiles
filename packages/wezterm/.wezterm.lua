@@ -166,7 +166,7 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, tab_config, hover, max
     local path = cwd.file_path or tostring(cwd)
     local folder = path:match('([^/]+)/?$')
     if folder then
-      title = folder .. ': ' .. title
+      title = folder
     end
   end
 
