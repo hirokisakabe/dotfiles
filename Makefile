@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink doctor clean-legacy-claude-skills-stow setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
+.PHONY: install update sync link unlink doctor clean-legacy-claude-skills-stow setup-mcp setup-claude-mcp setup-codex-mcp skills-install skills-update promote-webfetch help
 
 PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 
@@ -15,10 +15,9 @@ update: ## Update Homebrew itself and packages from Brewfile
 sync: ## Sync current Homebrew packages to Brewfile
 	brew bundle dump --force --file=Brewfile
 
-link: ## Create symlinks with stow and install agent skills via gh skill
+link: ## Create symlinks with stow
 	$(MAKE) clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -t ~ $(PACKAGES)
-	$(MAKE) skills-install
 
 unlink: ## Remove symlinks with stow
 	$(MAKE) clean-legacy-claude-skills-stow
@@ -82,6 +81,9 @@ skills-install: ## Install agent skills globally via gh skill
 	gh skill install anthropics/skills frontend-design --agent claude-code --scope user -f
 	gh skill install anthropics/skills skill-creator --agent claude-code --scope user -f
 	gh skill install vercel-labs/agent-browser agent-browser --agent claude-code --scope user -f
+
+skills-update: ## Update installed agent skills via gh skill
+	gh skill update --all
 
 setup-mcp: setup-claude-mcp setup-codex-mcp ## Setup MCP servers for AI coding agents
 
