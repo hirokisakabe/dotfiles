@@ -39,7 +39,6 @@ brew "yazi"
 brew "glow"
 brew "freeze"
 brew "mise"
-brew "pipx"
 brew "uv"
 
 # --- Container & VM ---
@@ -47,7 +46,6 @@ brew "podman"
 cask "orbstack"
 
 # --- Cloud & IaC ---
-brew "tfenv"
 brew "tflint"
 brew "awscli"
 cask "gcloud-cli"

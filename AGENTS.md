@@ -21,7 +21,7 @@ packages/           # Stow パッケージ（各ツールの設定ファイル�
 ├── vim/           # .vimrc
 ├── wezterm/       # .wezterm.lua
 ├── git/           # .gitconfig, .gitignore_global
-├── npm/           # .default-npm-packages
+├── mise/          # .config/mise/config.toml（開発 CLI の宣言元）
 ├── starship/      # .config/starship.toml
 ├── yazi/          # .config/yazi/yazi.toml
 ├── claude/        # .claude/settings.json, .claude/CLAUDE.md

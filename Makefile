@@ -1,8 +1,6 @@
-.PHONY: install update sync link unlink doctor clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
+.PHONY: install update sync link unlink doctor clean-legacy-claude-skills-stow setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
 
-PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
-UV_TOOLS_FILE := packages/python-tools/.default-uv-tools
-PIPX_TOOLS_FILE := packages/python-tools/.default-pipx-tools
+PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -84,20 +82,6 @@ skills-install: ## Install agent skills globally via gh skill
 	gh skill install anthropics/skills frontend-design --agent claude-code --scope user -f
 	gh skill install anthropics/skills skill-creator --agent claude-code --scope user -f
 	gh skill install vercel-labs/agent-browser agent-browser --agent claude-code --scope user -f
-
-setup-python-tools: setup-uv-tools setup-pipx-tools ## Install Python CLI tools
-
-setup-uv-tools: ## Install Python CLI tools via uv
-	@while read -r package python; do \
-		case "$$package" in ""|\#*) continue;; esac; \
-		uv tool install "$$package" --python "$$python"; \
-	done < "$(UV_TOOLS_FILE)"
-
-setup-pipx-tools: ## Install Python CLI tools via pipx
-	@while read -r package python; do \
-		case "$$package" in ""|\#*) continue;; esac; \
-		pipx install "$$package" --python "$$python"; \
-	done < "$(PIPX_TOOLS_FILE)"
 
 setup-mcp: setup-claude-mcp setup-codex-mcp ## Setup MCP servers for AI coding agents
 
