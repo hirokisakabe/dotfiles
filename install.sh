@@ -19,6 +19,9 @@ brew bundle install --cleanup --force-cleanup --file=Brewfile
 printf '\n-- create symbolic links with stow --\n'
 make link
 
+printf '\n-- install agent skills --\n'
+make skills-install
+
 printf '\n-- install development CLI tools with mise --\n'
 mise install
 
