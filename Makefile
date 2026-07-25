@@ -39,8 +39,18 @@ doctor: ## Check dotfiles setup without making changes
 			status=1; \
 		fi; \
 	}; \
+	check_stow() { \
+		output=$$(stow --simulate --verbose --no-folding --dir=packages --target="$$HOME" $(PACKAGES) 2>&1); \
+		stow_status=$$?; \
+		[ -z "$$output" ] || printf '%s\n' "$$output"; \
+		[ "$$stow_status" -eq 0 ] || return "$$stow_status"; \
+		if printf '%s\n' "$$output" | grep -Eq '^(LINK|MKDIR):'; then \
+			printf 'Stow would create links or directories.\n' >&2; \
+			return 1; \
+		fi; \
+	}; \
 	run_check "Homebrew dependencies" brew bundle check --verbose --file=Brewfile; \
-	run_check "Stow links" stow --simulate --verbose --no-folding --dir=packages --target="$$HOME" $(PACKAGES); \
+	run_check "Stow links" check_stow; \
 	run_check "zsh syntax" zsh -n packages/zsh/.zshrc; \
 	run_check "mise installation" mise doctor; \
 	printf '\n'; \
