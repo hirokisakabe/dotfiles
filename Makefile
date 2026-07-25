@@ -13,7 +13,7 @@ PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copil
 	claude-permissions-promote
 
 help: ## 利用可能なタスク一覧を表示
-	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z][a-zA-Z0-9_-]*:.*## / {names[count] = $$1; descriptions[count] = $$2; if (length($$1) > width) width = length($$1); count++} END {for (i = 0; i < count; i++) printf "\033[36m%-*s\033[0m %s\n", width + 2, names[i], descriptions[i]}' $(MAKEFILE_LIST)
+	@awk 'BEGIN {FS = ":.*## "; count = 0} /^[a-zA-Z][a-zA-Z0-9_-]*:.*## / {names[count] = $$1; descriptions[count] = $$2; if (length($$1) > width) width = length($$1); count++} END {for (i = 0; i < count; i++) printf "\033[36m%-*s\033[0m %s\n", width + 2, names[i], descriptions[i]}' $(MAKEFILE_LIST)
 
 install: ## dotfiles 環境を初回セットアップ
 	./install.sh
@@ -48,7 +48,20 @@ brewfile-dump: ## 現在の Homebrew 状態を Brewfile に書き出し
 	brew bundle dump --force --file=Brewfile
 
 brew-prune: ## Brewfile にない Homebrew パッケージを確認後に削除
-	brew bundle cleanup --file=Brewfile
+	@output=$$(brew bundle cleanup --file=Brewfile 2>&1); cleanup_status=$$?; \
+	printf '%s\n' "$$output"; \
+	if [ "$$cleanup_status" -eq 0 ]; then \
+		exit 0; \
+	fi; \
+	if ! printf '%s\n' "$$output" | grep -Fq 'Run `brew bundle cleanup --force`'; then \
+		exit "$$cleanup_status"; \
+	fi; \
+	printf '\nBrewfile にないパッケージを削除しますか? [y/N] '; \
+	read -r answer; \
+	case "$$answer" in \
+		y|Y) brew bundle cleanup --force --file=Brewfile ;; \
+		*) printf '%s\n' "削除を中止しました。" ;; \
+	esac
 
 stow-link: ## packages 配下をホームディレクトリへリンク
 	$(MAKE) _clean-legacy-claude-skills-stow
@@ -97,7 +110,10 @@ gh-extensions-update: ## インストール済みの GitHub CLI 拡張を更新
 
 gitalias-install: ## GitAlias をインストール
 	mkdir -p "$$HOME/.git-extensions"
-	curl -fsSL https://raw.githubusercontent.com/GitAlias/gitalias/main/gitalias.txt -o "$$HOME/.git-extensions/gitalias.txt"
+	@tmp_file=$$(mktemp "$$HOME/.git-extensions/gitalias.txt.XXXXXX"); \
+	trap 'rm -f "$$tmp_file"' EXIT HUP INT TERM; \
+	curl -fsSL https://raw.githubusercontent.com/GitAlias/gitalias/main/gitalias.txt -o "$$tmp_file"; \
+	mv "$$tmp_file" "$$HOME/.git-extensions/gitalias.txt"
 
 gitalias-update: gitalias-install ## GitAlias を更新
 

@@ -81,5 +81,5 @@ There is no centralized automated test suite in this repository.
 - Keep commit scope small and message specific (example: `fix: adjust yazi preview keymap`).
 - Open PRs with:
   - purpose and impacted package paths,
-  - local verification steps (`make link`, `make help`, etc.),
+  - local verification steps (`make stow-link`, `make help`, etc.),
   - screenshots/log snippets only when UI behavior changes.
