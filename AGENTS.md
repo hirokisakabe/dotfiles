@@ -21,7 +21,7 @@ packages/           # Stow パッケージ（各ツールの設定ファイル�
 ├── vim/           # .vimrc
 ├── wezterm/       # .wezterm.lua
 ├── git/           # .gitconfig, .gitignore_global
-├── npm/           # .default-npm-packages
+├── mise/          # .config/mise/config.toml（開発 CLI の宣言元）
 ├── starship/      # .config/starship.toml
 ├── yazi/          # .config/yazi/yazi.toml
 ├── claude/        # .claude/settings.json, .claude/CLAUDE.md
@@ -48,8 +48,8 @@ Use `make` targets as the standard workflow:
 - `make sync`: 現在の Homebrew 状態を `Brewfile` に書き戻す。
 - `make link`: `packages/` 配下を `$HOME` に stow でシンボリックリンク化。
 - `make unlink`: stow 管理のシンボリックリンクを削除。
+- `mise install`: mise 管理の開発 CLI と Terraform をインストール。
 - `make setup-mcp`: Claude Code の MCP サーバーをセットアップ。
-- `make setup-python-tools`: OpenHands などの Python CLI ツールを `uv` / `pipx` 経由でインストール。
 
 Example: `make link` after adding a new file under `packages/zsh/`.
 
