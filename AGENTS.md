@@ -43,15 +43,20 @@ packages/           # Stow パッケージ（各ツールの設定ファイル�
 Use `make` targets as the standard workflow:
 
 - `make help`: 利用可能なタスク一覧を表示。
-- `make install`: 初回セットアップ（Homebrew インストール、パッケージインストール、シンボリックリンク作成）を `install.sh` 経由で実行。
-- `make update`: `Brewfile` から Homebrew パッケージを更新。
-- `make sync`: 現在の Homebrew 状態を `Brewfile` に書き戻す。
-- `make link`: `packages/` 配下を `$HOME` に stow でシンボリックリンク化。
-- `make unlink`: stow 管理のシンボリックリンクを削除。
-- `mise install`: mise 管理の開発 CLI と Terraform をインストール。
-- `make setup-mcp`: Claude Code の MCP サーバーをセットアップ。
+- `make install`: Homebrew のbootstrapから外部リソース導入、状態検査までを一括実行。
+- `make update`: 管理対象のパッケージと外部リソースを一括更新。
+- `make brew-install`: `Brewfile` のパッケージをインストール。
+- `make brew-update`: Homebrew と `Brewfile` のパッケージを更新。
+- `make brewfile-dump`: 現在の Homebrew 状態を `Brewfile` に書き出す。
+- `make brew-prune`: `Brewfile` にない Homebrew パッケージを確認後に削除。
+- `make stow-link`: `packages/` 配下を `$HOME` にシンボリックリンク化。
+- `make stow-unlink`: Stow 管理のシンボリックリンクを削除。
+- `make mise-install`: mise 管理の開発 CLI と Terraform をインストール。
+- `make mcp-setup`: Claude Code と Codex の MCP サーバーをセットアップ。
 
-Example: `make link` after adding a new file under `packages/zsh/`.
+MCP設定はStow管理対象の設定ファイルと衝突し得るため、`make install` には含めず明示的に実行する。
+
+Example: `make stow-link` after adding a new file under `packages/zsh/`.
 
 ## Coding Style & Naming Conventions
 
@@ -66,7 +71,7 @@ Prettier is configured as the formatter. Run `npx prettier@3 --check .` to verif
 
 There is no centralized automated test suite in this repository.
 
-- Verify symlink behavior with `make link` and `make unlink`.
+- Verify symlink behavior with `make stow-link` and `make stow-unlink`.
 - Run `make help` to confirm Makefile integrity after edits.
 - For tool-specific configs, run the tool’s own check command when available (for example, `git config --list`).
 
@@ -76,5 +81,5 @@ There is no centralized automated test suite in this repository.
 - Keep commit scope small and message specific (example: `fix: adjust yazi preview keymap`).
 - Open PRs with:
   - purpose and impacted package paths,
-  - local verification steps (`make link`, `make help`, etc.),
+  - local verification steps (`make stow-link`, `make help`, etc.),
   - screenshots/log snippets only when UI behavior changes.

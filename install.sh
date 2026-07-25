@@ -1,57 +1,31 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
-kernelName="$(uname -s)"
-
-if [ "$kernelName" != 'Darwin' ]; then
-  echo "Not support OS."
+if [ "$(uname -s)" != "Darwin" ]; then
+  printf '%s\n' "Unsupported OS. This setup supports macOS only." >&2
   exit 1
 fi
 
-printf '\n-- install Homebrew and formulae --\n'
-if ! command -v brew &> /dev/null; then
+if ! command -v brew >/dev/null 2>&1; then
+  printf '\n-- install Homebrew --\n'
   curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 fi
 
-brew bundle install --cleanup --force-cleanup --file=Brewfile
-
-printf '\n-- create symbolic links with stow --\n'
-make link
-
-printf '\n-- install agent skills --\n'
-make skills-install
-
-printf '\n-- install development CLI tools with mise --\n'
-mise install
-
-printf '\n-- install gh extensions --\n'
-gh extension install dlvhdr/gh-dash || true
-gh extension install babarot/gh-infra || true
-
-printf '\n-- install GitAlias --\n'
-echo "Downloading GitAlias..."
-mkdir -p ~/.git-extensions
-curl -fsSL https://raw.githubusercontent.com/GitAlias/gitalias/main/gitalias.txt -o ~/.git-extensions/gitalias.txt
-
-# Add GitAlias include to .gitconfig if it's not already there
-if ! grep -q "\[include\]" ~/.gitconfig || ! grep -q "path = ~/.git-extensions/gitalias.txt" ~/.gitconfig; then
-  printf '\n# GitAlias configuration\n[include]\n    path = ~/.git-extensions/gitalias.txt\n' >> ~/.gitconfig
-  echo "GitAlias configured successfully!"
+if command -v brew >/dev/null 2>&1; then
+  brew_command="$(command -v brew)"
+elif [ -x /opt/homebrew/bin/brew ]; then
+  brew_command="/opt/homebrew/bin/brew"
+elif [ -x /usr/local/bin/brew ]; then
+  brew_command="/usr/local/bin/brew"
 else
-  echo "GitAlias already configured."
+  printf '%s\n' "Homebrew was installed but the brew command could not be found." >&2
+  exit 1
 fi
 
-printf '\n-- build bat theme cache (Iceberg) --\n'
-bat cache --build || true
+eval "$("$brew_command" shellenv)"
 
-printf '\n-- install vim plugins (iceberg.vim) --\n'
-ICEBERG_VIM_DIR="$HOME/.vim/pack/themes/start/iceberg.vim"
-mkdir -p "$(dirname "$ICEBERG_VIM_DIR")"
-if [ ! -d "$ICEBERG_VIM_DIR" ]; then
-  git clone --depth 1 https://github.com/cocopon/iceberg.vim.git "$ICEBERG_VIM_DIR"
-else
-  git -C "$ICEBERG_VIM_DIR" pull --ff-only || true
-fi
+printf '\n-- install dotfiles environment --\n'
+make _install
 
 printf '\n-- done! --\n'

@@ -5,8 +5,7 @@ macOS 向けの dotfiles リポジトリ。Homebrew でパッケージ管理、[
 ## 前提
 
 - macOS
-- [Homebrew](https://brew.sh/)
-- GNU Stow（`make install` で導入される）
+- Xcode Command Line Tools
 
 ## セットアップ
 
@@ -14,22 +13,28 @@ macOS 向けの dotfiles リポジトリ。Homebrew でパッケージ管理、[
 make install
 ```
 
-`install.sh` 経由で Homebrew のインストール、`Brewfile` のパッケージ導入、`packages/` 配下のシンボリックリンク作成、agent skill の導入までを行う。
+`install.sh` でHomebrewをbootstrapした後、Makefileの個別ターゲットを順番に実行する。Homebrewパッケージ、シンボリックリンク、mise管理ツール、agent skill、GitHub CLI拡張、GitAlias、Vimプラグイン、batテーマキャッシュをセットアップし、最後に `make doctor` で状態を検査する。
+
+MCP設定は各ツール自身の設定ファイルを更新するため、Stow管理との衝突を避けて一括セットアップから分離している。必要な場合は `make mcp-setup` を明示的に実行する。
 
 ## 主要コマンド
 
-| Command               | 用途                                                      |
-| --------------------- | --------------------------------------------------------- |
-| `make help`           | 利用可能なタスク一覧を表示                                |
-| `make install`        | 初回セットアップ（agent skill の導入を含む）              |
-| `make link`           | `packages/` 配下を `$HOME` に stow でシンボリックリンク化 |
-| `make unlink`         | stow 管理のシンボリックリンクを削除                       |
-| `make skills-install` | 管理対象の agent skill を初回導入・再導入                 |
-| `make skills-update`  | インストール済みの agent skill を最新版へ更新             |
-| `make doctor`         | dotfiles の設定状態を読み取り専用で検査                   |
-| `make update`         | `Brewfile` から Homebrew パッケージを更新                 |
-| `make sync`           | 現在の Homebrew 状態を `Brewfile` に書き戻し              |
-| `mise install`        | mise 管理の開発 CLI と Terraform をインストール           |
+| Command               | 用途                                              |
+| --------------------- | ------------------------------------------------- |
+| `make help`           | 利用可能なタスク一覧を表示                        |
+| `make install`        | dotfiles環境を一括セットアップ                    |
+| `make update`         | 管理対象のパッケージと外部リソースを一括更新      |
+| `make doctor`         | dotfilesの設定状態を読み取り専用で検査            |
+| `make brew-install`   | `Brewfile` のパッケージをインストール             |
+| `make brew-update`    | Homebrewと `Brewfile` のパッケージを更新          |
+| `make brewfile-dump`  | 現在のHomebrew状態を `Brewfile` に書き出し        |
+| `make brew-prune`     | `Brewfile` にないHomebrewパッケージを確認後に削除 |
+| `make stow-link`      | `packages/` 配下を `$HOME` にシンボリックリンク化 |
+| `make stow-unlink`    | Stow管理のシンボリックリンクを削除                |
+| `make mise-install`   | mise管理の開発CLIとTerraformをインストール        |
+| `make skills-install` | 管理対象のagent skillをインストール               |
+| `make skills-update`  | インストール済みのagent skillを更新               |
+| `make mcp-setup`      | Claude CodeとCodexのMCPサーバーを設定             |
 
 ## 詳細
 
