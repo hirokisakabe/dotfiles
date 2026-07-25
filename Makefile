@@ -1,4 +1,4 @@
-.PHONY: install update sync link unlink clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
+.PHONY: install update sync link unlink doctor clean-legacy-claude-skills-stow setup-python-tools setup-uv-tools setup-pipx-tools setup-mcp setup-claude-mcp setup-codex-mcp skills-install promote-webfetch help
 
 PACKAGES := zsh vim wezterm git npm starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 UV_TOOLS_FILE := packages/python-tools/.default-uv-tools
@@ -25,6 +25,31 @@ link: ## Create symlinks with stow and install agent skills via gh skill
 unlink: ## Remove symlinks with stow
 	$(MAKE) clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -D -t ~ $(PACKAGES)
+
+doctor: ## Check dotfiles setup without making changes
+	@status=0; \
+	run_check() { \
+		name="$$1"; \
+		shift; \
+		printf '\n==> %s\n' "$$name"; \
+		if "$$@"; then \
+			printf '[PASS] %s\n' "$$name"; \
+		else \
+			printf '[FAIL] %s\n' "$$name" >&2; \
+			status=1; \
+		fi; \
+	}; \
+	run_check "Homebrew dependencies" brew bundle check --verbose --file=Brewfile; \
+	run_check "Stow links" stow --simulate --verbose --no-folding --dir=packages --target="$$HOME" $(PACKAGES); \
+	run_check "zsh syntax" zsh -n packages/zsh/.zshrc; \
+	run_check "mise installation" mise doctor; \
+	printf '\n'; \
+	if [ "$$status" -eq 0 ]; then \
+		printf 'All checks passed.\n'; \
+	else \
+		printf 'One or more checks failed.\n' >&2; \
+	fi; \
+	exit "$$status"
 
 clean-legacy-claude-skills-stow: ## Remove old Stow links for legacy Claude Code skills package
 	@if [ -L "$$HOME/.claude/skills" ]; then \
