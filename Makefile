@@ -90,7 +90,9 @@ skills-install: ## 管理対象の agent skill をインストール
 	gh skill install hirokisakabe/issuekit acceptance-check --agent claude-code --scope user -f
 	gh skill install hirokisakabe/issuekit cross-review --agent claude-code --scope user -f
 	gh skill install hirokisakabe/issuekit issue-create --agent claude-code --scope user -f
+	gh skill install hirokisakabe/issuekit issue-dispatch --agent claude-code --scope user -f
 	gh skill install hirokisakabe/issuekit issue-implement --agent claude-code --scope user -f
+	gh skill install hirokisakabe/issuekit issue-investigate --agent claude-code --scope user -f
 	gh skill install hirokisakabe/issuekit issue-pick --agent claude-code --scope user -f
 	gh skill install hirokisakabe/issuekit issue-refine --agent claude-code --scope user -f
 	gh skill install hirokisakabe/issuekit worktree-start --agent claude-code --scope user -f
