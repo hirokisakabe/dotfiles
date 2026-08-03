@@ -2,6 +2,24 @@
 
 PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
 
+AGENT_SKILLS := \
+	hirokisakabe/issuekit:acceptance-check \
+	hirokisakabe/issuekit:cross-review \
+	hirokisakabe/issuekit:issue-create \
+	hirokisakabe/issuekit:issue-dispatch \
+	hirokisakabe/issuekit:issue-implement \
+	hirokisakabe/issuekit:issue-investigate \
+	hirokisakabe/issuekit:issue-pick \
+	hirokisakabe/issuekit:issue-refine \
+	hirokisakabe/issuekit:worktree-start \
+	anthropics/skills:frontend-design \
+	anthropics/skills:skill-creator \
+	vercel-labs/agent-browser:agent-browser
+
+AGENT_SKILLS_DIR ?= $(HOME)/.agents/skills
+CLAUDE_SKILLS_DIR ?= $(HOME)/.claude/skills
+CODEX_SKILLS_DIR ?= $(HOME)/.codex/skills
+
 .PHONY: help install _install update doctor \
 	brew-install brew-update brewfile-dump brew-prune \
 	stow-link stow-unlink _clean-legacy-claude-skills-stow \
@@ -87,21 +105,43 @@ mise-install: ## mise 管理の開発ツールをインストール
 	mise install
 
 skills-install: ## 管理対象の agent skill をインストール
-	gh skill install hirokisakabe/issuekit acceptance-check --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit cross-review --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit issue-create --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit issue-dispatch --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit issue-implement --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit issue-investigate --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit issue-pick --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit issue-refine --agent claude-code --scope user -f
-	gh skill install hirokisakabe/issuekit worktree-start --agent claude-code --scope user -f
-	gh skill install anthropics/skills frontend-design --agent claude-code --scope user -f
-	gh skill install anthropics/skills skill-creator --agent claude-code --scope user -f
-	gh skill install vercel-labs/agent-browser agent-browser --agent claude-code --scope user -f
+	@mkdir -p "$(AGENT_SKILLS_DIR)" "$(CLAUDE_SKILLS_DIR)"
+	@set -e; for skill_spec in $(AGENT_SKILLS); do \
+		repository=$${skill_spec%:*}; \
+		skill=$${skill_spec#*:}; \
+		gh skill install "$$repository" "$$skill" --dir "$(AGENT_SKILLS_DIR)" -f; \
+		canonical_path="$(AGENT_SKILLS_DIR)/$$skill"; \
+		claude_path="$(CLAUDE_SKILLS_DIR)/$$skill"; \
+		codex_path="$(CODEX_SKILLS_DIR)/$$skill"; \
+		if [ -L "$$claude_path" ]; then \
+			target=$$(readlink "$$claude_path"); \
+			if [ "$$target" = "$$canonical_path" ]; then \
+				:; \
+			elif [ ! -e "$$claude_path" ]; then \
+				rm -f "$$claude_path"; \
+			else \
+				printf '%s\n' "既存の外部 symlink を保持します: $$claude_path -> $$target"; \
+			fi; \
+		elif [ -e "$$claude_path" ]; then \
+			rm -rf "$$claude_path"; \
+		fi; \
+		if [ ! -e "$$claude_path" ] && [ ! -L "$$claude_path" ]; then \
+			ln -s "$$canonical_path" "$$claude_path"; \
+		fi; \
+		if [ -L "$$codex_path" ]; then \
+			target=$$(readlink "$$codex_path"); \
+			if [ "$$target" = "$$canonical_path" ] || [ ! -e "$$codex_path" ]; then \
+				rm -f "$$codex_path"; \
+			else \
+				printf '%s\n' "既存の外部 symlink を保持します: $$codex_path -> $$target"; \
+			fi; \
+		elif [ -e "$$codex_path" ]; then \
+			rm -rf "$$codex_path"; \
+		fi; \
+	done
 
 skills-update: ## インストール済みの agent skill を更新
-	gh skill update --all
+	gh skill update --all --dir "$(AGENT_SKILLS_DIR)"
 
 gh-extensions-install: ## 管理対象の GitHub CLI 拡張をインストール
 	gh extension install dlvhdr/gh-dash --force

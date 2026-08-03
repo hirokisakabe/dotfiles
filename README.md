@@ -17,6 +17,12 @@ make install
 
 MCP設定は各ツール自身の設定ファイルを更新するため、Stow管理との衝突を避けて一括セットアップから分離している。必要な場合は `make mcp-setup` を明示的に実行する。
 
+### Agent skill
+
+`make skills-install` は管理対象のagent skillを `~/.agents/skills/<name>` に一度だけインストールする。Codexはこの共通ディレクトリから直接読み込み、Claude Codeは `~/.claude/skills/<name>` から正本へのsymlinkを介して同じskillを利用する。これにより、両方のskill selectorに同名skillが重複して表示されない。
+
+`make skills-update` は `~/.agents/skills` を明示して、共通配置されたskillを更新する。
+
 ## 主要コマンド
 
 | Command               | 用途                                              |
