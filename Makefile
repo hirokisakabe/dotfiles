@@ -110,14 +110,22 @@ skills-install: ## 管理対象の agent skill をインストール
 	is_managed_skill() { \
 		skill_file_path="$$1/SKILL.md"; \
 		expected_repository="https://github.com/$$2"; \
-		expected_skill="$$3"; \
+		expected_skill_path="skills/$$3"; \
 		[ -f "$$skill_file_path" ] || return 1; \
-		metadata_repository=$$(awk 'NR == 1 && $$0 == "---" { frontmatter = 1; next } frontmatter && $$0 == "---" { exit } frontmatter && /^[[:space:]]*github-repo:/ { sub(/^[[:space:]]*github-repo:[[:space:]]*/, ""); print; exit }' "$$skill_file_path"); \
-		metadata_path=$$(awk 'NR == 1 && $$0 == "---" { frontmatter = 1; next } frontmatter && $$0 == "---" { exit } frontmatter && /^[[:space:]]*github-path:/ { sub(/^[[:space:]]*github-path:[[:space:]]*/, ""); print; exit }' "$$skill_file_path"); \
-		metadata_tree_sha=$$(awk 'NR == 1 && $$0 == "---" { frontmatter = 1; next } frontmatter && $$0 == "---" { exit } frontmatter && /^[[:space:]]*github-tree-sha:/ { sub(/^[[:space:]]*github-tree-sha:[[:space:]]*/, ""); print; exit }' "$$skill_file_path"); \
-		[ "$$metadata_repository" = "$$expected_repository" ] && \
-			[ "$${metadata_path##*/}" = "$$expected_skill" ] && \
-			[ -n "$$metadata_tree_sha" ]; \
+		awk -v expected_repository="$$expected_repository" -v expected_skill_path="$$expected_skill_path" ' \
+			NR == 1 { if ($$0 != "---") exit 1; frontmatter = 1; next } \
+			frontmatter && $$0 == "---" { \
+				closed = 1; \
+				valid_sha = length(tree_sha) == 40 && tree_sha !~ /[^0-9a-f]/; \
+				exit !(metadata_count == 1 && repo_count == 1 && path_count == 1 && sha_count == 1 && repository == expected_repository && skill_path == expected_skill_path && valid_sha); \
+			} \
+			frontmatter && $$0 == "metadata:" { metadata = 1; metadata_count++; next } \
+			metadata && /^[^[:space:]]/ { metadata = 0 } \
+			metadata && /^    github-repo:[[:space:]]*/ { repo_count++; repository = $$0; sub(/^    github-repo:[[:space:]]*/, "", repository); next } \
+			metadata && /^    github-path:[[:space:]]*/ { path_count++; skill_path = $$0; sub(/^    github-path:[[:space:]]*/, "", skill_path); next } \
+			metadata && /^    github-tree-sha:[[:space:]]*/ { sha_count++; tree_sha = $$0; sub(/^    github-tree-sha:[[:space:]]*/, "", tree_sha); next } \
+			END { if (!closed) exit 1 } \
+		' "$$skill_file_path" >/dev/null; \
 	}; \
 	for skill_spec in $(AGENT_SKILLS); do \
 		repository=$${skill_spec%:*}; \
