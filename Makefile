@@ -106,37 +106,63 @@ mise-install: ## mise 管理の開発ツールをインストール
 
 skills-install: ## 管理対象の agent skill をインストール
 	@mkdir -p "$(AGENT_SKILLS_DIR)" "$(CLAUDE_SKILLS_DIR)"
-	@set -e; for skill_spec in $(AGENT_SKILLS); do \
+	@set -e; \
+	is_managed_skill() { \
+		skill_file_path="$$1/SKILL.md"; \
+		expected_repository="https://github.com/$$2"; \
+		[ -f "$$skill_file_path" ] || return 1; \
+		metadata_repository=$$(sed -n 's/^[[:space:]]*github-repo:[[:space:]]*//p' "$$skill_file_path" | head -n 1); \
+		[ "$$metadata_repository" = "$$expected_repository" ]; \
+	}; \
+	for skill_spec in $(AGENT_SKILLS); do \
 		repository=$${skill_spec%:*}; \
 		skill=$${skill_spec#*:}; \
-		gh skill install "$$repository" "$$skill" --dir "$(AGENT_SKILLS_DIR)" -f; \
 		canonical_path="$(AGENT_SKILLS_DIR)/$$skill"; \
 		claude_path="$(CLAUDE_SKILLS_DIR)/$$skill"; \
 		codex_path="$(CODEX_SKILLS_DIR)/$$skill"; \
+		if [ -L "$$canonical_path" ]; then \
+			if is_managed_skill "$$canonical_path" "$$repository"; then \
+				rm -f "$$canonical_path"; \
+			else \
+				printf '%s\n' "管理外の symlink と競合しています: $$canonical_path" >&2; \
+				exit 1; \
+			fi; \
+		fi; \
+		gh skill install "$$repository" "$$skill" --dir "$(AGENT_SKILLS_DIR)" -f; \
 		if [ -L "$$claude_path" ]; then \
 			target=$$(readlink "$$claude_path"); \
-			if [ "$$target" = "$$canonical_path" ]; then \
+			if [ "$$claude_path" -ef "$$canonical_path" ]; then \
 				:; \
 			elif [ ! -e "$$claude_path" ]; then \
+				rm -f "$$claude_path"; \
+			elif is_managed_skill "$$claude_path" "$$repository"; then \
 				rm -f "$$claude_path"; \
 			else \
 				printf '%s\n' "既存の外部 symlink を保持します: $$claude_path -> $$target"; \
 			fi; \
 		elif [ -e "$$claude_path" ]; then \
-			rm -rf "$$claude_path"; \
+			if is_managed_skill "$$claude_path" "$$repository"; then \
+				rm -rf "$$claude_path"; \
+			else \
+				printf '%s\n' "管理外の既存 skill を保持します: $$claude_path"; \
+			fi; \
 		fi; \
 		if [ ! -e "$$claude_path" ] && [ ! -L "$$claude_path" ]; then \
 			ln -s "$$canonical_path" "$$claude_path"; \
 		fi; \
 		if [ -L "$$codex_path" ]; then \
 			target=$$(readlink "$$codex_path"); \
-			if [ "$$target" = "$$canonical_path" ] || [ ! -e "$$codex_path" ]; then \
+			if [ ! -e "$$codex_path" ] || [ "$$codex_path" -ef "$$canonical_path" ] || is_managed_skill "$$codex_path" "$$repository"; then \
 				rm -f "$$codex_path"; \
 			else \
 				printf '%s\n' "既存の外部 symlink を保持します: $$codex_path -> $$target"; \
 			fi; \
 		elif [ -e "$$codex_path" ]; then \
-			rm -rf "$$codex_path"; \
+			if is_managed_skill "$$codex_path" "$$repository"; then \
+				rm -rf "$$codex_path"; \
+			else \
+				printf '%s\n' "管理外の既存 skill を保持します: $$codex_path"; \
+			fi; \
 		fi; \
 	done
 
