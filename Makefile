@@ -117,10 +117,11 @@ skills-install: ## 管理対象の agent skill をインストール
 			frontmatter && $$0 == "---" { \
 				closed = 1; \
 				valid_sha = length(tree_sha) == 40 && tree_sha !~ /[^0-9a-f]/; \
-				exit !(metadata_count == 1 && repo_count == 1 && path_count == 1 && sha_count == 1 && repository == expected_repository && skill_path == expected_skill_path && valid_sha); \
+				exit !(metadata_count == 1 && !invalid_metadata && repo_count == 1 && path_count == 1 && sha_count == 1 && repository == expected_repository && skill_path == expected_skill_path && valid_sha); \
 			} \
 			frontmatter && $$0 == "metadata:" { metadata = 1; metadata_count++; next } \
 			metadata && /^[^[:space:]]/ { metadata = 0 } \
+			metadata && /^  [^ ]/ { invalid_metadata = 1; metadata = 0 } \
 			metadata && /^    github-repo:[[:space:]]*/ { repo_count++; repository = $$0; sub(/^    github-repo:[[:space:]]*/, "", repository); next } \
 			metadata && /^    github-path:[[:space:]]*/ { path_count++; skill_path = $$0; sub(/^    github-path:[[:space:]]*/, "", skill_path); next } \
 			metadata && /^    github-tree-sha:[[:space:]]*/ { sha_count++; tree_sha = $$0; sub(/^    github-tree-sha:[[:space:]]*/, "", tree_sha); next } \
