@@ -110,9 +110,14 @@ skills-install: ## 管理対象の agent skill をインストール
 	is_managed_skill() { \
 		skill_file_path="$$1/SKILL.md"; \
 		expected_repository="https://github.com/$$2"; \
+		expected_skill="$$3"; \
 		[ -f "$$skill_file_path" ] || return 1; \
-		metadata_repository=$$(sed -n 's/^[[:space:]]*github-repo:[[:space:]]*//p' "$$skill_file_path" | head -n 1); \
-		[ "$$metadata_repository" = "$$expected_repository" ]; \
+		metadata_repository=$$(awk 'NR == 1 && $$0 == "---" { frontmatter = 1; next } frontmatter && $$0 == "---" { exit } frontmatter && /^[[:space:]]*github-repo:/ { sub(/^[[:space:]]*github-repo:[[:space:]]*/, ""); print; exit }' "$$skill_file_path"); \
+		metadata_path=$$(awk 'NR == 1 && $$0 == "---" { frontmatter = 1; next } frontmatter && $$0 == "---" { exit } frontmatter && /^[[:space:]]*github-path:/ { sub(/^[[:space:]]*github-path:[[:space:]]*/, ""); print; exit }' "$$skill_file_path"); \
+		metadata_tree_sha=$$(awk 'NR == 1 && $$0 == "---" { frontmatter = 1; next } frontmatter && $$0 == "---" { exit } frontmatter && /^[[:space:]]*github-tree-sha:/ { sub(/^[[:space:]]*github-tree-sha:[[:space:]]*/, ""); print; exit }' "$$skill_file_path"); \
+		[ "$$metadata_repository" = "$$expected_repository" ] && \
+			[ "$${metadata_path##*/}" = "$$expected_skill" ] && \
+			[ -n "$$metadata_tree_sha" ]; \
 	}; \
 	for skill_spec in $(AGENT_SKILLS); do \
 		repository=$${skill_spec%:*}; \
@@ -121,12 +126,15 @@ skills-install: ## 管理対象の agent skill をインストール
 		claude_path="$(CLAUDE_SKILLS_DIR)/$$skill"; \
 		codex_path="$(CODEX_SKILLS_DIR)/$$skill"; \
 		if [ -L "$$canonical_path" ]; then \
-			if is_managed_skill "$$canonical_path" "$$repository"; then \
+			if is_managed_skill "$$canonical_path" "$$repository" "$$skill"; then \
 				rm -f "$$canonical_path"; \
 			else \
 				printf '%s\n' "管理外の symlink と競合しています: $$canonical_path" >&2; \
 				exit 1; \
 			fi; \
+		elif [ -e "$$canonical_path" ] && ! is_managed_skill "$$canonical_path" "$$repository" "$$skill"; then \
+			printf '%s\n' "管理外の既存 skill と競合しています: $$canonical_path" >&2; \
+			exit 1; \
 		fi; \
 		gh skill install "$$repository" "$$skill" --dir "$(AGENT_SKILLS_DIR)" -f; \
 		if [ -L "$$claude_path" ]; then \
@@ -134,31 +142,36 @@ skills-install: ## 管理対象の agent skill をインストール
 			if [ "$$claude_path" -ef "$$canonical_path" ]; then \
 				:; \
 			elif [ ! -e "$$claude_path" ]; then \
-				rm -f "$$claude_path"; \
-			elif is_managed_skill "$$claude_path" "$$repository"; then \
+				printf '%s\n' "既存の壊れた外部 symlink を保持します: $$claude_path -> $$target"; \
+			elif is_managed_skill "$$claude_path" "$$repository" "$$skill"; then \
 				rm -f "$$claude_path"; \
 			else \
 				printf '%s\n' "既存の外部 symlink を保持します: $$claude_path -> $$target"; \
 			fi; \
 		elif [ -e "$$claude_path" ]; then \
-			if is_managed_skill "$$claude_path" "$$repository"; then \
+			if is_managed_skill "$$claude_path" "$$repository" "$$skill"; then \
 				rm -rf "$$claude_path"; \
 			else \
 				printf '%s\n' "管理外の既存 skill を保持します: $$claude_path"; \
 			fi; \
 		fi; \
 		if [ ! -e "$$claude_path" ] && [ ! -L "$$claude_path" ]; then \
-			ln -s "$$canonical_path" "$$claude_path"; \
+			if [ "$(AGENT_SKILLS_DIR)" = "$(HOME)/.agents/skills" ] && [ "$(CLAUDE_SKILLS_DIR)" = "$(HOME)/.claude/skills" ]; then \
+				link_target="../../.agents/skills/$$skill"; \
+			else \
+				link_target="$$canonical_path"; \
+			fi; \
+			ln -s "$$link_target" "$$claude_path"; \
 		fi; \
 		if [ -L "$$codex_path" ]; then \
 			target=$$(readlink "$$codex_path"); \
-			if [ ! -e "$$codex_path" ] || [ "$$codex_path" -ef "$$canonical_path" ] || is_managed_skill "$$codex_path" "$$repository"; then \
+			if [ -e "$$codex_path" ] && { [ "$$codex_path" -ef "$$canonical_path" ] || is_managed_skill "$$codex_path" "$$repository" "$$skill"; }; then \
 				rm -f "$$codex_path"; \
 			else \
 				printf '%s\n' "既存の外部 symlink を保持します: $$codex_path -> $$target"; \
 			fi; \
 		elif [ -e "$$codex_path" ]; then \
-			if is_managed_skill "$$codex_path" "$$repository"; then \
+			if is_managed_skill "$$codex_path" "$$repository" "$$skill"; then \
 				rm -rf "$$codex_path"; \
 			else \
 				printf '%s\n' "管理外の既存 skill を保持します: $$codex_path"; \
