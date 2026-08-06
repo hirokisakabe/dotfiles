@@ -6,44 +6,46 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
-local tab_bar_background = '#d7f1f8'
-local left_cap = utf8.char(0xe0b6)
-local right_cap = utf8.char(0xe0b4)
+local background = '#f7f8f8'
+local surface = '#eceff0'
+local foreground = '#1f2326'
+local muted = '#737a7e'
+local accent = '#1f2326'
 
--- Frosted Aqua: a pale blue, translucent palette inspired by Liquid Glass.
+-- Atrium Library: cool architectural whites, black details, and open space.
 config.color_schemes = {
-  ['Frosted Aqua'] = {
-    foreground = '#203b52',
-    background = '#ddf4fa',
-    cursor_bg = '#4c87c7',
-    cursor_fg = '#f4fbfd',
-    cursor_border = '#4c87c7',
-    selection_fg = '#12283a',
-    selection_bg = 'rgba(114, 199, 232, 48%)',
-    split = '#8abdd0',
+  ['Atrium Library'] = {
+    foreground = foreground,
+    background = background,
+    cursor_bg = accent,
+    cursor_fg = background,
+    cursor_border = accent,
+    selection_fg = foreground,
+    selection_bg = '#dce1e3',
+    split = '#cbd1d4',
     ansi = {
-      '#203b52',
-      '#b84f68',
-      '#3f8969',
-      '#966824',
-      '#4c87c7',
-      '#8076b3',
-      '#378a9b',
-      '#c7eaf6',
+      '#292b2d',
+      '#945f5f',
+      '#687768',
+      '#827458',
+      '#687078',
+      '#756d7a',
+      '#657575',
+      '#dfe1e0',
     },
     brights = {
-      '#6d8496',
-      '#c65f77',
-      '#4b9b79',
-      '#a57432',
-      '#5e9bd9',
-      '#9187c2',
-      '#45a0b1',
-      '#f4fbfd',
+      '#767b80',
+      '#a36d6d',
+      '#768576',
+      '#908266',
+      '#767e86',
+      '#837b88',
+      '#738383',
+      '#ffffff',
     },
   },
 }
-config.color_scheme = 'Frosted Aqua'
+config.color_scheme = 'Atrium Library'
 
 config.font = wezterm.font_with_fallback {
   { family = "OverpassM Nerd Font" },
@@ -52,76 +54,50 @@ config.font = wezterm.font_with_fallback {
 
 config.window_frame = {
   font = wezterm.font { family = "OverpassM Nerd Font" },
-  active_titlebar_bg = '#c7eaf6',
-  inactive_titlebar_bg = '#d7f1f8',
+  font_size = 15.0,
+  active_titlebar_bg = surface,
+  inactive_titlebar_bg = surface,
 }
 
 config.use_fancy_tab_bar = false
 config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
-config.tab_max_width = 32
+config.tab_max_width = 44
 config.window_padding = {
-  left = 10,
-  right = 10,
-  top = 6,
-  bottom = 8,
+  left = 16,
+  right = 16,
+  top = 12,
+  bottom = 14,
 }
 
 config.colors = {
   tab_bar = {
-    background = tab_bar_background,
+    background = surface,
     active_tab = {
-      bg_color = '#d7f1f8',
-      fg_color = '#203b52',
+      bg_color = background,
+      fg_color = foreground,
       intensity = 'Bold',
     },
     inactive_tab = {
-      bg_color = '#d7f1f8',
-      fg_color = '#63869a',
+      bg_color = surface,
+      fg_color = muted,
     },
     inactive_tab_hover = {
-      bg_color = '#d7f1f8',
-      fg_color = '#4c87c7',
+      bg_color = '#dfe3e5',
+      fg_color = foreground,
     },
     new_tab = {
-      bg_color = '#c7eaf6',
-      fg_color = '#4c87c7',
+      bg_color = surface,
+      fg_color = muted,
     },
     new_tab_hover = {
-      bg_color = '#a9dceb',
-      fg_color = '#12283a',
+      bg_color = '#dfe3e5',
+      fg_color = foreground,
     },
   },
 }
-
-local function rounded_tab_button(background, foreground, text)
-  return wezterm.format {
-    { Background = { Color = tab_bar_background } },
-    { Text = ' ' },
-    { Foreground = { Color = background } },
-    { Text = left_cap },
-    { Background = { Color = background } },
-    { Foreground = { Color = foreground } },
-    { Text = ' ' .. text .. ' ' },
-    { Background = { Color = tab_bar_background } },
-    { Foreground = { Color = background } },
-    { Text = right_cap },
-  }
-end
-
-config.tab_bar_style = {
-  new_tab = rounded_tab_button('#c7eaf6', '#4c87c7', '+'),
-  new_tab_hover = rounded_tab_button('#a9dceb', '#12283a', '+'),
-}
-
-config.window_background_gradient = {
-  orientation = { Linear = { angle = -35.0 } },
-  colors = { '#e8f8fc', '#c7eaf6', '#d9f3f9' },
-  interpolation = 'Linear',
-  blend = 'Rgb',
-}
 config.inactive_pane_hsb = {
-  saturation = 0.75,
-  brightness = 0.92,
+  saturation = 0.6,
+  brightness = 0.96,
 }
 
 config.front_end = 'WebGpu'
@@ -164,77 +140,17 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, tab_config, hover, max
   local cwd = pane.current_working_dir
   if cwd then
     local path = cwd.file_path or tostring(cwd)
-    local folder = path:match('([^/]+)/?$')
-    if folder then
-      title = folder
-    end
+    title = path:match('([^/]+)/?$') or title
   end
 
-  local background = '#c7eaf6'
-  local foreground = '#4b6b7e'
-  if tab.is_active then
-    background = '#93d2ea'
-    foreground = '#12283a'
-  elseif hover then
-    background = '#a9dceb'
-    foreground = '#203b52'
-  end
-
-  title = wezterm.truncate_right(title, max_width - 5)
-
-  return {
-    { Background = { Color = tab_bar_background } },
-    { Text = ' ' },
-    { Foreground = { Color = background } },
-    { Text = left_cap },
-    { Background = { Color = background } },
-    { Foreground = { Color = foreground } },
-    { Attribute = { Intensity = tab.is_active and 'Bold' or 'Normal' } },
-    { Text = ' ' .. title .. ' ' },
-    { Background = { Color = tab_bar_background } },
-    { Foreground = { Color = background } },
-    { Text = right_cap },
-  }
+  title = wezterm.truncate_right(title, max_width - 6)
+  return '   ' .. title .. '   '
 end)
-config.window_background_opacity = 0.8
-config.macos_window_background_blur = 32
+
+config.window_background_opacity = 1.0
+config.macos_window_background_blur = 0
 config.native_macos_fullscreen_mode = true
 config.initial_cols = 120
 config.initial_rows = 40
-
-local function adjust_fullscreen_background(window)
-  local window_dims = window:get_dimensions()
-  local overrides = window:get_config_overrides() or {}
-
-  if window_dims.is_full_screen then
-    if
-      overrides.window_background_opacity == 1.0
-      and overrides.macos_window_background_blur == 0
-    then
-      return
-    end
-    overrides.window_background_opacity = 1.0
-    overrides.macos_window_background_blur = 0
-  else
-    if
-      overrides.window_background_opacity == nil
-      and overrides.macos_window_background_blur == nil
-    then
-      return
-    end
-    overrides.window_background_opacity = nil
-    overrides.macos_window_background_blur = nil
-  end
-
-  window:set_config_overrides(overrides)
-end
-
-wezterm.on('window-resized', function(window)
-  adjust_fullscreen_background(window)
-end)
-
-wezterm.on('window-config-reloaded', function(window)
-  adjust_fullscreen_background(window)
-end)
 
 return config
