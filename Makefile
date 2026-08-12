@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot worktrunk gh-dash mise pnpm atuin
+PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot gh-dash mise pnpm atuin
 
 AGENT_SKILLS := \
 	hirokisakabe/issuekit:acceptance-check \
