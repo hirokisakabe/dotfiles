@@ -4,7 +4,10 @@ set -euo pipefail
 
 repo_root=$(cd "$(dirname "$0")/.." && pwd)
 test_root=$(mktemp -d)
-trap 'rm -rf "$test_root"' EXIT HUP INT TERM
+trap 'rm -rf "$test_root"' EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 bin_dir="$test_root/bin"
 mkdir -p "$bin_dir"
 
