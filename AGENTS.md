@@ -54,9 +54,6 @@ Use `make` targets as the standard workflow:
 - `make stow-link`: `packages/` 配下を `$HOME` にシンボリックリンク化。
 - `make stow-unlink`: Stow 管理のシンボリックリンクを削除。
 - `make mise-install`: mise 管理の開発 CLI と Terraform をインストール。
-- `make mcp-setup`: Claude Code と Codex の MCP サーバーをセットアップ。
-
-MCP設定はStow管理対象の設定ファイルと衝突し得るため、`make install` には含めず明示的に実行する。
 
 Example: `make stow-link` after adding a new file under `packages/zsh/`.
 

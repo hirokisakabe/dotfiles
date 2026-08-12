@@ -30,7 +30,6 @@ CODEX_CONFIG_SUDO ?= sudo
 	gh-extensions-install gh-extensions-update \
 	gitalias-install gitalias-update \
 	vim-plugins-install vim-plugins-update bat-cache-build \
-	mcp-setup claude-mcp-setup codex-mcp-setup \
 	claude-permissions-promote \
 	codex-system-config-dry-run codex-system-config-install \
 	codex-system-config-check codex-system-config-verify
@@ -148,16 +147,6 @@ vim-plugins-update: vim-plugins-install ## 管理対象の Vim プラグイン�
 
 bat-cache-build: ## bat のテーマキャッシュを再構築
 	bat cache --build
-
-mcp-setup: claude-mcp-setup codex-mcp-setup ## AI coding agent の MCP サーバーを設定
-
-claude-mcp-setup: ## Claude Code の MCP サーバーを設定
-	@claude mcp get chrome-devtools >/dev/null 2>&1 || \
-		claude mcp add --scope user --transport stdio chrome-devtools -- npx chrome-devtools-mcp@latest
-
-codex-mcp-setup: ## Codex の MCP サーバーを設定
-	@codex mcp get chrome-devtools >/dev/null 2>&1 || \
-		codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
 
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
 	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \

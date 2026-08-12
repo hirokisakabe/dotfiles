@@ -15,8 +15,6 @@ make install
 
 `install.sh` でHomebrewをbootstrapした後、Makefileの個別ターゲットを順番に実行する。Homebrewパッケージ、シンボリックリンク、mise管理ツール、agent skill、GitHub CLI拡張、GitAlias、Vimプラグイン、batテーマキャッシュをセットアップし、最後に `make doctor` で状態を検査する。
 
-MCP設定は各ツール自身の設定ファイルを更新するため、Stow管理との衝突を避けて一括セットアップから分離している。必要な場合は `make mcp-setup` を明示的に実行する。
-
 ### Codex設定
 
 複数マシンで共有するCodex設定は [`config/codex/config.toml`](./config/codex/config.toml) を正本とし、`/etc/codex/config.toml` へ導入する。新規セットアップまたは共有設定の更新時は、適用内容を確認してから導入・検証する。
@@ -56,7 +54,6 @@ make codex-system-config-verify
 | `make codex-system-config-install` | Codexの共有設定を `/etc/codex/config.toml` へ導入 |
 | `make codex-system-config-check`   | Codex共有設定を一時ディレクトリで非破壊検証       |
 | `make codex-system-config-verify`  | 導入後のCodex設定の代表値を診断                   |
-| `make mcp-setup`                   | Claude CodeとCodexのMCPサーバーを設定             |
 
 ## 詳細
 
