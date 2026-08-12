@@ -23,7 +23,7 @@ CODEX_SHARED_CONFIG := config/codex/config.toml
 CODEX_SYSTEM_CONFIG ?= /etc/codex/config.toml
 CODEX_CONFIG_SUDO ?= sudo
 
-.PHONY: help install _install update doctor \
+.PHONY: help test install _install update doctor \
 	brew-install brew-update brewfile-dump brew-prune \
 	stow-link stow-unlink _clean-legacy-claude-skills-stow \
 	mise-install skills-install skills-update \
@@ -37,6 +37,9 @@ CODEX_CONFIG_SUDO ?= sudo
 
 help: ## 利用可能なタスク一覧を表示
 	@awk 'BEGIN {FS = ":.*## "; count = 0} /^[a-zA-Z][a-zA-Z0-9_-]*:.*## / {names[count] = $$1; descriptions[count] = $$2; if (length($$1) > width) width = length($$1); count++} END {for (i = 0; i < count; i++) printf "\033[36m%-*s\033[0m %s\n", width + 2, names[i], descriptions[i]}' $(MAKEFILE_LIST)
+
+test: ## Shell script のテストを実行
+	./tests/shell-scripts.sh
 
 install: ## dotfiles 環境を初回セットアップ
 	./install.sh
@@ -110,88 +113,10 @@ mise-install: ## mise 管理の開発ツールをインストール
 	mise install
 
 skills-install: ## 管理対象の agent skill をインストール
-	@mkdir -p "$(AGENT_SKILLS_DIR)" "$(CLAUDE_SKILLS_DIR)"
-	@set -e; \
-	is_managed_skill() { \
-		skill_file_path="$$1/SKILL.md"; \
-		expected_repository="https://github.com/$$2"; \
-		expected_skill_path="skills/$$3"; \
-		[ -f "$$skill_file_path" ] || return 1; \
-		awk -v expected_repository="$$expected_repository" -v expected_skill_path="$$expected_skill_path" ' \
-			NR == 1 { if ($$0 != "---") exit 1; frontmatter = 1; next } \
-			frontmatter && $$0 == "---" { \
-				closed = 1; \
-				valid_sha = length(tree_sha) == 40 && tree_sha !~ /[^0-9a-f]/; \
-				exit !(metadata_count == 1 && !invalid_metadata && repo_count == 1 && path_count == 1 && sha_count == 1 && repository == expected_repository && skill_path == expected_skill_path && valid_sha); \
-			} \
-			frontmatter && $$0 == "metadata:" { metadata = 1; metadata_count++; next } \
-			metadata && /^[^[:space:]]/ { metadata = 0 } \
-			metadata && /^  [^ ]/ { invalid_metadata = 1; metadata = 0 } \
-			metadata && /^    github-repo:[[:space:]]*/ { repo_count++; repository = $$0; sub(/^    github-repo:[[:space:]]*/, "", repository); next } \
-			metadata && /^    github-path:[[:space:]]*/ { path_count++; skill_path = $$0; sub(/^    github-path:[[:space:]]*/, "", skill_path); next } \
-			metadata && /^    github-tree-sha:[[:space:]]*/ { sha_count++; tree_sha = $$0; sub(/^    github-tree-sha:[[:space:]]*/, "", tree_sha); next } \
-			END { if (!closed) exit 1 } \
-		' "$$skill_file_path" >/dev/null; \
-	}; \
-	for skill_spec in $(AGENT_SKILLS); do \
-		repository=$${skill_spec%:*}; \
-		skill=$${skill_spec#*:}; \
-		canonical_path="$(AGENT_SKILLS_DIR)/$$skill"; \
-		claude_path="$(CLAUDE_SKILLS_DIR)/$$skill"; \
-		codex_path="$(CODEX_SKILLS_DIR)/$$skill"; \
-		if [ -L "$$canonical_path" ]; then \
-			if is_managed_skill "$$canonical_path" "$$repository" "$$skill"; then \
-				rm -f "$$canonical_path"; \
-			else \
-				printf '%s\n' "管理外の symlink と競合しています: $$canonical_path" >&2; \
-				exit 1; \
-			fi; \
-		elif [ -e "$$canonical_path" ] && ! is_managed_skill "$$canonical_path" "$$repository" "$$skill"; then \
-			printf '%s\n' "管理外の既存 skill と競合しています: $$canonical_path" >&2; \
-			exit 1; \
-		fi; \
-		gh skill install "$$repository" "$$skill" --dir "$(AGENT_SKILLS_DIR)" -f; \
-		if [ -L "$$claude_path" ]; then \
-			target=$$(readlink "$$claude_path"); \
-			if [ "$$claude_path" -ef "$$canonical_path" ]; then \
-				:; \
-			elif [ ! -e "$$claude_path" ]; then \
-				printf '%s\n' "既存の壊れた外部 symlink を保持します: $$claude_path -> $$target"; \
-			elif is_managed_skill "$$claude_path" "$$repository" "$$skill"; then \
-				rm -f "$$claude_path"; \
-			else \
-				printf '%s\n' "既存の外部 symlink を保持します: $$claude_path -> $$target"; \
-			fi; \
-		elif [ -e "$$claude_path" ]; then \
-			if is_managed_skill "$$claude_path" "$$repository" "$$skill"; then \
-				rm -rf "$$claude_path"; \
-			else \
-				printf '%s\n' "管理外の既存 skill を保持します: $$claude_path"; \
-			fi; \
-		fi; \
-		if [ ! -e "$$claude_path" ] && [ ! -L "$$claude_path" ]; then \
-			if [ "$(AGENT_SKILLS_DIR)" = "$(HOME)/.agents/skills" ] && [ "$(CLAUDE_SKILLS_DIR)" = "$(HOME)/.claude/skills" ]; then \
-				link_target="../../.agents/skills/$$skill"; \
-			else \
-				link_target="$$canonical_path"; \
-			fi; \
-			ln -s "$$link_target" "$$claude_path"; \
-		fi; \
-		if [ -L "$$codex_path" ]; then \
-			target=$$(readlink "$$codex_path"); \
-			if [ -e "$$codex_path" ] && { [ "$$codex_path" -ef "$$canonical_path" ] || is_managed_skill "$$codex_path" "$$repository" "$$skill"; }; then \
-				rm -f "$$codex_path"; \
-			else \
-				printf '%s\n' "既存の外部 symlink を保持します: $$codex_path -> $$target"; \
-			fi; \
-		elif [ -e "$$codex_path" ]; then \
-			if is_managed_skill "$$codex_path" "$$repository" "$$skill"; then \
-				rm -rf "$$codex_path"; \
-			else \
-				printf '%s\n' "管理外の既存 skill を保持します: $$codex_path"; \
-			fi; \
-		fi; \
-	done
+	@AGENT_SKILLS_DIR="$(AGENT_SKILLS_DIR)" \
+	CLAUDE_SKILLS_DIR="$(CLAUDE_SKILLS_DIR)" \
+	CODEX_SKILLS_DIR="$(CODEX_SKILLS_DIR)" \
+		./scripts/skills-install.sh $(AGENT_SKILLS)
 
 skills-update: ## インストール済みの agent skill を更新
 	gh skill update --all --dir "$(AGENT_SKILLS_DIR)"
@@ -235,169 +160,23 @@ codex-mcp-setup: ## Codex の MCP サーバーを設定
 		codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
 
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
-	@set -eu; \
-	umask 077; \
-	source="$(CODEX_SHARED_CONFIG)"; \
-	destination="$(CODEX_SYSTEM_CONFIG)"; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
-		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
-		exit 1; \
-	fi; \
-	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
-		tmp_file=$$(mktemp); \
-		trap 'rm -f "$$tmp_file"' 0 1 2 15; \
-		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$tmp_file"; \
-		if cmp -s "$$tmp_file" "$$source"; then \
-			printf '%s\n' "変更はありません: $$destination"; \
-		else \
-			printf '%s\n' "適用予定の差分: $$destination"; \
-			diff -u "$$tmp_file" "$$source" || true; \
-		fi; \
-		rm -f "$$tmp_file"; \
-		trap - 0 1 2 15; \
-	else \
-		printf '%s\n' "新規作成予定: $$destination"; \
-		sed -n '1,$$p' "$$source"; \
-	fi
+	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
+		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh dry-run
 
 codex-system-config-install: codex-system-config-dry-run ## 共有Codex設定をsystem configへ導入・更新
-	@set -eu; \
-	umask 077; \
-	source="$(CODEX_SHARED_CONFIG)"; \
-	destination="$(CODEX_SYSTEM_CONFIG)"; \
-	destination_dir=$$(dirname "$$destination"); \
-	tmp_file=''; \
-	cleanup() { \
-		if [ -n "$$tmp_file" ]; then \
-			$(CODEX_CONFIG_SUDO) rm -f "$$tmp_file"; \
-		fi; \
-	}; \
-	trap cleanup 0 1 2 15; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
-		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
-		exit 1; \
-	fi; \
-	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
-		current_file=$$(mktemp); \
-		trap 'rm -f "$$current_file"; cleanup' 0 1 2 15; \
-		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$current_file"; \
-		if cmp -s "$$current_file" "$$source"; then \
-			rm -f "$$current_file"; \
-			trap cleanup 0 1 2 15; \
-			printf '%s\n' "既に最新です: $$destination"; \
-			exit 0; \
-		fi; \
-		rm -f "$$current_file"; \
-		trap cleanup 0 1 2 15; \
-		printf '既存の %s を上記内容で更新しますか? [y/N] ' "$$destination"; \
-		read -r answer; \
-		case "$$answer" in y|Y) ;; *) printf '%s\n' '更新を中止しました。'; exit 1 ;; esac; \
-	fi; \
-	$(CODEX_CONFIG_SUDO) install -d -m 0755 "$$destination_dir"; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
-		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
-		exit 1; \
-	fi; \
-	tmp_file=$$($(CODEX_CONFIG_SUDO) mktemp "$$destination_dir/.config.toml.install.XXXXXX"); \
-	$(CODEX_CONFIG_SUDO) install -m 0644 "$$source" "$$tmp_file"; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$tmp_file" || ! $(CODEX_CONFIG_SUDO) test -f "$$tmp_file"; then \
-		printf '%s\n' "一時ファイルが通常ファイルではありません: $$tmp_file" >&2; \
-		exit 1; \
-	fi; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
-		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
-		exit 1; \
-	fi; \
-	$(CODEX_CONFIG_SUDO) mv -fh "$$tmp_file" "$$destination"; \
-	tmp_file=''; \
-	trap - 0 1 2 15; \
-	printf '%s\n' "導入しました: $$destination"
+	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
+		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh install
 
 codex-system-config-check: ## 共有Codex設定を一時CODEX_HOMEで非破壊検証
-	@set -eu; \
-	tmp_dir=$$(mktemp -d); \
-	trap 'rm -rf "$$tmp_dir"' EXIT HUP INT TERM; \
-	cp "$(CODEX_SHARED_CONFIG)" "$$tmp_dir/config.toml"; \
-	report="$$tmp_dir/doctor.json"; \
-	CODEX_HOME="$$tmp_dir" codex doctor --json >"$$report" || true; \
-	jq -e ' \
-		.checks["config.load"].status == "ok" and \
-		(.checks["config.load"].details["feature flag overrides"] | contains("runtime_metrics=true")) and \
-		.checks["sandbox.helpers"].details["approval policy"] == "OnRequest" and \
-		.checks["sandbox.helpers"].details["filesystem sandbox"] == "unrestricted" \
-	' "$$report" >/dev/null; \
-	printf '%s\n' '共有Codex設定の読み込みと代表値を確認しました。'
+	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
+		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh check
 
 codex-system-config-verify: ## 導入済みsystem configの有効値をcodex doctorで検証
-	@set -eu; \
-	source="$(CODEX_SHARED_CONFIG)"; \
-	destination="$(CODEX_SYSTEM_CONFIG)"; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$destination" || ! $(CODEX_CONFIG_SUDO) test -f "$$destination"; then \
-		printf '%s\n' "system config が通常ファイルとして導入されていません: $$destination" >&2; \
-		exit 1; \
-	fi; \
-	if ! $(CODEX_CONFIG_SUDO) cmp -s "$$source" "$$destination"; then \
-		printf '%s\n' "system config が共有設定の正本と一致しません: $$destination" >&2; \
-		exit 1; \
-	fi; \
-	tmp_dir=$$(mktemp -d); \
-	trap 'rm -rf "$$tmp_dir"' EXIT HUP INT TERM; \
-	mkdir "$$tmp_dir/expected-home" "$$tmp_dir/actual-home"; \
-	cp "$$source" "$$tmp_dir/expected-home/config.toml"; \
-	CODEX_HOME="$$tmp_dir/expected-home" codex doctor --json >"$$tmp_dir/expected.json" || true; \
-	CODEX_HOME="$$tmp_dir/actual-home" codex doctor --json >"$$tmp_dir/actual.json" || true; \
-	jq -e --slurpfile expected "$$tmp_dir/expected.json" ' \
-		.checks["config.load"].status == "ok" and \
-		.checks["config.load"].details.model == $$expected[0].checks["config.load"].details.model and \
-		.checks["config.load"].details["feature flag overrides"] == $$expected[0].checks["config.load"].details["feature flag overrides"] and \
-		.checks["sandbox.helpers"].details["approval policy"] == $$expected[0].checks["sandbox.helpers"].details["approval policy"] and \
-		.checks["sandbox.helpers"].details["filesystem sandbox"] == $$expected[0].checks["sandbox.helpers"].details["filesystem sandbox"] \
-	' "$$tmp_dir/actual.json" >/dev/null; \
-	printf '%s\n' '有効なCodex設定の代表値を確認しました。'
+	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
+		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh verify
 
 claude-permissions-promote: ## WebFetch 履歴のドメインを Claude Code の許可設定へ反映
 	./scripts/promote-webfetch.sh
 
 doctor: ## dotfiles のセットアップ状態を読み取り専用で検査
-	@status=0; \
-	run_check() { \
-		name="$$1"; \
-		shift; \
-		printf '\n==> %s\n' "$$name"; \
-		if "$$@"; then \
-			printf '[PASS] %s\n' "$$name"; \
-		else \
-			printf '[FAIL] %s\n' "$$name" >&2; \
-			status=1; \
-		fi; \
-	}; \
-	check_stow() { \
-		output=$$(stow --simulate --verbose --no-folding --dir=packages --target="$$HOME" $(PACKAGES) 2>&1); \
-		stow_status=$$?; \
-		[ -z "$$output" ] || printf '%s\n' "$$output"; \
-		[ "$$stow_status" -eq 0 ] || return "$$stow_status"; \
-		if printf '%s\n' "$$output" | grep -Eq '^(LINK|MKDIR):'; then \
-			printf 'Stow would create links or directories.\n' >&2; \
-			return 1; \
-		fi; \
-	}; \
-	check_gh_extensions() { \
-		output=$$(gh extension list); \
-		printf '%s\n' "$$output" | grep -Fq 'dlvhdr/gh-dash' && \
-			printf '%s\n' "$$output" | grep -Fq 'babarot/gh-infra'; \
-	}; \
-	run_check "Homebrew dependencies" brew bundle check --verbose --file=Brewfile; \
-	run_check "Stow links" check_stow; \
-	run_check "zsh syntax" zsh -n packages/zsh/.zshrc; \
-	run_check "mise installation" mise doctor; \
-	run_check "GitHub CLI extensions" check_gh_extensions; \
-	run_check "GitAlias" test -f "$$HOME/.git-extensions/gitalias.txt"; \
-	run_check "Vim plugins" test -d "$$HOME/.vim/pack/themes/start/iceberg.vim"; \
-	run_check "bat theme cache" sh -c 'bat --list-themes | grep -Fxq Iceberg'; \
-	printf '\n'; \
-	if [ "$$status" -eq 0 ]; then \
-		printf 'All checks passed.\n'; \
-	else \
-		printf 'One or more checks failed.\n' >&2; \
-	fi; \
-	exit "$$status"
+	@./scripts/doctor.sh $(PACKAGES)
