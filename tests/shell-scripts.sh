@@ -71,7 +71,7 @@ EOF
 }
 
 test_codex_system_config() {
-  local case_dir source destination output target
+  local case_dir source destination missing_source output target
   case_dir="$test_root/codex"
   source="$case_dir/shared.toml"
   destination="$case_dir/etc/config.toml"
@@ -105,6 +105,20 @@ test_codex_system_config() {
   fi
   assert_contains "$output" 'symlink は自動処理しません'
   [ "$(cat "$target")" = 'do not change' ] || fail 'symlink target was modified'
+
+  rm -f "$destination"
+  missing_source="$case_dir/missing.toml"
+  if output=$(PATH="$bin_dir:$PATH" CODEX_SHARED_CONFIG="$missing_source" \
+    CODEX_SYSTEM_CONFIG="$destination" CODEX_CONFIG_SUDO='' \
+    "$repo_root/scripts/codex-system-config.sh" install 2>&1); then
+    fail 'install with a missing source was accepted'
+  fi
+  case "$output" in
+    *'unbound variable'*) fail 'cleanup replaced the original install error' ;;
+  esac
+  if find "$(dirname "$destination")" -name '.config.toml.install.*' -print -quit | grep -q .; then
+    fail 'failed install left a temporary file behind'
+  fi
 }
 
 write_doctor_mocks() {

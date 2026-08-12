@@ -23,7 +23,7 @@ CODEX_SHARED_CONFIG := config/codex/config.toml
 CODEX_SYSTEM_CONFIG ?= /etc/codex/config.toml
 CODEX_CONFIG_SUDO ?= sudo
 
-.PHONY: help install _install update doctor \
+.PHONY: help test install _install update doctor \
 	brew-install brew-update brewfile-dump brew-prune \
 	stow-link stow-unlink _clean-legacy-claude-skills-stow \
 	mise-install skills-install skills-update \
@@ -37,6 +37,9 @@ CODEX_CONFIG_SUDO ?= sudo
 
 help: ## 利用可能なタスク一覧を表示
 	@awk 'BEGIN {FS = ":.*## "; count = 0} /^[a-zA-Z][a-zA-Z0-9_-]*:.*## / {names[count] = $$1; descriptions[count] = $$2; if (length($$1) > width) width = length($$1); count++} END {for (i = 0; i < count; i++) printf "\033[36m%-*s\033[0m %s\n", width + 2, names[i], descriptions[i]}' $(MAKEFILE_LIST)
+
+test: ## Shell script のテストを実行
+	./tests/shell-scripts.sh
 
 install: ## dotfiles 環境を初回セットアップ
 	./install.sh
