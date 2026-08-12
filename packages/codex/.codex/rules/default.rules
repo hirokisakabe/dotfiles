@@ -12,12 +12,6 @@ prefix_rule(
     decision = "prompt",
     justification = "Merging pull requests should remain an explicit user decision.",
 )
-prefix_rule(
-    pattern = ["wt", "merge"],
-    decision = "prompt",
-    justification = "Worktree merges should remain an explicit user decision.",
-)
-
 prefix_rule(pattern = ["find"], decision = "allow")
 prefix_rule(pattern = ["rg"], decision = "allow")
 prefix_rule(pattern = ["grep"], decision = "allow")

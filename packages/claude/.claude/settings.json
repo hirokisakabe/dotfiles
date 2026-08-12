@@ -101,7 +101,6 @@
     "ask": [
       "Bash(gh pr merge:*)",
       "Bash(git push:*)",
-      "Bash(wt merge:*)",
       "Read(./.env)",
       "Read(./.env.*)"
     ],
