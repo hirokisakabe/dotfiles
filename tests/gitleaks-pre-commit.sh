@@ -49,4 +49,12 @@ esac
 git -C "$test_root/repository" diff --cached --quiet -- secret.txt && \
   fail 'rejected secret was not left staged'
 
+git -C "$test_root/repository" commit --no-verify -q -m 'test: bypass hook'
+if output=$(gitleaks git --redact --verbose "$test_root/repository" 2>&1); then
+  fail 'git history scan accepted a committed dummy secret'
+fi
+case "$output" in
+  *"$dummy_secret"*) fail 'git history scan output exposed the detected secret' ;;
+esac
+
 printf 'Gitleaks pre-commit hook tests passed.\n'
