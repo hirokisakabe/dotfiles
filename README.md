@@ -19,11 +19,7 @@ MCP設定は各ツール自身の設定ファイルを更新するため、Stow�
 
 ### Codex設定
 
-複数マシンで共有するCodexのデフォルト設定は [`config/codex/config.toml`](./config/codex/config.toml) を正本とし、`/etc/codex/config.toml` へ導入する。Codex自身が更新する `~/.codex/config.toml` はmachine-localな通常ファイルとしてGit / Stow管理から外す。Codexはuser configをsystem configより優先するため、user configに同じキーがある場合はmachine-localな値が有効になる。
-
-共有設定の `sandbox_mode = "danger-full-access"` は、個人専用macOSでの利用を前提とする既存値である。共有端末へ導入する場合は、この値を `workspace-write` へ変更する。
-
-新規セットアップまたは共有設定の更新時は、先に適用内容を確認してから導入・検証する。
+複数マシンで共有するCodex設定は [`config/codex/config.toml`](./config/codex/config.toml) を正本とし、`/etc/codex/config.toml` へ導入する。新規セットアップまたは共有設定の更新時は、適用内容を確認してから導入・検証する。
 
 ```sh
 make codex-system-config-dry-run
@@ -31,30 +27,7 @@ make codex-system-config-install
 make codex-system-config-verify
 ```
 
-既存の管理外 `/etc/codex/config.toml` が異なる場合、installターゲットは差分を表示して確認を求め、同意なしには上書きしない。同じ内容が導入済みなら何も変更しない。system configのsymlinkはリンク先を意図せず読み書きしないよう、正常・リンク切れを問わず自動処理しない。`make codex-system-config-check` は実マシンのsystem/user configを変更せず、共有設定を一時的なuser layerとして読み込み、現在のsystem layerと組み合わせたときの構文と代表値を検査する。Codexにはsystem layerを無効化する診断オプションがないため、完全な単体検査ではない。
-
-旧構成から更新する場合、`~/.codex/config.toml` が通常ファイルなら移行は不要である。symlinkの場合は `make stow-link` の前に `readlink` の出力を確認し、このdotfilesの `packages/codex/.codex/config.toml` を指していることを人が確認してから、一度だけ内容を保持した通常ファイルへ置き換える。
-
-```sh
-readlink "$HOME/.codex/config.toml"
-tmp_file=$(mktemp "$HOME/.codex/config.toml.migrate.XXXXXX")
-cp -pL "$HOME/.codex/config.toml" "$tmp_file"
-mv "$tmp_file" "$HOME/.codex/config.toml"
-test -f "$HOME/.codex/config.toml" && test ! -L "$HOME/.codex/config.toml"
-```
-
-symlinkがすでにリンク切れの場合は、dotfilesリポジトリのルートで `git log --all -- packages/codex/.codex/config.toml` を確認し、削除前のcommitから一時ファイルへ復元して置き換える。
-
-```sh
-tmp_file=$(mktemp "$HOME/.codex/config.toml.migrate.XXXXXX")
-git show <削除前のcommit>:packages/codex/.codex/config.toml >"$tmp_file"
-mv "$tmp_file" "$HOME/.codex/config.toml"
-test -f "$HOME/.codex/config.toml" && test ! -L "$HOME/.codex/config.toml"
-```
-
-通常ファイル化を確認してから `make stow-link` を実行する。user config内の共有キーは必要に応じて削除し、project trust、hook承認、marketplace、Desktop / MCPのパスなどmachine-localな設定・状態だけを残す。
-
-`packages/codex/.codex/` では引き続き `AGENTS.md` と `rules/default.rules` だけをStow管理する。project trust、hook状態、marketplaceキャッシュ、Codex Desktopが生成したMCP/runtimeの絶対パス、TUIのmachine-local状態は共有設定へ追加しない。
+設定レイヤーの役割、安全設計、検証上の制約、Stow管理との境界は [`docs/codex.md`](./docs/codex.md) を参照。
 
 ### Agent skill
 
