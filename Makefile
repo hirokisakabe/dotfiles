@@ -292,6 +292,7 @@ codex-user-config-migrate: ## 旧Stow symlinkを内容を保持した通常フ�
 
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
 	@set -eu; \
+	umask 077; \
 	source="$(CODEX_SHARED_CONFIG)"; \
 	destination="$(CODEX_SYSTEM_CONFIG)"; \
 	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
@@ -300,6 +301,7 @@ codex-system-config-dry-run: ## system configの適用内容または差分を�
 	fi; \
 	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
 		tmp_file=$$(mktemp); \
+		trap 'rm -f "$$tmp_file"' 0 1 2 15; \
 		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$tmp_file"; \
 		if cmp -s "$$tmp_file" "$$source"; then \
 			printf '%s\n' "変更はありません: $$destination"; \
@@ -308,6 +310,7 @@ codex-system-config-dry-run: ## system configの適用内容または差分を�
 			diff -u "$$tmp_file" "$$source" || true; \
 		fi; \
 		rm -f "$$tmp_file"; \
+		trap - 0 1 2 15; \
 	else \
 		printf '%s\n' "新規作成予定: $$destination"; \
 		sed -n '1,$$p' "$$source"; \
@@ -315,17 +318,21 @@ codex-system-config-dry-run: ## system configの適用内容または差分を�
 
 codex-system-config-install: codex-system-config-dry-run ## 共有Codex設定をsystem configへ導入・更新
 	@set -eu; \
+	umask 077; \
 	source="$(CODEX_SHARED_CONFIG)"; \
 	destination="$(CODEX_SYSTEM_CONFIG)"; \
 	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
 		tmp_file=$$(mktemp); \
+		trap 'rm -f "$$tmp_file"' 0 1 2 15; \
 		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$tmp_file"; \
 		if cmp -s "$$tmp_file" "$$source"; then \
 			rm -f "$$tmp_file"; \
+			trap - 0 1 2 15; \
 			printf '%s\n' "既に最新です: $$destination"; \
 			exit 0; \
 		fi; \
 		rm -f "$$tmp_file"; \
+		trap - 0 1 2 15; \
 		printf '既存の %s を上記内容で更新しますか? [y/N] ' "$$destination"; \
 		read -r answer; \
 		case "$$answer" in y|Y) ;; *) printf '%s\n' '更新を中止しました。'; exit 1 ;; esac; \
