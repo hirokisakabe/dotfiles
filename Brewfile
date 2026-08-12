@@ -64,7 +64,6 @@ cask "libreoffice"
 cask "inkscape"
 cask "logi-options+"
 cask "deepl"
-cask "obsidian"
 
 # --- Fonts ---
 cask "font-hackgen-nerd"
