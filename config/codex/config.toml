@@ -22,9 +22,3 @@ status_line = [
   "weekly-limit",
 ]
 status_line_use_colors = true
-
-[tui.model_availability_nux]
-"gpt-5.5" = 4
-
-[projects."/Users/hirokisakabe/work/dotfiles"]
-trust_level = "trusted"

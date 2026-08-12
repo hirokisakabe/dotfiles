@@ -10,7 +10,8 @@ macOS 向けの dotfiles リポジトリ。Homebrew でパッケージ管理、G
 
 - `packages/`: one directory per tool (`zsh`, `vim`, `wezterm`, `git`, `codex`, etc.).
 - `packages/*/`: mirrored home-directory layout (for example, `packages/yazi/.config/yazi/`).
-- `packages/codex/`: contains `AGENTS.md`, Codex CLI の指示ファイル。
+- `packages/codex/`: contains Stow-managed `AGENTS.md` and `rules/default.rules`。
+- `config/codex/config.toml`: `/etc/codex/config.toml` へ導入する共有Codex設定の正本。
 - `Makefile`: primary task entrypoint for setup, linking, and package maintenance.
 - `install.sh`: bootstrap script used by `make install`.
 - `Brewfile` / `Brewfile.lock.json`: Homebrew package definitions and lock data.
@@ -25,7 +26,8 @@ packages/           # Stow パッケージ（各ツールの設定ファイル�
 ├── starship/      # .config/starship.toml
 ├── yazi/          # .config/yazi/yazi.toml
 ├── claude/        # .claude/settings.json, .claude/CLAUDE.md
-└── codex/         # .codex/AGENTS.md, config.toml, rules/default.rules
+└── codex/         # .codex/AGENTS.md, rules/default.rules
+config/codex/      # /etc/codex/config.toml の共有設定正本
 ```
 
 ### Stow の仕組み
