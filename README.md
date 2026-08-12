@@ -29,7 +29,7 @@ make codex-system-config-install
 make codex-system-config-verify
 ```
 
-既存の管理外 `/etc/codex/config.toml` が異なる場合、installターゲットは差分を表示して確認を求め、同意なしには上書きしない。同じ内容が導入済みなら何も変更しない。`make codex-system-config-check` は実マシンのsystem/user configを変更せず、一時的な `CODEX_HOME` で共有設定の構文と代表値を検査する。
+既存の管理外 `/etc/codex/config.toml` が異なる場合、installターゲットは差分を表示して確認を求め、同意なしには上書きしない。同じ内容が導入済みなら何も変更しない。system configのsymlinkはリンク先を意図せず読み書きしないよう、正常・リンク切れを問わず自動処理しない。`make codex-system-config-check` は実マシンのsystem/user configを変更せず、一時的な `CODEX_HOME` で共有設定の構文と代表値を検査する。
 
 旧構成からの移行では、`make stow-link` が先に `make codex-user-config-migrate` を実行する。`~/.codex/config.toml` がこのdotfilesの旧 `packages/codex/.codex/config.toml` を指すsymlinkの場合だけ、現在の内容（リンク先が削除済みならGit履歴上の最終内容）を保持した通常ファイルへ置き換える。既存の通常ファイルには触れず、管理外symlinkはエラーにして自動変更しない。移行後はuser config内の共有キーを必要に応じて削除し、project trust、hook承認、marketplace、Desktop / MCPのパスなどmachine-localな設定・状態だけを残す。
 

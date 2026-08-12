@@ -255,31 +255,47 @@ codex-user-config-migrate: ## 旧Stow symlinkを内容を保持した通常フ�
 		printf '%s\n' "管理外の symlink を保持します: $$user_config -> $$link_target" >&2; \
 		exit 1; \
 	}; \
-	current_origin=$$(git config --get remote.origin.url); \
-	target_origin=$$(git -C "$$target_repo" config --get remote.origin.url); \
-	if [ "$$target_path" != "$$target_repo/$$legacy_path" ] || [ "$$target_origin" != "$$current_origin" ]; then \
+	current_common_dir=$$(git rev-parse --path-format=absolute --git-common-dir); \
+	target_common_dir=$$(git -C "$$target_repo" rev-parse --path-format=absolute --git-common-dir); \
+	current_origin=$$(git config --get remote.origin.url 2>/dev/null || true); \
+	target_origin=$$(git -C "$$target_repo" config --get remote.origin.url 2>/dev/null || true); \
+	normalize_origin() { printf '%s\n' "$$1" | sed -E 's#^git@github.com:#https://github.com/#; s#^ssh://git@github.com/#https://github.com/#; s#\.git$$##'; }; \
+	current_origin=$$(normalize_origin "$$current_origin"); \
+	target_origin=$$(normalize_origin "$$target_origin"); \
+	if [ "$$target_path" != "$$target_repo/$$legacy_path" ] || { \
+		[ "$$target_common_dir" != "$$current_common_dir" ] && { \
+			[ -z "$$current_origin" ] || [ "$$target_origin" != "$$current_origin" ]; \
+		}; \
+	}; then \
 		printf '%s\n' "管理外の symlink を保持します: $$user_config -> $$link_target" >&2; \
 		exit 1; \
 	fi; \
 	tmp_file=$$(mktemp "$$(dirname "$$user_config")/.config.toml.migrate.XXXXXX"); \
+	trap 'rm -f "$$tmp_file"' 0 1 2 15; \
 	if [ -f "$$user_config" ]; then \
 		cp -p "$$user_config" "$$tmp_file"; \
 	else \
-		legacy_commit=$$(git -C "$$target_repo" log -1 --format=%H --all -- "$$legacy_path"); \
+		legacy_commit=$$(for commit in $$(git -C "$$target_repo" log --format=%H --all -- "$$legacy_path"); do \
+			if git -C "$$target_repo" cat-file -e "$$commit:$$legacy_path" 2>/dev/null; then \
+				printf '%s\n' "$$commit"; \
+				break; \
+			fi; \
+		done); \
 		if [ -z "$$legacy_commit" ] || ! git -C "$$target_repo" show "$$legacy_commit:$$legacy_path" >"$$tmp_file"; then \
 			printf '%s\n' "旧 user config の内容を復元できません: $$user_config" >&2; \
 			exit 1; \
 		fi; \
 	fi; \
 	mv -f "$$tmp_file" "$$user_config"; \
+	trap - 0 1 2 15; \
 	printf '%s\n' "通常ファイルへ移行しました: $$user_config"
 
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
 	@set -eu; \
 	source="$(CODEX_SHARED_CONFIG)"; \
 	destination="$(CODEX_SYSTEM_CONFIG)"; \
-	if $(CODEX_CONFIG_SUDO) test -L "$$destination" && ! $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
-		printf '%s\n' "壊れた symlink のため内容を比較できません: $$destination" >&2; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
+		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
 		exit 1; \
 	fi; \
 	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
@@ -313,9 +329,6 @@ codex-system-config-install: codex-system-config-dry-run ## 共有Codex設定を
 		printf '既存の %s を上記内容で更新しますか? [y/N] ' "$$destination"; \
 		read -r answer; \
 		case "$$answer" in y|Y) ;; *) printf '%s\n' '更新を中止しました。'; exit 1 ;; esac; \
-	elif $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
-		printf '%s\n' "壊れた symlink は自動更新しません: $$destination" >&2; \
-		exit 1; \
 	fi; \
 	$(CODEX_CONFIG_SUDO) install -d -m 0755 "$$(dirname "$$destination")"; \
 	$(CODEX_CONFIG_SUDO) install -m 0644 "$$source" "$$destination"; \
@@ -338,11 +351,22 @@ codex-system-config-check: ## 共有Codex設定を一時CODEX_HOMEで非破壊�
 
 codex-system-config-verify: ## 導入済みsystem configの有効値をcodex doctorで検証
 	@set -eu; \
+	source="$(CODEX_SHARED_CONFIG)"; \
+	destination="$(CODEX_SYSTEM_CONFIG)"; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$destination" || ! $(CODEX_CONFIG_SUDO) test -f "$$destination"; then \
+		printf '%s\n' "system config が通常ファイルとして導入されていません: $$destination" >&2; \
+		exit 1; \
+	fi; \
+	if ! $(CODEX_CONFIG_SUDO) cmp -s "$$source" "$$destination"; then \
+		printf '%s\n' "system config が共有設定の正本と一致しません: $$destination" >&2; \
+		exit 1; \
+	fi; \
 	tmp_dir=$$(mktemp -d); \
 	trap 'rm -rf "$$tmp_dir"' EXIT HUP INT TERM; \
-	cp "$(CODEX_SHARED_CONFIG)" "$$tmp_dir/config.toml"; \
-	CODEX_HOME="$$tmp_dir" codex doctor --json >"$$tmp_dir/expected.json" || true; \
-	codex doctor --json >"$$tmp_dir/actual.json" || true; \
+	mkdir "$$tmp_dir/expected-home" "$$tmp_dir/actual-home"; \
+	cp "$$source" "$$tmp_dir/expected-home/config.toml"; \
+	CODEX_HOME="$$tmp_dir/expected-home" codex doctor --json >"$$tmp_dir/expected.json" || true; \
+	CODEX_HOME="$$tmp_dir/actual-home" codex doctor --json >"$$tmp_dir/actual.json" || true; \
 	jq -e --slurpfile expected "$$tmp_dir/expected.json" ' \
 		.checks["config.load"].status == "ok" and \
 		.checks["config.load"].details.model == $$expected[0].checks["config.load"].details.model and \
