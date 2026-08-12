@@ -19,6 +19,10 @@ AGENT_SKILLS := \
 AGENT_SKILLS_DIR ?= $(HOME)/.agents/skills
 CLAUDE_SKILLS_DIR ?= $(HOME)/.claude/skills
 CODEX_SKILLS_DIR ?= $(HOME)/.codex/skills
+CODEX_SHARED_CONFIG := config/codex/config.toml
+CODEX_USER_CONFIG ?= $(HOME)/.codex/config.toml
+CODEX_SYSTEM_CONFIG ?= /etc/codex/config.toml
+CODEX_CONFIG_SUDO ?= sudo
 
 .PHONY: help install _install update doctor \
 	brew-install brew-update brewfile-dump brew-prune \
@@ -28,7 +32,9 @@ CODEX_SKILLS_DIR ?= $(HOME)/.codex/skills
 	gitalias-install gitalias-update \
 	vim-plugins-install vim-plugins-update bat-cache-build \
 	mcp-setup claude-mcp-setup codex-mcp-setup \
-	claude-permissions-promote
+	claude-permissions-promote codex-user-config-migrate \
+	codex-system-config-dry-run codex-system-config-install \
+	codex-system-config-check codex-system-config-verify
 
 help: ## 利用可能なタスク一覧を表示
 	@awk 'BEGIN {FS = ":.*## "; count = 0} /^[a-zA-Z][a-zA-Z0-9_-]*:.*## / {names[count] = $$1; descriptions[count] = $$2; if (length($$1) > width) width = length($$1); count++} END {for (i = 0; i < count; i++) printf "\033[36m%-*s\033[0m %s\n", width + 2, names[i], descriptions[i]}' $(MAKEFILE_LIST)
@@ -81,7 +87,7 @@ brew-prune: ## Brewfile にない Homebrew パッケージを確認後に削除
 		*) printf '%s\n' "削除を中止しました。" ;; \
 	esac
 
-stow-link: ## packages 配下をホームディレクトリへリンク
+stow-link: codex-user-config-migrate ## packages 配下をホームディレクトリへリンク
 	$(MAKE) _clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -t "$$HOME" $(PACKAGES)
 
@@ -228,6 +234,123 @@ claude-mcp-setup: ## Claude Code の MCP サーバーを設定
 codex-mcp-setup: ## Codex の MCP サーバーを設定
 	@codex mcp get chrome-devtools >/dev/null 2>&1 || \
 		codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
+
+codex-user-config-migrate: ## 旧Stow symlinkを内容を保持した通常ファイルへ移行
+	@set -eu; \
+	user_config="$(CODEX_USER_CONFIG)"; \
+	legacy_path='packages/codex/.codex/config.toml'; \
+	if [ ! -L "$$user_config" ]; then \
+		exit 0; \
+	fi; \
+	link_target=$$(readlink "$$user_config"); \
+	case "$$link_target" in \
+		/*) target_path="$$link_target" ;; \
+		*) target_dir=$$(cd "$$(dirname "$$user_config")/$$(dirname "$$link_target")" 2>/dev/null && pwd -P) || { \
+			printf '%s\n' "管理元を確認できない symlink を保持します: $$user_config -> $$link_target" >&2; \
+			exit 1; \
+		}; \
+		target_path="$$target_dir/$$(basename "$$link_target")" ;; \
+	esac; \
+	target_repo=$$(git -C "$$(dirname "$$target_path")" rev-parse --show-toplevel 2>/dev/null) || { \
+		printf '%s\n' "管理外の symlink を保持します: $$user_config -> $$link_target" >&2; \
+		exit 1; \
+	}; \
+	current_origin=$$(git config --get remote.origin.url); \
+	target_origin=$$(git -C "$$target_repo" config --get remote.origin.url); \
+	if [ "$$target_path" != "$$target_repo/$$legacy_path" ] || [ "$$target_origin" != "$$current_origin" ]; then \
+		printf '%s\n' "管理外の symlink を保持します: $$user_config -> $$link_target" >&2; \
+		exit 1; \
+	fi; \
+	tmp_file=$$(mktemp "$$(dirname "$$user_config")/.config.toml.migrate.XXXXXX"); \
+	if [ -f "$$user_config" ]; then \
+		cp -p "$$user_config" "$$tmp_file"; \
+	else \
+		legacy_commit=$$(git -C "$$target_repo" log -1 --format=%H --all -- "$$legacy_path"); \
+		if [ -z "$$legacy_commit" ] || ! git -C "$$target_repo" show "$$legacy_commit:$$legacy_path" >"$$tmp_file"; then \
+			printf '%s\n' "旧 user config の内容を復元できません: $$user_config" >&2; \
+			exit 1; \
+		fi; \
+	fi; \
+	mv -f "$$tmp_file" "$$user_config"; \
+	printf '%s\n' "通常ファイルへ移行しました: $$user_config"
+
+codex-system-config-dry-run: ## system configの適用内容または差分を表示
+	@set -eu; \
+	source="$(CODEX_SHARED_CONFIG)"; \
+	destination="$(CODEX_SYSTEM_CONFIG)"; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$destination" && ! $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
+		printf '%s\n' "壊れた symlink のため内容を比較できません: $$destination" >&2; \
+		exit 1; \
+	fi; \
+	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
+		tmp_file=$$(mktemp); \
+		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$tmp_file"; \
+		if cmp -s "$$tmp_file" "$$source"; then \
+			printf '%s\n' "変更はありません: $$destination"; \
+		else \
+			printf '%s\n' "適用予定の差分: $$destination"; \
+			diff -u "$$tmp_file" "$$source" || true; \
+		fi; \
+		rm -f "$$tmp_file"; \
+	else \
+		printf '%s\n' "新規作成予定: $$destination"; \
+		sed -n '1,$$p' "$$source"; \
+	fi
+
+codex-system-config-install: codex-system-config-dry-run ## 共有Codex設定をsystem configへ導入・更新
+	@set -eu; \
+	source="$(CODEX_SHARED_CONFIG)"; \
+	destination="$(CODEX_SYSTEM_CONFIG)"; \
+	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
+		tmp_file=$$(mktemp); \
+		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$tmp_file"; \
+		if cmp -s "$$tmp_file" "$$source"; then \
+			rm -f "$$tmp_file"; \
+			printf '%s\n' "既に最新です: $$destination"; \
+			exit 0; \
+		fi; \
+		rm -f "$$tmp_file"; \
+		printf '既存の %s を上記内容で更新しますか? [y/N] ' "$$destination"; \
+		read -r answer; \
+		case "$$answer" in y|Y) ;; *) printf '%s\n' '更新を中止しました。'; exit 1 ;; esac; \
+	elif $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
+		printf '%s\n' "壊れた symlink は自動更新しません: $$destination" >&2; \
+		exit 1; \
+	fi; \
+	$(CODEX_CONFIG_SUDO) install -d -m 0755 "$$(dirname "$$destination")"; \
+	$(CODEX_CONFIG_SUDO) install -m 0644 "$$source" "$$destination"; \
+	printf '%s\n' "導入しました: $$destination"
+
+codex-system-config-check: ## 共有Codex設定を一時CODEX_HOMEで非破壊検証
+	@set -eu; \
+	tmp_dir=$$(mktemp -d); \
+	trap 'rm -rf "$$tmp_dir"' EXIT HUP INT TERM; \
+	cp "$(CODEX_SHARED_CONFIG)" "$$tmp_dir/config.toml"; \
+	report="$$tmp_dir/doctor.json"; \
+	CODEX_HOME="$$tmp_dir" codex doctor --json >"$$report" || true; \
+	jq -e ' \
+		.checks["config.load"].status == "ok" and \
+		(.checks["config.load"].details["feature flag overrides"] | contains("runtime_metrics=true")) and \
+		.checks["sandbox.helpers"].details["approval policy"] == "OnRequest" and \
+		.checks["sandbox.helpers"].details["filesystem sandbox"] == "unrestricted" \
+	' "$$report" >/dev/null; \
+	printf '%s\n' '共有Codex設定の読み込みと代表値を確認しました。'
+
+codex-system-config-verify: ## 導入済みsystem configの有効値をcodex doctorで検証
+	@set -eu; \
+	tmp_dir=$$(mktemp -d); \
+	trap 'rm -rf "$$tmp_dir"' EXIT HUP INT TERM; \
+	cp "$(CODEX_SHARED_CONFIG)" "$$tmp_dir/config.toml"; \
+	CODEX_HOME="$$tmp_dir" codex doctor --json >"$$tmp_dir/expected.json" || true; \
+	codex doctor --json >"$$tmp_dir/actual.json" || true; \
+	jq -e --slurpfile expected "$$tmp_dir/expected.json" ' \
+		.checks["config.load"].status == "ok" and \
+		.checks["config.load"].details.model == $$expected[0].checks["config.load"].details.model and \
+		.checks["config.load"].details["feature flag overrides"] == $$expected[0].checks["config.load"].details["feature flag overrides"] and \
+		.checks["sandbox.helpers"].details["approval policy"] == $$expected[0].checks["sandbox.helpers"].details["approval policy"] and \
+		.checks["sandbox.helpers"].details["filesystem sandbox"] == $$expected[0].checks["sandbox.helpers"].details["filesystem sandbox"] \
+	' "$$tmp_dir/actual.json" >/dev/null; \
+	printf '%s\n' '有効なCodex設定の代表値を確認しました。'
 
 claude-permissions-promote: ## WebFetch 履歴のドメインを Claude Code の許可設定へ反映
 	./scripts/promote-webfetch.sh
