@@ -265,24 +265,52 @@ codex-system-config-install: codex-system-config-dry-run ## 共有Codex設定を
 	umask 077; \
 	source="$(CODEX_SHARED_CONFIG)"; \
 	destination="$(CODEX_SYSTEM_CONFIG)"; \
+	destination_dir=$$(dirname "$$destination"); \
+	tmp_file=''; \
+	cleanup() { \
+		if [ -n "$$tmp_file" ]; then \
+			$(CODEX_CONFIG_SUDO) rm -f "$$tmp_file"; \
+		fi; \
+	}; \
+	trap cleanup 0 1 2 15; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
+		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
+		exit 1; \
+	fi; \
 	if $(CODEX_CONFIG_SUDO) test -e "$$destination"; then \
-		tmp_file=$$(mktemp); \
-		trap 'rm -f "$$tmp_file"' 0 1 2 15; \
-		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$tmp_file"; \
-		if cmp -s "$$tmp_file" "$$source"; then \
-			rm -f "$$tmp_file"; \
-			trap - 0 1 2 15; \
+		current_file=$$(mktemp); \
+		trap 'rm -f "$$current_file"; cleanup' 0 1 2 15; \
+		$(CODEX_CONFIG_SUDO) cat "$$destination" >"$$current_file"; \
+		if cmp -s "$$current_file" "$$source"; then \
+			rm -f "$$current_file"; \
+			trap cleanup 0 1 2 15; \
 			printf '%s\n' "既に最新です: $$destination"; \
 			exit 0; \
 		fi; \
-		rm -f "$$tmp_file"; \
-		trap - 0 1 2 15; \
+		rm -f "$$current_file"; \
+		trap cleanup 0 1 2 15; \
 		printf '既存の %s を上記内容で更新しますか? [y/N] ' "$$destination"; \
 		read -r answer; \
 		case "$$answer" in y|Y) ;; *) printf '%s\n' '更新を中止しました。'; exit 1 ;; esac; \
 	fi; \
-	$(CODEX_CONFIG_SUDO) install -d -m 0755 "$$(dirname "$$destination")"; \
-	$(CODEX_CONFIG_SUDO) install -m 0644 "$$source" "$$destination"; \
+	$(CODEX_CONFIG_SUDO) install -d -m 0755 "$$destination_dir"; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
+		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
+		exit 1; \
+	fi; \
+	tmp_file=$$($(CODEX_CONFIG_SUDO) mktemp "$$destination_dir/.config.toml.install.XXXXXX"); \
+	$(CODEX_CONFIG_SUDO) install -m 0644 "$$source" "$$tmp_file"; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$tmp_file" || ! $(CODEX_CONFIG_SUDO) test -f "$$tmp_file"; then \
+		printf '%s\n' "一時ファイルが通常ファイルではありません: $$tmp_file" >&2; \
+		exit 1; \
+	fi; \
+	if $(CODEX_CONFIG_SUDO) test -L "$$destination"; then \
+		printf '%s\n' "symlink は自動処理しません: $$destination" >&2; \
+		exit 1; \
+	fi; \
+	$(CODEX_CONFIG_SUDO) mv -fh "$$tmp_file" "$$destination"; \
+	tmp_file=''; \
+	trap - 0 1 2 15; \
 	printf '%s\n' "導入しました: $$destination"
 
 codex-system-config-check: ## 共有Codex設定を一時CODEX_HOMEで非破壊検証
