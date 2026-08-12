@@ -20,7 +20,6 @@ AGENT_SKILLS_DIR ?= $(HOME)/.agents/skills
 CLAUDE_SKILLS_DIR ?= $(HOME)/.claude/skills
 CODEX_SKILLS_DIR ?= $(HOME)/.codex/skills
 CODEX_SHARED_CONFIG := config/codex/config.toml
-CODEX_USER_CONFIG ?= $(HOME)/.codex/config.toml
 CODEX_SYSTEM_CONFIG ?= /etc/codex/config.toml
 CODEX_CONFIG_SUDO ?= sudo
 
@@ -32,7 +31,7 @@ CODEX_CONFIG_SUDO ?= sudo
 	gitalias-install gitalias-update \
 	vim-plugins-install vim-plugins-update bat-cache-build \
 	mcp-setup claude-mcp-setup codex-mcp-setup \
-	claude-permissions-promote codex-user-config-migrate \
+	claude-permissions-promote \
 	codex-system-config-dry-run codex-system-config-install \
 	codex-system-config-check codex-system-config-verify
 
@@ -87,7 +86,7 @@ brew-prune: ## Brewfile にない Homebrew パッケージを確認後に削除
 		*) printf '%s\n' "削除を中止しました。" ;; \
 	esac
 
-stow-link: codex-user-config-migrate ## packages 配下をホームディレクトリへリンク
+stow-link: ## packages 配下をホームディレクトリへリンク
 	$(MAKE) _clean-legacy-claude-skills-stow
 	cd packages && stow -v --no-folding -t "$$HOME" $(PACKAGES)
 
@@ -234,61 +233,6 @@ claude-mcp-setup: ## Claude Code の MCP サーバーを設定
 codex-mcp-setup: ## Codex の MCP サーバーを設定
 	@codex mcp get chrome-devtools >/dev/null 2>&1 || \
 		codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
-
-codex-user-config-migrate: ## 旧Stow symlinkを内容を保持した通常ファイルへ移行
-	@set -eu; \
-	user_config="$(CODEX_USER_CONFIG)"; \
-	legacy_path='packages/codex/.codex/config.toml'; \
-	if [ ! -L "$$user_config" ]; then \
-		exit 0; \
-	fi; \
-	link_target=$$(readlink "$$user_config"); \
-	case "$$link_target" in \
-		/*) target_path="$$link_target" ;; \
-		*) target_dir=$$(cd "$$(dirname "$$user_config")/$$(dirname "$$link_target")" 2>/dev/null && pwd -P) || { \
-			printf '%s\n' "管理元を確認できない symlink を保持します: $$user_config -> $$link_target" >&2; \
-			exit 1; \
-		}; \
-		target_path="$$target_dir/$$(basename "$$link_target")" ;; \
-	esac; \
-	target_repo=$$(git -C "$$(dirname "$$target_path")" rev-parse --show-toplevel 2>/dev/null) || { \
-		printf '%s\n' "管理外の symlink を保持します: $$user_config -> $$link_target" >&2; \
-		exit 1; \
-	}; \
-	current_common_dir=$$(git rev-parse --path-format=absolute --git-common-dir); \
-	target_common_dir=$$(git -C "$$target_repo" rev-parse --path-format=absolute --git-common-dir); \
-	current_origin=$$(git config --get remote.origin.url 2>/dev/null || true); \
-	target_origin=$$(git -C "$$target_repo" config --get remote.origin.url 2>/dev/null || true); \
-	normalize_origin() { printf '%s\n' "$$1" | sed -E 's#^git@github.com:#https://github.com/#; s#^ssh://git@github.com/#https://github.com/#; s#\.git$$##'; }; \
-	current_origin=$$(normalize_origin "$$current_origin"); \
-	target_origin=$$(normalize_origin "$$target_origin"); \
-	if [ "$$target_path" != "$$target_repo/$$legacy_path" ] || { \
-		[ "$$target_common_dir" != "$$current_common_dir" ] && { \
-			[ -z "$$current_origin" ] || [ "$$target_origin" != "$$current_origin" ]; \
-		}; \
-	}; then \
-		printf '%s\n' "管理外の symlink を保持します: $$user_config -> $$link_target" >&2; \
-		exit 1; \
-	fi; \
-	tmp_file=$$(mktemp "$$(dirname "$$user_config")/.config.toml.migrate.XXXXXX"); \
-	trap 'rm -f "$$tmp_file"' 0 1 2 15; \
-	if [ -f "$$user_config" ]; then \
-		cp -p "$$user_config" "$$tmp_file"; \
-	else \
-		legacy_commit=$$(for commit in $$(git -C "$$target_repo" log --format=%H --all -- "$$legacy_path"); do \
-			if git -C "$$target_repo" cat-file -e "$$commit:$$legacy_path" 2>/dev/null; then \
-				printf '%s\n' "$$commit"; \
-				break; \
-			fi; \
-		done); \
-		if [ -z "$$legacy_commit" ] || ! git -C "$$target_repo" show "$$legacy_commit:$$legacy_path" >"$$tmp_file"; then \
-			printf '%s\n' "旧 user config の内容を復元できません: $$user_config" >&2; \
-			exit 1; \
-		fi; \
-	fi; \
-	mv -f "$$tmp_file" "$$user_config"; \
-	trap - 0 1 2 15; \
-	printf '%s\n' "通常ファイルへ移行しました: $$user_config"
 
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
 	@set -eu; \

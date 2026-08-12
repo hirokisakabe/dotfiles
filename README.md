@@ -31,7 +31,38 @@ make codex-system-config-verify
 
 既存の管理外 `/etc/codex/config.toml` が異なる場合、installターゲットは差分を表示して確認を求め、同意なしには上書きしない。同じ内容が導入済みなら何も変更しない。system configのsymlinkはリンク先を意図せず読み書きしないよう、正常・リンク切れを問わず自動処理しない。`make codex-system-config-check` は実マシンのsystem/user configを変更せず、共有設定を一時的なuser layerとして読み込み、現在のsystem layerと組み合わせたときの構文と代表値を検査する。Codexにはsystem layerを無効化する診断オプションがないため、完全な単体検査ではない。
 
-旧構成からの移行では、`make stow-link` が先に `make codex-user-config-migrate` を実行する。`~/.codex/config.toml` がこのdotfilesの旧 `packages/codex/.codex/config.toml` を指すsymlinkの場合だけ、現在の内容（リンク先が削除済みならGit履歴上の最終内容）を保持した通常ファイルへ置き換える。既存の通常ファイルには触れず、管理外symlinkはエラーにして自動変更しない。移行後はuser config内の共有キーを必要に応じて削除し、project trust、hook承認、marketplace、Desktop / MCPのパスなどmachine-localな設定・状態だけを残す。
+旧構成から更新する場合は、`make stow-link` の前に一度だけ次を実行する。通常ファイルなら何も変更せず、このdotfilesの旧 `packages/codex/.codex/config.toml` を指すsymlinkだけを、内容を退避してから同じパスの通常ファイルへ置き換える。リンク先がすでに削除されていてもGit履歴から最終内容を復元する。対象外のsymlinkでは停止するため、リンク先を意図せず変更しない。
+
+```sh
+(
+  set -eu
+  user_config="$HOME/.codex/config.toml"
+  legacy_path="packages/codex/.codex/config.toml"
+
+  [ -L "$user_config" ] || exit 0
+  link_target=$(readlink "$user_config")
+  case "$link_target" in
+    *"/$legacy_path") ;;
+    *) echo "対象外のsymlinkを保持します: $user_config -> $link_target" >&2; exit 1 ;;
+  esac
+
+  tmp_file=$(mktemp "$HOME/.codex/config.toml.migrate.XXXXXX")
+  trap 'rm -f "$tmp_file"' EXIT HUP INT TERM
+  if [ -e "$user_config" ]; then
+    cp -pL "$user_config" "$tmp_file"
+  else
+    legacy_commit=$(git log --all --format=%H -- "$legacy_path" | while read -r commit; do
+      git cat-file -e "$commit:$legacy_path" 2>/dev/null && { echo "$commit"; break; }
+    done)
+    [ -n "$legacy_commit" ]
+    git show "$legacy_commit:$legacy_path" >"$tmp_file"
+  fi
+  mv "$tmp_file" "$user_config"
+  trap - EXIT HUP INT TERM
+)
+```
+
+この手順はdotfilesリポジトリのルートで実行する。完了後に `test -f "$HOME/.codex/config.toml" && test ! -L "$HOME/.codex/config.toml"` で通常ファイル化を確認してから `make stow-link` を実行する。user config内の共有キーは必要に応じて削除し、project trust、hook承認、marketplace、Desktop / MCPのパスなどmachine-localな設定・状態だけを残す。
 
 `packages/codex/.codex/` では引き続き `AGENTS.md` と `rules/default.rules` だけをStow管理する。project trust、hook状態、marketplaceキャッシュ、Codex Desktopが生成したMCP/runtimeの絶対パス、TUIのmachine-local状態は共有設定へ追加しない。
 
