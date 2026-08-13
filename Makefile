@@ -6,6 +6,7 @@ AGENT_SKILLS := \
 	hirokisakabe/issuekit:acceptance-check \
 	hirokisakabe/issuekit:cross-review \
 	hirokisakabe/issuekit:issue-create \
+	hirokisakabe/issuekit:issue-discover \
 	hirokisakabe/issuekit:issue-dispatch \
 	hirokisakabe/issuekit:issue-implement \
 	hirokisakabe/issuekit:issue-investigate \
