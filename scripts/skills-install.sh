@@ -10,7 +10,7 @@ is_managed_skill() {
   local skill_file_path expected_repository expected_skill_path
   skill_file_path="$1/SKILL.md"
   expected_repository="https://github.com/$2"
-  expected_skill_path="skills/$3"
+  expected_skill_path="$3"
   [ -f "$skill_file_path" ] || return 1
   awk -v expected_repository="$expected_repository" -v expected_skill_path="$expected_skill_path" '
     NR == 1 { if ($0 != "---") exit 1; frontmatter = 1; next }
@@ -33,24 +33,29 @@ mkdir -p "$AGENT_SKILLS_DIR" "$CLAUDE_SKILLS_DIR"
 
 for skill_spec in "$@"; do
   repository=${skill_spec%:*}
-  skill=${skill_spec#*:}
+  skill_source=${skill_spec#*:}
+  skill=${skill_source##*/}
+  case "$skill_source" in
+    */*) expected_skill_path="$skill_source" ;;
+    *) expected_skill_path="skills/$skill_source" ;;
+  esac
   canonical_path="$AGENT_SKILLS_DIR/$skill"
   claude_path="$CLAUDE_SKILLS_DIR/$skill"
   codex_path="$CODEX_SKILLS_DIR/$skill"
 
   if [ -L "$canonical_path" ]; then
-    if is_managed_skill "$canonical_path" "$repository" "$skill"; then
+    if is_managed_skill "$canonical_path" "$repository" "$expected_skill_path"; then
       rm -f "$canonical_path"
     else
       printf '%s\n' "管理外の symlink と競合しています: $canonical_path" >&2
       exit 1
     fi
-  elif [ -e "$canonical_path" ] && ! is_managed_skill "$canonical_path" "$repository" "$skill"; then
+  elif [ -e "$canonical_path" ] && ! is_managed_skill "$canonical_path" "$repository" "$expected_skill_path"; then
     printf '%s\n' "管理外の既存 skill と競合しています: $canonical_path" >&2
     exit 1
   fi
 
-  gh skill install "$repository" "$skill" --dir "$AGENT_SKILLS_DIR" -f
+  gh skill install "$repository" "$skill_source" --dir "$AGENT_SKILLS_DIR" -f
 
   if [ -L "$claude_path" ]; then
     target=$(readlink "$claude_path")
@@ -58,13 +63,13 @@ for skill_spec in "$@"; do
       :
     elif [ ! -e "$claude_path" ]; then
       printf '%s\n' "既存の壊れた外部 symlink を保持します: $claude_path -> $target"
-    elif is_managed_skill "$claude_path" "$repository" "$skill"; then
+    elif is_managed_skill "$claude_path" "$repository" "$expected_skill_path"; then
       rm -f "$claude_path"
     else
       printf '%s\n' "既存の外部 symlink を保持します: $claude_path -> $target"
     fi
   elif [ -e "$claude_path" ]; then
-    if is_managed_skill "$claude_path" "$repository" "$skill"; then
+    if is_managed_skill "$claude_path" "$repository" "$expected_skill_path"; then
       rm -rf "$claude_path"
     else
       printf '%s\n' "管理外の既存 skill を保持します: $claude_path"
@@ -82,13 +87,13 @@ for skill_spec in "$@"; do
 
   if [ -L "$codex_path" ]; then
     target=$(readlink "$codex_path")
-    if [ -e "$codex_path" ] && { [ "$codex_path" -ef "$canonical_path" ] || is_managed_skill "$codex_path" "$repository" "$skill"; }; then
+    if [ -e "$codex_path" ] && { [ "$codex_path" -ef "$canonical_path" ] || is_managed_skill "$codex_path" "$repository" "$expected_skill_path"; }; then
       rm -f "$codex_path"
     else
       printf '%s\n' "既存の外部 symlink を保持します: $codex_path -> $target"
     fi
   elif [ -e "$codex_path" ]; then
-    if is_managed_skill "$codex_path" "$repository" "$skill"; then
+    if is_managed_skill "$codex_path" "$repository" "$expected_skill_path"; then
       rm -rf "$codex_path"
     else
       printf '%s\n' "管理外の既存 skill を保持します: $codex_path"
