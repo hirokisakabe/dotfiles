@@ -15,6 +15,7 @@ AGENT_SKILLS := \
 	hirokisakabe/issuekit:worktree-start \
 	anthropics/skills:frontend-design \
 	anthropics/skills:skill-creator \
+	jakubkrehel/make-interfaces-feel-better:make-interfaces-feel-better \
 	vercel-labs/agent-browser:agent-browser
 
 AGENT_SKILLS_DIR ?= $(HOME)/.agents/skills
