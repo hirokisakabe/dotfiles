@@ -7,10 +7,11 @@ if wezterm.config_builder then
 end
 
 local background = '#f7f8f8'
-local surface = '#eceff0'
+local surface = '#e8ebec'
 local foreground = '#1f2326'
 local muted = '#737a7e'
 local accent = '#1f2326'
+local border = '#cbd1d4'
 
 -- Atrium Library: cool architectural whites, black details, and open space.
 config.color_schemes = {
@@ -54,15 +55,16 @@ config.font = wezterm.font_with_fallback {
 
 config.window_frame = {
   font = wezterm.font { family = "OverpassM Nerd Font" },
-  font_size = 15.0,
+  font_size = 13.0,
   active_titlebar_bg = surface,
   inactive_titlebar_bg = surface,
+  active_titlebar_border_bottom = border,
+  inactive_titlebar_border_bottom = border,
 }
 
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
 config.show_new_tab_button_in_tab_bar = false
 config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
-config.tab_max_width = 44
 config.window_padding = {
   left = 16,
   right = 16,
@@ -72,7 +74,6 @@ config.window_padding = {
 
 config.colors = {
   tab_bar = {
-    background = surface,
     active_tab = {
       bg_color = background,
       fg_color = foreground,
@@ -83,7 +84,7 @@ config.colors = {
       fg_color = muted,
     },
     inactive_tab_hover = {
-      bg_color = '#dfe3e5',
+      bg_color = '#dde1e3',
       fg_color = foreground,
     },
     new_tab = {
@@ -91,7 +92,7 @@ config.colors = {
       fg_color = muted,
     },
     new_tab_hover = {
-      bg_color = '#dfe3e5',
+      bg_color = '#dde1e3',
       fg_color = foreground,
     },
   },
