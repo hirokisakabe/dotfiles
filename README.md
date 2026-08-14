@@ -33,6 +33,8 @@ make codex-system-config-verify
 
 `make skills-update` は `~/.agents/skills` を明示して、共通配置されたskillを更新する。
 
+`AGENT_SKILLS` には `owner/repo:skill-name` に加えて、`owner/repo:path/to/skill` 形式でリポジトリ内のnested skillも指定できる。
+
 ## 主要コマンド
 
 | Command                            | 用途                                              |

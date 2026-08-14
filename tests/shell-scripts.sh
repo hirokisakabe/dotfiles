@@ -28,14 +28,19 @@ test_skills_install() {
 #!/usr/bin/env bash
 set -euo pipefail
 repository=$3
-skill=$4
+skill_source=$4
+skill=${skill_source##*/}
 directory=$6
+case "$skill_source" in
+  */*) skill_path="$skill_source" ;;
+  *) skill_path="skills/$skill_source" ;;
+esac
 mkdir -p "$directory/$skill"
 cat >"$directory/$skill/SKILL.md" <<SKILL
 ---
 metadata:
     github-repo: https://github.com/$repository
-    github-path: skills/$skill
+    github-path: $skill_path
     github-tree-sha: 0123456789abcdef0123456789abcdef01234567
 ---
 SKILL
@@ -44,12 +49,20 @@ EOF
 
   make -s -C "$repo_root" skills-install \
     HOME="$home" PATH="$bin_dir:$PATH" \
-    AGENT_SKILLS='owner/repo:example' \
+    AGENT_SKILLS='owner/repo:example owner/repo:collection/skills/nested-example' \
     AGENT_SKILLS_DIR="$home/.agents/skills" \
     CLAUDE_SKILLS_DIR="$home/.claude/skills" \
     CODEX_SKILLS_DIR="$home/.codex/skills"
   [ -f "$home/.agents/skills/example/SKILL.md" ] || fail 'skill was not installed'
+  [ -f "$home/.agents/skills/nested-example/SKILL.md" ] || fail 'nested skill was not installed'
   [ -L "$home/.claude/skills/example" ] || fail 'Claude skill link was not created'
+  [ -L "$home/.claude/skills/nested-example" ] || fail 'nested Claude skill link was not created'
+
+  HOME="$home" PATH="$bin_dir:$PATH" \
+    AGENT_SKILLS_DIR="$home/.agents/skills" \
+    CLAUDE_SKILLS_DIR="$home/.claude/skills" \
+    CODEX_SKILLS_DIR="$home/.codex/skills" \
+    "$repo_root/scripts/skills-install.sh" owner/repo:collection/skills/nested-example
 
   mkdir -p "$home/.agents/skills/unmanaged"
   printf 'unmanaged\n' >"$home/.agents/skills/unmanaged/SKILL.md"

@@ -16,6 +16,11 @@ AGENT_SKILLS := \
 	anthropics/skills:frontend-design \
 	anthropics/skills:skill-creator \
 	jakubkrehel/make-interfaces-feel-better:make-interfaces-feel-better \
+	Owl-Listener/designer-skills:visual-critique/skills/critique-affordance \
+	Owl-Listener/designer-skills:visual-critique/skills/critique-composition \
+	Owl-Listener/designer-skills:visual-critique/skills/critique-information-density \
+	Owl-Listener/designer-skills:visual-critique/skills/critique-visual-hierarchy \
+	Owl-Listener/designer-skills:designer-toolkit/skills/ux-writing \
 	vercel-labs/agent-browser:agent-browser
 
 AGENT_SKILLS_DIR ?= $(HOME)/.agents/skills
