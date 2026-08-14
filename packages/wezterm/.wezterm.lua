@@ -60,6 +60,7 @@ config.window_frame = {
 }
 
 config.use_fancy_tab_bar = false
+config.show_new_tab_button_in_tab_bar = false
 config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
 config.tab_max_width = 44
 config.window_padding = {
@@ -104,6 +105,8 @@ config.front_end = 'WebGpu'
 config.freetype_load_flags = 'NO_HINTING'
 
 config.font_size = 13.0
+config.line_height = 1.08
+config.cell_width = 1.01
 config.scrollback_lines = 10000
 config.keys = {
   {

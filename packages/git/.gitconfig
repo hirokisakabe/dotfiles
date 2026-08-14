@@ -34,24 +34,24 @@ hooksPath = ~/.git-hooks
 diffFilter = delta --color-only
 
 [delta]
-# Frosted Aqua palette
+# Atrium Library palette
 navigate = true
 line-numbers = true
-syntax-theme = base16
-minus-style = syntax "#f4dce2"
-minus-emph-style = syntax "#ebc0ca"
-plus-style = syntax "#dcefe7"
-plus-emph-style = syntax "#b9dfd0"
+syntax-theme = ansi
+minus-style = syntax "#f2e6e6"
+minus-emph-style = syntax "#e8d2d2"
+plus-style = syntax "#e8eee8"
+plus-emph-style = syntax "#d6e2d6"
 zero-style = syntax
-line-numbers-minus-style = "#b84f68"
-line-numbers-plus-style = "#3f8969"
-line-numbers-left-style = "#6d8496"
-line-numbers-right-style = "#6d8496"
-line-numbers-zero-style = "#6d8496"
-file-style = "#4c87c7" bold
-file-decoration-style = "#8abdd0" ul
-hunk-header-style = "#8076b3" bold
-hunk-header-decoration-style = "#8abdd0" box
+line-numbers-minus-style = "#945f5f"
+line-numbers-plus-style = "#687768"
+line-numbers-left-style = "#737a7e"
+line-numbers-right-style = "#737a7e"
+line-numbers-zero-style = "#737a7e"
+file-style = "#687078" bold
+file-decoration-style = "#cbd1d4" ul
+hunk-header-style = "#756d7a" bold
+hunk-header-decoration-style = "#cbd1d4" box
 
 [merge]
 conflictStyle = zdiff3
