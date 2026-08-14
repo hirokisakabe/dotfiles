@@ -43,18 +43,18 @@ alias gwr='cd $(git worktree list | head -1 | awk "{print \$1}")'
 # starship
 eval "$(starship init zsh)"
 
-# Frosted Aqua color palette
+# Atrium Library palette
 # eza
-export EZA_COLORS="di=1;38;2;76;135;199:ln=38;2;55;138;155:ex=38;2;63;137;105:fi=38;2;32;59;82:*.md=38;2;128;118;179:*.json=38;2;150;104;36:*.lock=38;2;109;132;150:*.toml=38;2;150;104;36:*.yml=38;2;150;104;36:*.yaml=38;2;150;104;36"
+export EZA_COLORS="di=1;38;2;89;97;102:ln=38;2;101;117;117:ex=38;2;104;119;104:fi=38;2;31;35;38:*.md=38;2;117;109;122:*.json=38;2;130;116;88:*.lock=38;2;115;122;126:*.toml=38;2;130;116;88:*.yml=38;2;130;116;88:*.yaml=38;2;130;116;88"
 
 # fzf
 export FZF_DEFAULT_OPTS="
   --border=rounded --preview-border=rounded --margin=1 --padding=1,2
-  --color=fg:#203b52,bg:#ddf4fa,hl:#4c87c7
-  --color=fg+:#12283a,bg+:#c7eaf6,hl+:#5e9bd9
-  --color=info:#3f8969,prompt:#8076b3,pointer:#b84f68
-  --color=marker:#966824,spinner:#378a9b,header:#4c87c7
-  --color=border:#8abdd0"
+  --color=fg:#1f2326,bg:#f7f8f8,hl:#687078
+  --color=fg+:#1f2326,bg+:#dce1e3,hl+:#596166
+  --color=info:#687768,prompt:#596166,pointer:#687078
+  --color=marker:#827458,spinner:#657575,header:#737a7e
+  --color=border:#cbd1d4"
 source <(fzf --zsh)
 
 # zoxide

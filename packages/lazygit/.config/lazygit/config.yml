@@ -1,24 +1,24 @@
-# Frosted Aqua palette
+# Atrium Library palette
 gui:
   theme:
     activeBorderColor:
-      - "#4c87c7"
+      - "#596166"
       - bold
     inactiveBorderColor:
-      - "#8abdd0"
+      - "#cbd1d4"
     optionsTextColor:
-      - "#5e9bd9"
+      - "#687078"
     selectedLineBgColor:
-      - "#c7eaf6"
+      - "#dce1e3"
     selectedRangeBgColor:
-      - "#b4dfed"
+      - "#cbd1d4"
     cherryPickedCommitBgColor:
-      - "#b9dfd0"
+      - "#d6e2d6"
     cherryPickedCommitFgColor:
-      - "#3f8969"
+      - "#687768"
     unstagedChangesColor:
-      - "#b84f68"
+      - "#945f5f"
     defaultFgColor:
-      - "#203b52"
+      - "#1f2326"
   authorColors:
-    "*": "#8076b3"
+    "*": "#756d7a"
