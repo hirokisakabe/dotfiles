@@ -65,7 +65,6 @@ config.window_frame = {
 config.use_fancy_tab_bar = true
 config.show_new_tab_button_in_tab_bar = false
 config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
-config.tab_max_width = 44
 config.window_padding = {
   left = 16,
   right = 16,
@@ -75,7 +74,6 @@ config.window_padding = {
 
 config.colors = {
   tab_bar = {
-    background = surface,
     active_tab = {
       bg_color = background,
       fg_color = foreground,
