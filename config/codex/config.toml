@@ -7,6 +7,7 @@ suppress_unstable_features_warning = true
 
 [features]
 runtime_metrics = true
+worktrees = true
 
 [sandbox_workspace_write]
 network_access = true
