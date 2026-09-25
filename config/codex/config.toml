@@ -1,16 +1,4 @@
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
-personality = "pragmatic"
-approval_policy = "on-request"
-sandbox_mode = "danger-full-access"
-suppress_unstable_features_warning = true
-
-[features]
-runtime_metrics = true
-worktrees = true
-
-[sandbox_workspace_write]
-network_access = true
 
 [tui]
 status_line = [
@@ -22,4 +10,3 @@ status_line = [
   "five-hour-limit",
   "weekly-limit",
 ]
-status_line_use_colors = true
