@@ -103,16 +103,36 @@ install_config() {
 }
 
 check_config() {
-  local report
+  local config_entries report
+  config_entries=$(awk '
+    /^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
+    /^[[:space:]]*\[[^]]+\][[:space:]]*$/ {
+      line = $0
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", line)
+      print line
+      next
+    }
+    /^[[:space:]]*[[:alnum:]_-]+[[:space:]]*=/ {
+      line = $0
+      sub(/^[[:space:]]*/, "", line)
+      sub(/[[:space:]]*=.*/, "", line)
+      print line
+    }
+  ' "$CODEX_SHARED_CONFIG")
+  if [ "$config_entries" != "$(printf '%s\n' model_reasoning_effort '[tui]' status_line)" ]; then
+    printf '%s\n' '共有Codex設定にはreasoning品質とTUI status line以外を追加しないでください。' >&2
+    exit 1
+  fi
+  if ! grep -Eq '^model_reasoning_effort[[:space:]]*=[[:space:]]*"medium"[[:space:]]*$' "$CODEX_SHARED_CONFIG"; then
+    printf '%s\n' 'model_reasoning_effort は medium を指定してください。' >&2
+    exit 1
+  fi
   cleanup_local_path=$(mktemp -d)
   cp "$CODEX_SHARED_CONFIG" "$cleanup_local_path/config.toml"
   report="$cleanup_local_path/doctor.json"
   CODEX_HOME="$cleanup_local_path" codex doctor --json >"$report" || true
   jq -e '
-    .checks["config.load"].status == "ok" and
-    (.checks["config.load"].details["feature flag overrides"] | contains("runtime_metrics=true")) and
-    .checks["sandbox.helpers"].details["approval policy"] == "OnRequest" and
-    .checks["sandbox.helpers"].details["filesystem sandbox"] == "unrestricted"
+    .checks["config.load"].status == "ok"
   ' "$report" >/dev/null
   rm -rf "$cleanup_local_path"
   cleanup_local_path=''
