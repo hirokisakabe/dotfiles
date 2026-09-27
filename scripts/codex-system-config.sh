@@ -46,7 +46,44 @@ reject_destination_symlink() {
   fi
 }
 
+validate_shared_config() {
+  python3 - "$CODEX_SHARED_CONFIG" <<'PY'
+import sys
+import tomllib
+
+config_path = sys.argv[1]
+try:
+    with open(config_path, "rb") as config_file:
+        config = tomllib.load(config_file)
+except (OSError, tomllib.TOMLDecodeError) as error:
+    print(f"共有Codex設定を読み込めません: {error}", file=sys.stderr)
+    raise SystemExit(1)
+
+if set(config) != {"model_reasoning_effort", "tui"}:
+    print(
+        "共有Codex設定にはreasoning品質とTUI status line以外を追加しないでください。",
+        file=sys.stderr,
+    )
+    raise SystemExit(1)
+if config["model_reasoning_effort"] != "medium":
+    print("model_reasoning_effort は medium を指定してください。", file=sys.stderr)
+    raise SystemExit(1)
+
+tui = config["tui"]
+if not isinstance(tui, dict) or set(tui) != {"status_line"}:
+    print("TUI設定にはstatus_line以外を追加しないでください。", file=sys.stderr)
+    raise SystemExit(1)
+status_line = tui["status_line"]
+if not isinstance(status_line, list) or not status_line or not all(
+    isinstance(item, str) for item in status_line
+):
+    print("tui.status_line は1件以上の文字列配列で指定してください。", file=sys.stderr)
+    raise SystemExit(1)
+PY
+}
+
 dry_run() {
+  validate_shared_config
   umask 077
   reject_destination_symlink
   if privileged test -e "$CODEX_SYSTEM_CONFIG"; then
@@ -68,6 +105,7 @@ dry_run() {
 
 install_config() {
   local destination_dir answer
+  validate_shared_config
   umask 077
   destination_dir=$(dirname "$CODEX_SYSTEM_CONFIG")
 
@@ -104,15 +142,13 @@ install_config() {
 
 check_config() {
   local report
+  validate_shared_config
   cleanup_local_path=$(mktemp -d)
   cp "$CODEX_SHARED_CONFIG" "$cleanup_local_path/config.toml"
   report="$cleanup_local_path/doctor.json"
   CODEX_HOME="$cleanup_local_path" codex doctor --json >"$report" || true
   jq -e '
-    .checks["config.load"].status == "ok" and
-    (.checks["config.load"].details["feature flag overrides"] | contains("runtime_metrics=true")) and
-    .checks["sandbox.helpers"].details["approval policy"] == "OnRequest" and
-    .checks["sandbox.helpers"].details["filesystem sandbox"] == "unrestricted"
+    .checks["config.load"].status == "ok"
   ' "$report" >/dev/null
   rm -rf "$cleanup_local_path"
   cleanup_local_path=''
@@ -120,6 +156,7 @@ check_config() {
 }
 
 verify_config() {
+  validate_shared_config
   if privileged test -L "$CODEX_SYSTEM_CONFIG" || ! privileged test -f "$CODEX_SYSTEM_CONFIG"; then
     printf '%s\n' "system config が通常ファイルとして導入されていません: $CODEX_SYSTEM_CONFIG" >&2
     exit 1

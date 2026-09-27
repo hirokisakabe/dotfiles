@@ -37,7 +37,6 @@ CODEX_CONFIG_SUDO ?= sudo
 	gh-extensions-install gh-extensions-update \
 	gitalias-install gitalias-update \
 	vim-plugins-install vim-plugins-update bat-cache-build \
-	claude-permissions-promote \
 	codex-system-config-dry-run codex-system-config-install \
 	codex-system-config-check codex-system-config-verify
 
@@ -170,9 +169,6 @@ codex-system-config-check: ## 共有Codex設定を一時CODEX_HOMEで非破壊�
 codex-system-config-verify: ## 導入済みsystem configの有効値をcodex doctorで検証
 	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
 		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh verify
-
-claude-permissions-promote: ## WebFetch 履歴のドメインを Claude Code の許可設定へ反映
-	./scripts/promote-webfetch.sh
 
 doctor: ## dotfiles のセットアップ状態を読み取り専用で検査
 	@./scripts/doctor.sh $(PACKAGES)

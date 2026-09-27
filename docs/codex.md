@@ -22,6 +22,8 @@ make codex-system-config-verify
 make codex-system-config-check
 ```
 
+共有設定では、モデルを固定せずCodexの現行デフォルトへ追従する。明示するのは、意図的な品質設定である `model_reasoning_effort = "medium"` と、TUIのstatus lineだけとする。approval、sandbox、network、feature flagは共有設定で上書きせず、Codexの標準設定と実行環境のpolicyに委ねる。
+
 ## system config導入時の安全設計
 
 - dry-runは、導入先が未作成なら新規作成する内容を、既存ファイルなら正本との差分を表示する。
@@ -31,13 +33,9 @@ make codex-system-config-check
 - installは一時ファイルを通常ファイルとして作成してから導入先へ移動し、不完全な内容が残ることを避ける。
 - verifyは導入先が通常ファイルであり、正本と一致することを確認してから有効な代表値を検査する。
 
-## `danger-full-access` の注意
-
-共有設定の `sandbox_mode = "danger-full-access"` は、個人専用macOSでの利用を前提とする。この設定ではCodexのfilesystem sandboxによる制限がないため、共有端末へそのまま導入しない。共有端末で利用する場合は、正本の値を `workspace-write` など用途に合う制限付きモードへ変更してから導入する。
-
 ## `codex-system-config-check` の制約
 
-`make codex-system-config-check` は共有設定を一時的なuser layerとして読み込み、現在のsystem layerと組み合わせた状態で構文と代表値を検査する。実マシンの設定ファイルは変更しない。
+共有設定のdry-run、install、check、verifyはすべて、TOMLを構造として読み取り、reasoning品質とTUI status line以外を上書きしていないことを先に検査する。`make codex-system-config-check` は、さらに共有設定を一時的なuser layerとして読み込み、現在のsystem layerと組み合わせて構文を検査する。実マシンの設定ファイルは変更しない。
 
 Codexにはsystem layerを無効化する診断オプションがないため、この検査は共有設定だけの完全な単体検査ではない。実際に導入したsystem configの確認には `make codex-system-config-verify` を使用する。
 
