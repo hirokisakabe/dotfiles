@@ -90,6 +90,18 @@ write_minimal_codex_config() {
   printf '%s\n' 'model_reasoning_effort = "medium"' '' '[tui]' 'status_line = ["model-with-reasoning"]' >"$1"
 }
 
+assert_codex_config_rejected() {
+  local destination output source
+  source=$1
+  destination=$2
+  if output=$(PATH="$bin_dir:$PATH" CODEX_SHARED_CONFIG="$source" \
+    CODEX_SYSTEM_CONFIG="$destination" CODEX_CONFIG_SUDO='' \
+    "$repo_root/scripts/codex-system-config.sh" check 2>&1); then
+    fail 'shared Codex config accepted an unrelated override'
+  fi
+  assert_contains "$output" '以外を追加しないでください'
+}
+
 test_codex_system_config() {
   local case_dir source destination missing_source output target
   case_dir="$test_root/codex"
@@ -112,12 +124,29 @@ test_codex_system_config() {
     "$repo_root/scripts/codex-system-config.sh" check >/dev/null
 
   printf '%s\n' 'sandbox_mode = "danger-full-access"' >>"$source"
+  assert_codex_config_rejected "$source" "$destination"
   if output=$(PATH="$bin_dir:$PATH" CODEX_SHARED_CONFIG="$source" \
     CODEX_SYSTEM_CONFIG="$destination" CODEX_CONFIG_SUDO='' \
-    "$repo_root/scripts/codex-system-config.sh" check 2>&1); then
-    fail 'shared Codex config accepted an unrelated override'
+    "$repo_root/scripts/codex-system-config.sh" install 2>&1); then
+    fail 'install accepted an unrelated Codex override'
   fi
-  assert_contains "$output" 'reasoning品質とTUI status line以外'
+  assert_contains "$output" '以外を追加しないでください'
+  if output=$(PATH="$bin_dir:$PATH" CODEX_SHARED_CONFIG="$source" \
+    CODEX_SYSTEM_CONFIG="$destination" CODEX_CONFIG_SUDO='' \
+    "$repo_root/scripts/codex-system-config.sh" verify 2>&1); then
+    fail 'verify accepted an unrelated Codex override'
+  fi
+  assert_contains "$output" '以外を追加しないでください'
+
+  printf '%s\n' '"model" = "test"' 'model_reasoning_effort = "medium"' '' '[tui]' 'status_line = ["model-with-reasoning"]' >"$source"
+  assert_codex_config_rejected "$source" "$destination"
+
+  printf '%s\n' 'model_reasoning_effort = "medium"' 'tui.status_line = ["model-with-reasoning"]' 'tui.extra = true' >"$source"
+  assert_codex_config_rejected "$source" "$destination"
+
+  printf '%s\n' 'extra = { enabled = true }' 'model_reasoning_effort = "medium"' '' '[tui]' 'status_line = ["model-with-reasoning"]' >"$source"
+  assert_codex_config_rejected "$source" "$destination"
+
   write_minimal_codex_config "$source"
 
   PATH="$bin_dir:$PATH" CODEX_SHARED_CONFIG="$source" \
@@ -149,6 +178,10 @@ test_codex_system_config() {
   if find "$(dirname "$destination")" -name '.config.toml.install.*' -print -quit | grep -q .; then
     fail 'failed install left a temporary file behind'
   fi
+
+  PATH="$bin_dir:$PATH" CODEX_SHARED_CONFIG="$repo_root/config/codex/config.toml" \
+    CODEX_SYSTEM_CONFIG="$destination" CODEX_CONFIG_SUDO='' \
+    "$repo_root/scripts/codex-system-config.sh" check >/dev/null
 }
 
 write_doctor_mocks() {

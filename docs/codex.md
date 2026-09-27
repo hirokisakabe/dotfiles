@@ -35,7 +35,7 @@ make codex-system-config-check
 
 ## `codex-system-config-check` の制約
 
-`make codex-system-config-check` は、共有設定がreasoning品質とTUI status line以外を上書きしていないことを検査したうえで、一時的なuser layerとして読み込み、現在のsystem layerと組み合わせて構文を検査する。実マシンの設定ファイルは変更しない。
+共有設定のdry-run、install、check、verifyはすべて、TOMLを構造として読み取り、reasoning品質とTUI status line以外を上書きしていないことを先に検査する。`make codex-system-config-check` は、さらに共有設定を一時的なuser layerとして読み込み、現在のsystem layerと組み合わせて構文を検査する。実マシンの設定ファイルは変更しない。
 
 Codexにはsystem layerを無効化する診断オプションがないため、この検査は共有設定だけの完全な単体検査ではない。実際に導入したsystem configの確認には `make codex-system-config-verify` を使用する。
 
