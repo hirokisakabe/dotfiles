@@ -37,25 +37,25 @@ make codex-system-config-verify
 
 ## 主要コマンド
 
-| Command                            | 用途                                              |
-| ---------------------------------- | ------------------------------------------------- |
-| `make help`                        | 利用可能なタスク一覧を表示                        |
-| `make install`                     | dotfiles環境を一括セットアップ                    |
-| `make update`                      | 管理対象のパッケージと外部リソースを一括更新      |
-| `make doctor`                      | dotfilesの設定状態を読み取り専用で検査            |
-| `make brew-install`                | `Brewfile` のパッケージをインストール             |
-| `make brew-update`                 | Homebrewと `Brewfile` のパッケージを更新          |
-| `make brewfile-dump`               | 現在のHomebrew状態を `Brewfile` に書き出し        |
-| `make brew-prune`                  | `Brewfile` にないHomebrewパッケージを確認後に削除 |
-| `make stow-link`                   | `packages/` 配下を `$HOME` にシンボリックリンク化 |
-| `make stow-unlink`                 | Stow管理のシンボリックリンクを削除                |
-| `make mise-install`                | mise管理の開発CLIとTerraformをインストール        |
-| `make skills-install`              | 管理対象のagent skillをインストール               |
-| `make skills-update`               | インストール済みのagent skillを更新               |
-| `make codex-system-config-dry-run` | Codex system configの適用内容・差分を表示         |
-| `make codex-system-config-install` | Codexの共有設定を `/etc/codex/config.toml` へ導入 |
-| `make codex-system-config-check`   | Codex共有設定を一時ディレクトリで非破壊検証       |
-| `make codex-system-config-verify`  | 導入後のCodex設定の代表値を診断                   |
+| Command                            | 用途                                                                 |
+| ---------------------------------- | -------------------------------------------------------------------- |
+| `make help`                        | 利用可能なタスク一覧を表示                                           |
+| `make install`                     | dotfiles環境を一括セットアップ                                       |
+| `make update`                      | インストール済みHomebrewパッケージと管理対象の外部リソースを一括更新 |
+| `make doctor`                      | dotfilesの設定状態を読み取り専用で検査                               |
+| `make brew-install`                | `Brewfile` のパッケージをインストール                                |
+| `make brew-update`                 | インストール済みHomebrewパッケージを全更新し `Brewfile` を適用       |
+| `make brewfile-dump`               | 現在のHomebrew状態を `Brewfile` に書き出し                           |
+| `make brew-prune`                  | `Brewfile` にないHomebrewパッケージを確認後に削除                    |
+| `make stow-link`                   | `packages/` 配下を `$HOME` にシンボリックリンク化                    |
+| `make stow-unlink`                 | Stow管理のシンボリックリンクを削除                                   |
+| `make mise-install`                | mise管理の開発CLIとTerraformをインストール                           |
+| `make skills-install`              | 管理対象のagent skillをインストール                                  |
+| `make skills-update`               | インストール済みのagent skillを更新                                  |
+| `make codex-system-config-dry-run` | Codex system configの適用内容・差分を表示                            |
+| `make codex-system-config-install` | Codexの共有設定を `/etc/codex/config.toml` へ導入                    |
+| `make codex-system-config-check`   | Codex共有設定を一時ディレクトリで非破壊検証                          |
+| `make codex-system-config-verify`  | 導入後のCodex設定の代表値を診断                                      |
 
 ## 詳細
 

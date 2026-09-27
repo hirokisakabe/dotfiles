@@ -46,9 +46,9 @@ Use `make` targets as the standard workflow:
 
 - `make help`: 利用可能なタスク一覧を表示。
 - `make install`: Homebrew のbootstrapから外部リソース導入、状態検査までを一括実行。
-- `make update`: 管理対象のパッケージと外部リソースを一括更新。
+- `make update`: インストール済み Homebrew パッケージと管理対象の外部リソースを一括更新。
 - `make brew-install`: `Brewfile` のパッケージをインストール。
-- `make brew-update`: Homebrew と `Brewfile` のパッケージを更新。
+- `make brew-update`: インストール済み Homebrew パッケージを全更新し、`Brewfile` を適用。
 - `make brewfile-dump`: 現在の Homebrew 状態を `Brewfile` に書き出す。
 - `make brew-prune`: `Brewfile` にない Homebrew パッケージを確認後に削除。
 - `make stow-link`: `packages/` 配下を `$HOME` にシンボリックリンク化。

@@ -60,7 +60,7 @@ _install:
 	$(MAKE) bat-cache-build
 	$(MAKE) doctor
 
-update: ## 管理対象のパッケージと外部リソースを更新
+update: ## インストール済み Homebrew パッケージと管理対象の外部リソースを更新
 	$(MAKE) brew-update
 	$(MAKE) skills-update
 	$(MAKE) gh-extensions-update
@@ -71,7 +71,7 @@ update: ## 管理対象のパッケージと外部リソースを更新
 brew-install: ## Brewfile のパッケージをインストール
 	brew bundle install --file=Brewfile
 
-brew-update: ## Homebrew と Brewfile のパッケージを更新
+brew-update: ## インストール済み Homebrew パッケージを全更新し Brewfile を適用
 	brew update
 	brew upgrade
 	brew bundle install --file=Brewfile
