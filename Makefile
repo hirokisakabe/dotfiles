@@ -73,6 +73,7 @@ brew-install: ## Brewfile のパッケージをインストール
 
 brew-update: ## Homebrew と Brewfile のパッケージを更新
 	brew update
+	brew upgrade
 	brew bundle install --file=Brewfile
 
 brewfile-dump: ## 現在の Homebrew 状態を Brewfile に書き出し
