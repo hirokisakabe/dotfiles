@@ -1,4 +1,5 @@
 [tools]
+dotnet = "10.0.401"
 node = "26.5.0"
 python = "3.14.6"
 terraform = "1.15.8"
