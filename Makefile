@@ -32,7 +32,6 @@ CODEX_CONFIG_SUDO ?= sudo
 
 .PHONY: help test install _install update doctor \
 	brew-install brew-update brewfile-dump brew-prune \
-	_migrate-claude-code-cask \
 	stow-link stow-unlink _clean-legacy-claude-skills-stow \
 	mise-install skills-install skills-update \
 	gh-extensions-install gh-extensions-update \
@@ -69,15 +68,10 @@ update: ## インストール済み Homebrew パッケージと管理対象の�
 	$(MAKE) vim-plugins-update
 	$(MAKE) bat-cache-build
 
-brew-install: _migrate-claude-code-cask ## Brewfile のパッケージをインストール
+brew-install: ## Brewfile のパッケージをインストール
 	brew bundle install --file=Brewfile
 
-_migrate-claude-code-cask:
-	@if brew list --cask claude-code >/dev/null 2>&1; then \
-		brew uninstall --cask claude-code; \
-	fi
-
-brew-update: _migrate-claude-code-cask ## インストール済み Homebrew パッケージを全更新し Brewfile を適用
+brew-update: ## インストール済み Homebrew パッケージを全更新し Brewfile を適用
 	brew update
 	brew upgrade --no-ask
 	brew bundle install --file=Brewfile
