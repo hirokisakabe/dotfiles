@@ -53,6 +53,8 @@ cask "gcloud-cli"
 cask "wezterm"
 cask "visual-studio-code"
 cask "flutter"
+cask "unity-hub"
+cask "unity-cli"
 
 # --- Utility Apps ---
 cask "stats"
