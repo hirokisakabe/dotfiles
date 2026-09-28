@@ -84,7 +84,7 @@ cask "figma"
 # --- AI Tools ---
 cask "chatgpt"
 cask "claude"
-cask "claude-code"
+cask "claude-code@latest"
 cask "codex"
 cask "kiro-cli"
 cask "copilot-cli"
