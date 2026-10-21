@@ -19,6 +19,36 @@
     "defaultMode": "auto"
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/scripts/session-launcher.py record"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/scripts/session-launcher.py record"
+          }
+        ]
+      }
+    ],
+    "CwdChanged": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/scripts/session-launcher.py record"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "WebFetch",
@@ -43,6 +73,10 @@
     "Stop": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/scripts/session-launcher.py record"
+          },
           {
             "type": "command",
             "command": "afplay /System/Library/Sounds/Funk.aiff"
