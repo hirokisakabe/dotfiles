@@ -35,6 +35,12 @@ make codex-system-config-verify
 
 `AGENT_SKILLS` には `owner/repo:skill-name` に加えて、`owner/repo:path/to/skill` 形式でリポジトリ内のnested skillも指定できる。
 
+### iTerm2
+
+`make stow-link` と `make iterm2-configure` の実行後、iTerm2を再起動すると設定が反映される。`make install` では両方を実行する。
+
+設定の正本は `packages/iterm2/.config/iterm2/com.googlecode.iterm2.plist`。GUIでの変更は正本へ自動保存されないため、継続する変更はこのファイルを編集する。
+
 ## 主要コマンド
 
 | Command                            | 用途                                                                 |
@@ -50,6 +56,7 @@ make codex-system-config-verify
 | `make stow-link`                   | `packages/` 配下を `$HOME` にシンボリックリンク化                    |
 | `make stow-unlink`                 | Stow管理のシンボリックリンクを削除                                   |
 | `make mise-install`                | mise管理の開発CLIとTerraformをインストール                           |
+| `make iterm2-configure`            | Stow管理のiTerm2設定を次回起動から読み込む                           |
 | `make skills-install`              | 管理対象のagent skillをインストール                                  |
 | `make skills-update`               | インストール済みのagent skillを更新                                  |
 | `make codex-system-config-dry-run` | Codex system configの適用内容・差分を表示                            |

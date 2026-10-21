@@ -51,6 +51,7 @@ cask "gcloud-cli"
 
 # --- Development Apps ---
 cask "wezterm"
+cask "iterm2"
 cask "visual-studio-code"
 cask "flutter"
 cask "unity-hub"
