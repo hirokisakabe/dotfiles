@@ -40,6 +40,7 @@ trap 'exit_on_signal 130' INT
 trap 'exit_on_signal 143' TERM
 
 reject_destination_symlink() {
+  # リンク先を意図せず読み書きしないよう、リンク切れも含めて拒否する。
   if privileged test -L "$CODEX_SYSTEM_CONFIG"; then
     printf '%s\n' "symlink は自動処理しません: $CODEX_SYSTEM_CONFIG" >&2
     exit 1
@@ -141,6 +142,8 @@ install_config() {
 }
 
 check_config() {
+  # 一時user layerで検査するため、既存system layerの影響は残る。
+  # 導入済みsystem configの確認にはverifyを使う。
   local report
   validate_shared_config
   cleanup_local_path=$(mktemp -d)
