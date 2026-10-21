@@ -37,13 +37,9 @@ make codex-system-config-verify
 
 ### iTerm2
 
-`make stow-link` と `make iterm2-configure` の実行後、iTerm2を起動（起動中なら終了して再起動）すると、`~/.config/iterm2/com.googlecode.iterm2.plist` の設定を読み込む。`make install` では両方を実行する。
+`make stow-link` と `make iterm2-configure` の実行後、iTerm2を再起動すると設定が反映される。`make install` では両方を実行する。
 
-WezTermと同じAtrium Library配色、OverpassM Nerd Font / Moralerspace Argonの13pt、文字間隔・行間隔、120列×40行、10,000行のスクロールバックを設定している。余白は左右16pt・上下13pt、タブはMinimalテーマで近似する。`Cmd+|` / `Cmd+\` で左右 / 上下に分割し、`Shift+Enter` はWezTermと同じESC+CRを送る。`Cmd+W` はiTerm2標準のペインを閉じる操作、`Cmd+Q` はアプリ終了のままとする。
-
-設定の正本は `packages/iterm2/` 配下。iTerm2の設定画面からの変更は正本へ自動保存しないため、継続する変更はplistを編集する。
-
-タブバーは1タブでもフルスクリーンでも常時表示し、閉じるボタンを表示する。フルスクリーン時は自動的に隠れるタイトルバー内にタブを配置せず、独立したバーとして表示する（Advancedの `Place tabs in the window's titlebar in full screen mode` を無効化）。タブをドラッグすると別ウィンドウへ切り離し・移動できる。
+設定の正本は `packages/iterm2/.config/iterm2/com.googlecode.iterm2.plist`。GUIでの変更は正本へ自動保存されないため、継続する変更はこのファイルを編集する。
 
 ## 主要コマンド
 
