@@ -1,3 +1,8 @@
+# /etc/codex/config.toml へ導入する共有設定の正本。
+# ~/.codex/config.toml はCodexが更新するマシン固有の通常ファイルとしてGit/Stow管理しない。
+# 同じキーはuser configが優先する。trust・hook承認・キャッシュ・絶対パスは共有しない。
+# モデルは既定に追従し、共有するのはreasoning品質とstatus lineだけ。
+# approval・sandbox・network・feature flagは実行環境のpolicyと既定値に委ねる。
 model_reasoning_effort = "medium"
 
 [tui]

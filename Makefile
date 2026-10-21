@@ -2,6 +2,7 @@
 
 PACKAGES := zsh vim wezterm iterm2 git starship yazi bat tig lazygit claude codex copilot gh-dash mise pnpm atuin
 
+# owner/repo:skill-name または owner/repo:path/to/skill で指定する。
 AGENT_SKILLS := \
 	hirokisakabe/issuekit:acceptance-check \
 	hirokisakabe/issuekit:cross-review \
@@ -23,6 +24,7 @@ AGENT_SKILLS := \
 	Owl-Listener/designer-skills:designer-toolkit/skills/ux-writing \
 	vercel-labs/agent-browser:agent-browser
 
+# skillの正本は共通ディレクトリ。Codexは直接参照し、Claudeはsymlink経由で参照する。
 AGENT_SKILLS_DIR ?= $(HOME)/.agents/skills
 CLAUDE_SKILLS_DIR ?= $(HOME)/.claude/skills
 CODEX_SKILLS_DIR ?= $(HOME)/.codex/skills
@@ -119,6 +121,7 @@ _clean-legacy-claude-skills-stow:
 mise-install: ## mise 管理の開発ツールをインストール
 	mise install
 
+# GUI変更は正本に自動保存しない。継続する変更はpackages/iterm2内のplistを編集する。
 iterm2-configure: ## Stow管理のiTerm2設定を次回起動から読み込む
 	@test -f "$$HOME/.config/iterm2/com.googlecode.iterm2.plist" || { echo '先に make stow-link を実行してください。' >&2; exit 1; }
 	defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$$HOME/.config/iterm2"
@@ -163,6 +166,8 @@ vim-plugins-update: vim-plugins-install ## 管理対象の Vim プラグイン�
 bat-cache-build: ## bat のテーマキャッシュを再構築
 	bat cache --build
 
+# 共有Codex設定はmake installの対象外。初回・更新時は以下を順に実行する。
+# make codex-system-config-dry-run → make codex-system-config-install → make codex-system-config-verify
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
 	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
 		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh dry-run
