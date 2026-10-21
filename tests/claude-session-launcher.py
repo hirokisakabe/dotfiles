@@ -71,7 +71,7 @@ class LauncherTest(unittest.TestCase):
         (self.config / "history.jsonl").write_text("bad JSON\n" + json.dumps({
             "sessionId": OLD_SESSION, "project": str(self.main),
             "timestamp": 1000, "display": "old task"}) + "\n")
-        project = self.config / "projects" / re.sub("[^a-zA-Z0-9]", "-", str(self.main))
+        project = self.config / "projects" / re.sub("[^a-zA-Z0-9]", "-", str(self.worktree))
         project.mkdir(parents=True)
         (project / (OLD_SESSION + ".jsonl")).write_text(json.dumps({
             "sessionId": OLD_SESSION, "cwd": str(self.worktree)}) + "\n")
@@ -84,6 +84,34 @@ class LauncherTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("ディレクトリがありません", result.stderr)
         self.assertFalse((self.root / "capture.json").exists())
+
+    def test_relocated_worktree_takes_priority_over_message_cwd(self):
+        (self.config / "history.jsonl").write_text(json.dumps({
+            "sessionId": OLD_SESSION, "project": str(self.main),
+            "timestamp": 1000, "display": "old task"}) + "\n")
+        project = self.config / "projects" / re.sub("[^a-zA-Z0-9]", "-", str(self.main))
+        project.mkdir(parents=True)
+        transcript = project / (OLD_SESSION + ".jsonl")
+        transcript.write_text(json.dumps({"sessionId": OLD_SESSION,
+                                         "cwd": str(self.main)}) + "\n" +
+                              json.dumps({"sessionId": OLD_SESSION, "type": "relocated",
+                                          "relocatedCwd": str(self.worktree)}) + "\n")
+        self.assert_resumed(OLD_SESSION)
+        transcript.write_text(json.dumps({"sessionId": OLD_SESSION, "type": "relocated",
+                                         "relocatedCwd": str(self.root / "deleted")}) + "\n")
+        result = self.run_launcher(SELECT=OLD_SESSION)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("ディレクトリがありません", result.stderr)
+
+    def test_resumed_session_gets_history_title_without_overwriting_current_cwd(self):
+        (self.config / "history.jsonl").write_text(json.dumps({
+            "sessionId": SESSION, "project": str(self.main),
+            "timestamp": 1000, "display": "original task"}) + "\n")
+        self.record(cwd=str(self.worktree), hook_event_name="SessionStart", source="resume")
+        self.record(cwd=str(self.worktree), hook_event_name="UserPromptSubmit", prompt="continue")
+        self.assert_resumed()
+        with sqlite3.connect(self.config / "task-launcher/sessions.sqlite3") as db:
+            self.assertEqual(db.execute("SELECT title FROM sessions").fetchone()[0], "original task")
 
     def test_renamed_title_and_hook_priority_over_old_history(self):
         self.record(cwd=str(self.worktree), prompt="first", session_title="named task")

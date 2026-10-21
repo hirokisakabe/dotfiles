@@ -36,6 +36,8 @@ def record(db):
     cwd = event.get("new_cwd") or event.get("cwd")
     if not valid_id(session_id) or not cwd:
         return
+    if event.get("hook_event_name") == "SessionStart":
+        import_history(db)
     previous = db.execute("SELECT title FROM sessions WHERE id = ?", (session_id,)).fetchone()
     title = event.get("session_title") or (previous[0] if previous else "")
     if not title and event.get("prompt"):
@@ -70,13 +72,17 @@ def import_history(db):
                     title = clean(entry.get("display", ""))
                     db.execute(
                         "INSERT INTO sessions VALUES (?, ?, ?, ?, 0) "
-                        "ON CONFLICT(id) DO UPDATE SET cwd = excluded.cwd, updated = excluded.updated "
-                        "WHERE sessions.recorded = 0 AND excluded.updated > sessions.updated",
+                        "ON CONFLICT(id) DO UPDATE SET "
+                        "title = CASE WHEN sessions.title = '' THEN excluded.title ELSE sessions.title END, "
+                        "cwd = CASE WHEN sessions.recorded = 0 AND excluded.updated > sessions.updated "
+                        "THEN excluded.cwd ELSE sessions.cwd END, "
+                        "updated = CASE WHEN sessions.recorded = 0 AND excluded.updated > sessions.updated "
+                        "THEN excluded.updated ELSE sessions.updated END",
                         (session_id, cwd, title, updated),
                     )
                 except (ValueError, TypeError, AttributeError):
                     continue
-    db.execute("INSERT INTO metadata VALUES ('history-imported')")
+    db.execute("INSERT OR IGNORE INTO metadata VALUES ('history-imported')")
     db.commit()
 
 
@@ -85,16 +91,25 @@ def imported_cwd(session_id, cwd):
     # Read only the selected transcript, never tool output or subagent files.
     project = re.sub(r"[^a-zA-Z0-9]", "-", cwd)
     transcript = CONFIG / "projects" / project / (session_id + ".jsonl")
+    if not transcript.exists():
+        matches = list((CONFIG / "projects").glob(f"*/{session_id}.jsonl"))
+        if len(matches) != 1:
+            raise ValueError("会話の履歴ファイルを一意に特定できません: " + session_id)
+        transcript = matches[0]
+    relocated = None
     if transcript.exists():
         with transcript.open() as source:
             for line in source:
                 try:
                     entry = json.loads(line)
-                    if entry.get("sessionId") == session_id and entry.get("cwd"):
-                        cwd = entry["cwd"]
+                    if entry.get("sessionId") == session_id:
+                        if entry.get("cwd"):
+                            cwd = entry["cwd"]
+                        if entry.get("type") == "relocated" and entry.get("relocatedCwd"):
+                            relocated = entry["relocatedCwd"]
                 except (ValueError, AttributeError):
                     continue
-    return cwd
+    return relocated or cwd
 
 
 def launch(db):
