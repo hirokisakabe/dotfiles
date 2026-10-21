@@ -166,6 +166,8 @@ vim-plugins-update: vim-plugins-install ## 管理対象の Vim プラグイン�
 bat-cache-build: ## bat のテーマキャッシュを再構築
 	bat cache --build
 
+# 共有Codex設定はmake installの対象外。初回・更新時は以下を順に実行する。
+# make codex-system-config-dry-run → make codex-system-config-install → make codex-system-config-verify
 codex-system-config-dry-run: ## system configの適用内容または差分を表示
 	@CODEX_SHARED_CONFIG="$(CODEX_SHARED_CONFIG)" CODEX_SYSTEM_CONFIG="$(CODEX_SYSTEM_CONFIG)" \
 		CODEX_CONFIG_SUDO="$(CODEX_CONFIG_SUDO)" ./scripts/codex-system-config.sh dry-run
