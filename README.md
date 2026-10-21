@@ -12,14 +12,8 @@
 
 ## セットアップ
 
-macOSとXcode Command Line Toolsを前提に、次を実行する。
-
 ```sh
 make install
 ```
 
-導入・更新・状態確認などのタスクは `make help` を参照。
-
-## 詳細
-
-- [リポジトリの構成・変更ルール](./AGENTS.md)
+他のタスクは `make help` を参照。
