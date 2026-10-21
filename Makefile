@@ -45,8 +45,9 @@ CODEX_CONFIG_SUDO ?= sudo
 help: ## 利用可能なタスク一覧を表示
 	@awk 'BEGIN {FS = ":.*## "; count = 0} /^[a-zA-Z][a-zA-Z0-9_-]*:.*## / {names[count] = $$1; descriptions[count] = $$2; if (length($$1) > width) width = length($$1); count++} END {for (i = 0; i < count; i++) printf "\033[36m%-*s\033[0m %s\n", width + 2, names[i], descriptions[i]}' $(MAKEFILE_LIST)
 
-test: ## Shell script のテストを実行
+test: ## スクリプトのテストを実行
 	./tests/shell-scripts.sh
+	python3 tests/claude-session-launcher.py
 
 install: ## dotfiles 環境を初回セットアップ
 	./install.sh
