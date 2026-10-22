@@ -290,6 +290,13 @@
 					<key>Text</key>
 					<string>D8146DD3-B46B-474A-8632-51CB4892225D</string>
 				</dict>
+				<key>0x79-0x100000</key>
+				<dict>
+					<key>Action</key>
+					<integer>13</integer>
+					<key>Text</key>
+					<string></string>
+				</dict>
 				<key>0x7c-0x120000</key>
 				<dict>
 					<key>Action</key>
