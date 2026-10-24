@@ -17,6 +17,3 @@ make install
 ```
 
 他のタスクは `make help` を参照。
-
-VS Code の既存設定がある場合は、`make install` / `make stow-link` の前に
-[VS Code 設定の移行手順](docs/vscode.md)を実施する。
