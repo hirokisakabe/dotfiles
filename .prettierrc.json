@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "packages/vscode/Library/Application Support/Code/User/settings.json"
+      ],
+      "options": {
+        "parser": "jsonc"
+      }
+    }
+  ]
+}
