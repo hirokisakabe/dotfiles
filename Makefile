@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-PACKAGES := zsh vim wezterm iterm2 git starship yazi bat tig lazygit claude codex copilot gh-dash mise pnpm atuin
+PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot gh-dash mise pnpm atuin
 
 # owner/repo:skill-name または owner/repo:path/to/skill で指定する。
 AGENT_SKILLS := \
@@ -32,7 +32,7 @@ CODEX_SHARED_CONFIG := config/codex/config.toml
 CODEX_SYSTEM_CONFIG ?= /etc/codex/config.toml
 CODEX_CONFIG_SUDO ?= sudo
 
-.PHONY: help test install _install update doctor iterm2-configure \
+.PHONY: help test install _install update doctor \
 	brew-install brew-update brewfile-dump brew-prune \
 	stow-link stow-unlink _clean-legacy-claude-skills-stow \
 	mise-install skills-install skills-update \
@@ -55,7 +55,6 @@ install: ## dotfiles 環境を初回セットアップ
 _install:
 	$(MAKE) brew-install
 	$(MAKE) stow-link
-	$(MAKE) iterm2-configure
 	$(MAKE) mise-install
 	$(MAKE) skills-install
 	$(MAKE) gh-extensions-install
@@ -121,14 +120,6 @@ _clean-legacy-claude-skills-stow:
 
 mise-install: ## mise 管理の開発ツールをインストール
 	mise install
-
-# GUI変更は正本に自動保存しない。継続する変更はpackages/iterm2内のplistを編集する。
-iterm2-configure: ## Stow管理のiTerm2設定を次回起動から読み込む
-	@test -f "$$HOME/.config/iterm2/com.googlecode.iterm2.plist" || { echo '先に make stow-link を実行してください。' >&2; exit 1; }
-	defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$$HOME/.config/iterm2"
-	defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
-	defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile -bool true
-	defaults write com.googlecode.iterm2 NoSyncNeverRemindPrefsChangesLostForFile_selection -int 1
 
 skills-install: ## 管理対象の agent skill をインストール
 	@AGENT_SKILLS_DIR="$(AGENT_SKILLS_DIR)" \

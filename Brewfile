@@ -51,7 +51,6 @@ cask "gcloud-cli"
 
 # --- Development Apps ---
 cask "wezterm"
-cask "iterm2"
 cask "visual-studio-code"
 cask "flutter"
 cask "unity-hub"
@@ -91,4 +90,3 @@ cask "claude-code@latest"
 cask "codex"
 cask "kiro-cli"
 cask "copilot-cli"
-cask "github-copilot-app"
