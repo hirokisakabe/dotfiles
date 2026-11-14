@@ -10,3 +10,4 @@ install.sh
 *.toml
 *.rules
 .wt/
+packages/mise/.config/mise/locks/

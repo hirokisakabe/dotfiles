@@ -20,3 +20,4 @@ terraform = "1.17.0"
 
 [settings]
 idiomatic_version_file_enable_tools = ["python", "node"]
+lockfile = true

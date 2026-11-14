@@ -1,0 +1,12 @@
+{
+  "name": "mise-npm-install",
+  "private": true,
+  "aube": {
+    "allowBuilds": {
+      "better-sqlite3": true
+    }
+  },
+  "dependencies": {
+    "shirube": "1.3.1"
+  }
+}
