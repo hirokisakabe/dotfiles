@@ -65,6 +65,7 @@ cask "libreoffice"
 cask "inkscape"
 cask "logi-options+"
 cask "deepl"
+cask "lulu"
 
 # --- Fonts ---
 cask "font-hackgen-nerd"
