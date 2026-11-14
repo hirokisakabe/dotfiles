@@ -1,0 +1,38 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@bkmk/cli':
+        specifier: 0.1.1
+        version: 0.1.1
+
+packages:
+
+  '@bkmk/cli@0.1.1':
+    resolution: {integrity: sha512-o7rbPKCuwH5dFa+TO/rIgY1c1GR88fERiKjJZAcHPrwC3L0aeSAN/v4MoZBYAApJXG2r2ZxV8HhuJfOh21vraw==}
+    hasBin: true
+
+  commander@13.1.0:
+    resolution: {integrity: sha512-/rFeCpNJQbhSZjGVwO9RFV3xPqbnERS8MmIQzCtD/zl6gpJuV/bMLuN92oG3F7d8oDEHHRrujSXNUr8fpjntKw==}
+    engines: {node: '>=18'}
+
+  hono@4.13.18:
+    resolution: {integrity: sha512-H9q/E1XizaWstJxUW881dmLxEj+t/TrGGnyxINkm4+sK0qUwsMtFdo2BWI9Vs3cIS19MU6b6iCijoUoEf4f3DA==}
+    engines: {node: '>=16.9.0'}
+
+snapshots:
+
+  '@bkmk/cli@0.1.1':
+    dependencies:
+      commander: 13.1.0
+      hono: 4.13.18
+
+  commander@13.1.0: {}
+
+  hono@4.13.18: {}
