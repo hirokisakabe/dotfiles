@@ -16,7 +16,6 @@ elif [[ -x /usr/local/bin/brew ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-COLOR_TEXT=0xffcdd6f4
 COLOR_MUTED=0xff6c7086
 COLOR_OK=0xffa6e3a1
 COLOR_WARN=0xfff9e2af
