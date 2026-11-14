@@ -3,6 +3,7 @@ tap "homebrew/bundle"
 tap "charmbracelet/tap"
 tap "k1LoW/tap"
 tap "steipete/tap"
+tap "FelixKratz/formulae"
 
 # --- Shell & Environment ---
 brew "zsh"
@@ -39,6 +40,7 @@ brew "glow"
 brew "freeze"
 brew "mise"
 brew "uv"
+brew "sketchybar"
 
 # --- Container & VM ---
 brew "podman"

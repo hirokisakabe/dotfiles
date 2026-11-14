@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# SketchyBar prototype: mise で管理している主要ツールの
+# 現在バージョン → 最新バージョンをメニューバー右側に表示する。
+#
+# 起動: brew services start sketchybar
+# 再読込: sketchybar --reload
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+sketchybar --bar \
+    height=28 \
+    position=bottom \
+    padding_left=6 \
+    padding_right=6 \
+    color=0x991e1e2e \
+    blur_radius=10 \
+    topmost=window \
+    show_in_fullscreen=on
+
+sketchybar --default \
+    icon.font="HackGen Console NF:Bold:13.0" \
+    label.font="HackGen Console NF:Semibold:12.0" \
+    icon.color=0xffcdd6f4 \
+    label.color=0xffcdd6f4 \
+    padding_left=4 \
+    padding_right=4 \
+    icon.padding_right=2 \
+    label.padding_left=2
+
+MISE_TOOLS=(node python terraform dotnet tflint)
+
+for tool in "${MISE_TOOLS[@]}"; do
+    sketchybar --add item "mise.$tool" right \
+        --set "mise.$tool" \
+            update_freq=3600 \
+            script="$PLUGIN_DIR/mise_version.sh $tool" \
+            label="$tool …" \
+        --subscribe "mise.$tool" system_woke
+done
+
+sketchybar --update
