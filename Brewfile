@@ -75,7 +75,6 @@ cask "font-overpass-nerd-font"
 
 # --- Browsers ---
 cask "google-chrome"
-cask "microsoft-edge"
 
 # --- Communication & Collaboration ---
 cask "slack"
