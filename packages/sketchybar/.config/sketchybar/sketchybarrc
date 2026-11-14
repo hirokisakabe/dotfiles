@@ -38,4 +38,11 @@ for tool in "${MISE_TOOLS[@]}"; do
         --subscribe "mise.$tool" system_woke
 done
 
+sketchybar --add item brew.outdated right \
+    --set brew.outdated \
+        update_freq=3600 \
+        script="$PLUGIN_DIR/brew_outdated.sh" \
+        label="brew …" \
+    --subscribe brew.outdated system_woke
+
 sketchybar --update
