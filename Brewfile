@@ -45,7 +45,6 @@ brew "podman"
 cask "orbstack"
 
 # --- Cloud & IaC ---
-brew "tflint"
 brew "awscli"
 cask "gcloud-cli"
 
