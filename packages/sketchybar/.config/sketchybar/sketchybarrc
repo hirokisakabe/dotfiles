@@ -27,7 +27,10 @@ sketchybar --default \
     icon.padding_right=2 \
     label.padding_left=2
 
-MISE_TOOLS=(node python terraform dotnet tflint)
+# SketchyBar は右側のアイテムを追加順に右から左へ配置する。
+# 視覚上は左から [languages] python dotnet node | [IaC] terraform tflint の
+# 2 グループになるよう、追加順は右端から積む逆順で指定する。
+MISE_TOOLS=(tflint terraform node dotnet python)
 
 for tool in "${MISE_TOOLS[@]}"; do
     sketchybar --add item "mise.$tool" right \
