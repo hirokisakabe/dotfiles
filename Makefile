@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot gh-dash mise npm pnpm atuin sketchybar hammerspoon
+PACKAGES := zsh vim wezterm git starship yazi bat tig lazygit claude codex copilot gh-dash mise npm pnpm uv atuin sketchybar hammerspoon
 
 # owner/repo:skill-name または owner/repo:path/to/skill で指定する。
 AGENT_SKILLS := \
