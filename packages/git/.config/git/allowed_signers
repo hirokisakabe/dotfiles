@@ -12,3 +12,4 @@
 #     "$(git config --get user.email)" \
 #     "$(cat ~/.ssh/id_ed25519.pub | awk '{print $1" "$2}')" \
 #     >> ~/.config/git/allowed_signers
+hiroki.sakabe@icloud.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDFMMQdkK22drXsrd4ID1yG3u5ZH2OK01b/I/IFhEbCc
