@@ -1,0 +1,14 @@
+# allowed_signers for SSH-based git commit verification.
+#
+# Format: <principals (email)> [options] <key-type> <base64 pubkey>
+# Example:
+#   hiroki.sakabe@icloud.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
+#
+# Add one line per key you want to treat as trusted for git signatures.
+# `namespaces="git"` restricts this cert to git signing only (recommended).
+#
+# To append the active signing key after generating it:
+#   printf '%s namespaces="git" %s\n' \
+#     "$(git config --get user.email)" \
+#     "$(cat ~/.ssh/id_ed25519.pub | awk '{print $1" "$2}')" \
+#     >> ~/.config/git/allowed_signers
