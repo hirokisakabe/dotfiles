@@ -1,14 +1,4 @@
 {
-  "autoMode": {
-    "environment": [
-      "$defaults",
-      "Invoking the codex CLI to send repository diffs to api.openai.com for code review is an expected and trusted workflow in this project."
-    ],
-    "allow": [
-      "$defaults",
-      "Running codex CLI for read-only code review (no file writes, no branch changes) is permitted."
-    ]
-  },
   "permissions": {
     "ask": [
       "Bash(gh pr merge:*)",
@@ -18,6 +8,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opusplan",
   "hooks": {
     "SessionStart": [
       {
@@ -90,8 +81,18 @@
     "command": "~/.claude/statusline.sh"
   },
   "language": "ja",
-  "voiceEnabled": true,
-  "skipAutoPermissionPrompt": true,
   "tui": "default",
-  "model": "opusplan"
+  "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "allow": [
+      "$defaults",
+      "Running codex CLI for read-only code review (no file writes, no branch changes) is permitted."
+    ],
+    "environment": [
+      "$defaults",
+      "Invoking the codex CLI to send repository diffs to api.openai.com for code review is an expected and trusted workflow in this project."
+    ]
+  },
+  "voiceEnabled": true,
+  "theme": "light"
 }
