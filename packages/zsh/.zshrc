@@ -77,3 +77,6 @@ eval "$(git wt --init zsh)"
 
 # atuin
 eval "$(atuin init zsh)"
+
+# Unity CLI
+. "$HOME/.unity/env"
