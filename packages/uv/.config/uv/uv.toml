@@ -1,0 +1,6 @@
+# Supply chain hardening for uv.
+# Reference: https://docs.astral.sh/uv/reference/settings/#exclude-newer
+
+# Publish 直後の悪意あるバージョン取り込みを避けるため、7 日より新しいリリースは除外する。
+# "7 days" / "1 week" / "P7D" が使用可。要 uv >= 0.9.17 (duration 記法のサポート)。
+exclude-newer = "7 days"
